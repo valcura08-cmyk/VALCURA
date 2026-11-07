@@ -298,6 +298,18 @@
     "supportEmail": "care@valcurafragrance.com",
     "supportPhone": "+91 99887 76655",
     "shipping": "Complimentary standard delivery on all pre-orders across India.",
-    "cancellationPolicy": "Pre-orders can be modified or cancelled before dispatch. For reservation deposits, cancellations are eligible for a 100% full refund before the final balance payment request is issued."
+    "cancellationPolicy": "Pre-orders can be modified or cancelled before dispatch. For reservation deposits, cancellations are eligible for a 100% full refund before the final balance payment request is issued.",
+    "registeredUsers": [
+      {
+        "id": "usr_411293",
+        "email": "valcura08@gmail.com",
+        "fullName": "VALCURA Atelier",
+        "phone": "",
+        "provider": "google",
+        "registeredAt": "2026-11-07T15:56:00.618Z",
+        "lastLoginAt": "2026-11-07T15:56:00.618Z",
+        "memberSince": "November 2026"
+      }
+    ]
   }
 }
