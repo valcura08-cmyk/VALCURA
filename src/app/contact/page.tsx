@@ -1,0 +1,168 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
+
+export default function ContactUsPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="bg-white text-[#110D09] min-h-screen pb-24">
+      {/* Header Banner */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#FAF8F5] border-b border-[#E8E2D8] text-center">
+        <div className="max-w-2xl mx-auto space-y-4">
+          <span className="text-xs tracking-luxury uppercase text-[#8C6D3F] font-mono">
+            Client Concierge
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-serif tracking-wide uppercase text-[#110D09]">
+            Contact Us
+          </h1>
+          <p className="text-xs sm:text-sm text-[#554D45] font-light">
+            Our atelier concierge is dedicated to assisting you with order inquiries, pre-order
+            reservations, and bespoke scent recommendations.
+          </p>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+          {/* Contact Details */}
+          <div className="md:col-span-5 space-y-8">
+            <div className="bg-[#FAF8F5] border border-[#E8E2D8] p-6 space-y-6 shadow-sm">
+              <span className="text-xs tracking-luxury uppercase text-[#8C6D3F] font-mono block">
+                Official Channels
+              </span>
+
+              <div className="space-y-4 text-xs">
+                <div className="flex items-start space-x-3">
+                  <Mail className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[#888075] block font-mono">Concierge Email:</span>
+                    <a
+                      href="mailto:care@valcurafragrance.com"
+                      className="text-[#110D09] hover:text-[#8C6D3F] font-medium"
+                    >
+                      care@valcurafragrance.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Phone className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[#888075] block font-mono">Client Helpline:</span>
+                    <span className="text-[#110D09] font-medium">+91 99887 76655</span>
+                    <span className="text-[10px] text-[#888075] block">[Owner Editable Phone]</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Clock className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[#888075] block font-mono">Operating Hours:</span>
+                    <span className="text-[#110D09] font-medium">Monday – Saturday: 10:00 AM – 7:00 PM IST</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <MapPin className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[#888075] block font-mono">Atelier Headquarters:</span>
+                    <span className="text-[#110D09] font-medium">Mumbai, Maharashtra, India</span>
+                    <span className="text-[10px] text-[#888075] block">[Owner Editable Address]</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Message Form */}
+          <div className="md:col-span-7">
+            <div className="bg-white border border-[#E8E2D8] p-8 shadow-sm">
+              {submitted ? (
+                <div className="text-center py-12 space-y-4">
+                  <CheckCircle2 className="w-12 h-12 text-[#8C6D3F] mx-auto" />
+                  <h3 className="text-2xl font-serif text-[#110D09]">Message Received</h3>
+                  <p className="text-xs text-[#554D45] font-light max-w-sm mx-auto">
+                    Thank you for contacting VALCURA. Our client concierge will review your inquiry
+                    and respond within 24 business hours.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="btn-luxury-outline text-xs mt-4"
+                  >
+                    Send Another Inquiry
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <h3 className="text-lg font-serif uppercase tracking-wide text-[#110D09]">
+                    Send A Message
+                  </h3>
+                  <div className="space-y-4 text-xs">
+                    <div>
+                      <label className="block text-[#554D45] font-light mb-1">Your Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[#554D45] font-light mb-1">Email Address *</label>
+                      <input
+                        type="email"
+                        required
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[#554D45] font-light mb-1">Subject</label>
+                      <input
+                        type="text"
+                        value={form.subject}
+                        onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                        placeholder="e.g. Cacao Citrine Pre-order inquiry"
+                        className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[#554D45] font-light mb-1">Message *</label>
+                      <textarea
+                        rows={4}
+                        required
+                        value={form.message}
+                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full btn-luxury-primary py-3.5 text-xs tracking-luxury uppercase flex items-center justify-center space-x-2"
+                  >
+                    <span>Transmit Message</span>
+                    <Send className="w-3.5 h-3.5" />
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

@@ -1,0 +1,285 @@
+'use client';
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Order } from '@/lib/db';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  fullName: string;
+  avatar?: string;
+  provider: 'google' | 'microsoft' | 'email';
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  memberSince: string;
+}
+
+interface AuthContextType {
+  user: UserProfile | null;
+  orders: Order[];
+  isLoadingOrders: boolean;
+  isAuthModalOpen: boolean;
+  authModalMode: 'signin' | 'signup';
+  openAuthModal: (mode?: 'signin' | 'signup') => void;
+  closeAuthModal: () => void;
+  loginWithGoogle: (email?: string, name?: string) => Promise<UserProfile>;
+  loginWithMicrosoft: (email?: string, name?: string) => Promise<UserProfile>;
+  loginWithEmail: (email: string, fullName: string, phone?: string) => Promise<UserProfile>;
+  logout: () => void;
+  updateProfile: (updatedData: Partial<UserProfile>) => void;
+  refreshOrders: () => Promise<void>;
+  saveOrderToAccount: (order: Order) => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const STORAGE_KEY = 'valcura_user_auth_session';
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoadingOrders, setIsLoadingOrders] = useState<boolean>(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
+
+  // Load saved login on initial mount & automatically show login popup on website open
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.email) {
+          setUser(parsed);
+          fetchOrdersForEmail(parsed.email);
+          return; // Already logged in, no need to show login popup
+        }
+      }
+    } catch (e) {
+      console.error('Failed to parse saved auth session', e);
+    }
+
+    // If user is not logged in and hasn't dismissed in this session, show login popup on website open
+    try {
+      const dismissed = sessionStorage.getItem('valcura_login_popup_dismissed');
+      if (!dismissed) {
+        const timer = setTimeout(() => {
+          setIsAuthModalOpen(true);
+          setAuthModalMode('signin');
+        }, 700);
+        return () => clearTimeout(timer);
+      }
+    } catch (e) {
+      // Fallback
+      const timer = setTimeout(() => {
+        setIsAuthModalOpen(true);
+        setAuthModalMode('signin');
+      }, 700);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  // Fetch orders from API + local client orders
+  const fetchOrdersForEmail = async (email: string) => {
+    setIsLoadingOrders(true);
+    try {
+      const res = await fetch(`/api/orders/user?email=${encodeURIComponent(email)}`);
+      let serverOrders: Order[] = [];
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.orders)) {
+          serverOrders = data.orders;
+        }
+      }
+
+      // Also read local client orders saved in browser for this email
+      let localOrders: Order[] = [];
+      try {
+        const localKey = `valcura_orders_${email.toLowerCase().trim()}`;
+        const localSaved = localStorage.getItem(localKey);
+        if (localSaved) {
+          localOrders = JSON.parse(localSaved);
+        }
+      } catch (e) {
+        console.error('Failed to read local orders', e);
+      }
+
+      // Merge and deduplicate by order ID
+      const orderMap = new Map<string, Order>();
+      [...serverOrders, ...localOrders].forEach((ord) => {
+        if (ord && ord.id) {
+          orderMap.set(ord.id, ord);
+        }
+      });
+
+      const merged = Array.from(orderMap.values());
+      merged.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setOrders(merged);
+    } catch (err) {
+      console.error('Failed to fetch user orders', err);
+    } finally {
+      setIsLoadingOrders(false);
+    }
+  };
+
+  const saveSession = (profile: UserProfile) => {
+    setUser(profile);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+    } catch (e) {
+      console.error('Failed to save auth session', e);
+    }
+    fetchOrdersForEmail(profile.email);
+  };
+
+  const loginWithGoogle = async (customEmail?: string, customName?: string): Promise<UserProfile> => {
+    const email = (customEmail || 'aarav.sharma@gmail.com').trim().toLowerCase();
+    const fullName = customName || 'Aarav Sharma';
+    const profile: UserProfile = {
+      id: `usr_g_${Math.floor(100000 + Math.random() * 900000)}`,
+      email,
+      fullName,
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&crop=face',
+      provider: 'google',
+      phone: '+91 98201 12345',
+      address: 'B-402, Signature Towers, Bandra West',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400050',
+      memberSince: 'November 2026',
+    };
+
+    saveSession(profile);
+    setIsAuthModalOpen(false);
+    return profile;
+  };
+
+  const loginWithMicrosoft = async (customEmail?: string, customName?: string): Promise<UserProfile> => {
+    const email = (customEmail || 'priya.sen@outlook.com').trim().toLowerCase();
+    const fullName = customName || 'Priya Sen';
+    const profile: UserProfile = {
+      id: `usr_ms_${Math.floor(100000 + Math.random() * 900000)}`,
+      email,
+      fullName,
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&crop=face',
+      provider: 'microsoft',
+      phone: '+91 98112 87654',
+      address: 'Flat 12, Golf Green Gardens',
+      city: 'Kolkata',
+      state: 'West Bengal',
+      pincode: '700095',
+      memberSince: 'November 2026',
+    };
+
+    saveSession(profile);
+    setIsAuthModalOpen(false);
+    return profile;
+  };
+
+  const loginWithEmail = async (email: string, fullName: string, phone?: string): Promise<UserProfile> => {
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = fullName.trim() || cleanEmail.split('@')[0];
+    const profile: UserProfile = {
+      id: `usr_em_${Math.floor(100000 + Math.random() * 900000)}`,
+      email: cleanEmail,
+      fullName: cleanName,
+      provider: 'email',
+      phone: phone || '',
+      memberSince: 'November 2026',
+    };
+
+    saveSession(profile);
+    setIsAuthModalOpen(false);
+    return profile;
+  };
+
+  const logout = () => {
+    setUser(null);
+    setOrders([]);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {
+      console.error('Failed to clear auth session', e);
+    }
+  };
+
+  const updateProfile = (updatedData: Partial<UserProfile>) => {
+    if (!user) return;
+    const updated = { ...user, ...updatedData };
+    setUser(updated);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch (e) {
+      console.error('Failed to update auth session', e);
+    }
+  };
+
+  const refreshOrders = async () => {
+    if (user?.email) {
+      await fetchOrdersForEmail(user.email);
+    }
+  };
+
+  const saveOrderToAccount = (newOrder: Order) => {
+    setOrders((prev) => {
+      const updated = [newOrder, ...prev.filter((o) => o.id !== newOrder.id)];
+      // Also persist to localStorage
+      if (user?.email) {
+        try {
+          const localKey = `valcura_orders_${user.email.toLowerCase().trim()}`;
+          localStorage.setItem(localKey, JSON.stringify(updated));
+        } catch (e) {
+          console.error('Failed to save order locally', e);
+        }
+      }
+      return updated;
+    });
+  };
+
+  const openAuthModal = (mode: 'signin' | 'signup' = 'signin') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+    try {
+      sessionStorage.setItem('valcura_login_popup_dismissed', 'true');
+    } catch (e) {
+      console.error('Failed to save popup dismissal', e);
+    }
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        orders,
+        isLoadingOrders,
+        isAuthModalOpen,
+        authModalMode,
+        openAuthModal,
+        closeAuthModal,
+        loginWithGoogle,
+        loginWithMicrosoft,
+        loginWithEmail,
+        logout,
+        updateProfile,
+        refreshOrders,
+        saveOrderToAccount,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}

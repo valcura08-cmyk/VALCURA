@@ -1,0 +1,393 @@
+{
+  "products": [
+    {
+      "id": "cacao-citrine",
+      "slug": "cacao-citrine",
+      "name": "Cacao Citrine",
+      "collection": "Cacao Collection",
+      "category": "Unisex",
+      "volume": "50 ML",
+      "status": "Available",
+      "isAvailable": true,
+      "isPreorder": false,
+      "isComingSoon": false,
+      "standardPrice": 599,
+      "fullPrice": 499,
+      "preorderFullPrice": 399,
+      "reserveTotal": 449,
+      "depositToday": 314,
+      "balanceRemaining": 135,
+      "images": [
+        "/products/cacao-citrine-1.jpg",
+        "/products/cacao-citrine-2.jpg",
+        "/products/cacao-citrine-3.jpg",
+        "/products/cacao-citrine-4.jpg"
+      ],
+      "shortDescription": "A sophisticated modern composition marrying vibrant citrus freshness with the comforting depth of creamy hazelnut.",
+      "notes": [
+        "Sun-drenched Bergamot",
+        "Roasted Hazelnut Cream",
+        "Cacao Shell Veil"
+      ],
+      "inventory": 120,
+      "featured": true
+    },
+    {
+      "id": "silken-sambac",
+      "slug": "silken-sambac",
+      "name": "Silken Sambac",
+      "collection": "Cacao Collection",
+      "category": "For Her",
+      "volume": "50 ML",
+      "status": "Coming Soon",
+      "isAvailable": false,
+      "isPreorder": false,
+      "isComingSoon": true,
+      "standardPrice": null,
+      "fullPrice": null,
+      "reserveTotal": null,
+      "depositToday": null,
+      "balanceRemaining": null,
+      "images": [
+        "/products/silken-sambac-teaser.jpg"
+      ],
+      "shortDescription": "",
+      "notes": [],
+      "inventory": 0,
+      "featured": false
+    },
+    {
+      "id": "roasted-zest",
+      "slug": "roasted-zest",
+      "name": "Roasted Zest",
+      "collection": "Cacao Collection",
+      "category": "For Him",
+      "volume": "50 ML",
+      "status": "Coming Soon",
+      "isAvailable": false,
+      "isPreorder": false,
+      "isComingSoon": true,
+      "standardPrice": null,
+      "fullPrice": null,
+      "reserveTotal": null,
+      "depositToday": null,
+      "balanceRemaining": null,
+      "images": [
+        "/products/roasted-zest-teaser.jpg"
+      ],
+      "shortDescription": "",
+      "notes": [],
+      "inventory": 0,
+      "featured": false
+    }
+  ],
+  "moods": [
+    {
+      "id": "coffee-date",
+      "slug": "coffee-date",
+      "title": "THE COFFEE DATE",
+      "visualDirection": "An elegant coffee date, espresso, a chocolate dessert and an intimate café setting.",
+      "description": "For those little moments that deserve something memorable.",
+      "image": "/moods/coffee-date.jpg",
+      "recommendedProductId": "cacao-citrine",
+      "recommendedProductIds": [
+        "cacao-citrine",
+        "roasted-zest"
+      ],
+      "storySnippet": "When conversations stretch across warm cups and intimate table candlelight, you need a scent that feels both effortless and distinctive. Cacao Citrine brings crisp citrus brightness with creamy hazelnut warmth, while Roasted Zest adds dark cocoa nibs and smoked woods for café allure."
+    },
+    {
+      "id": "slow-moments",
+      "slug": "slow-moments",
+      "title": "SLOW MOMENTS",
+      "visualDirection": "A cosy coffee setting, a book, a warm drink and a relaxed afternoon.",
+      "description": "For unhurried moments and everyday comfort.",
+      "image": "/moods/slow-moments.jpg",
+      "recommendedProductId": "cacao-citrine",
+      "recommendedProductIds": [
+        "cacao-citrine",
+        "silken-sambac"
+      ],
+      "storySnippet": "For quiet mornings bathed in soft golden sun and the comfort of your favourite corner. Silken Sambac is formulated for personal tranquility, blending dewy white sambac petals with delicate cocoa butter and airy silk musks."
+    },
+    {
+      "id": "after-hours",
+      "slug": "after-hours",
+      "title": "AFTER HOURS",
+      "visualDirection": "An evening dinner setting, chocolate dessert, intimate conversations and sophisticated ambience.",
+      "description": "For evenings that deserve a little more character.",
+      "image": "/moods/after-hours.jpg",
+      "recommendedProductId": "roasted-zest",
+      "recommendedProductIds": [
+        "roasted-zest",
+        "cacao-citrine"
+      ],
+      "storySnippet": "As dusk descends and the atmosphere deepens, an evening calls for quiet confidence and magnetic warmth. Roasted Zest commands the room with smoky woods and bitter cocoa rind, beautifully complemented by the sparkling hazelnut glow of Cacao Citrine."
+    },
+    {
+      "id": "little-indulgence",
+      "slug": "little-indulgence",
+      "title": "A LITTLE INDULGENCE",
+      "visualDirection": "Hazelnut pastries, cocoa-inspired desserts, coffee and an elegant dessert-table experience.",
+      "description": "For people who enjoy the finer little moments.",
+      "image": "/moods/little-indulgence.jpg",
+      "recommendedProductId": "cacao-citrine",
+      "recommendedProductIds": [
+        "cacao-citrine",
+        "silken-sambac",
+        "roasted-zest"
+      ],
+      "storySnippet": "An exquisite sensory celebration of everyday luxury and dessert-table delight. Why settle for just one? A Little Indulgence brings together all three distinct expressions: the creamy citrus radiance of Cacao Citrine, the ethereal floral silk of Silken Sambac, and the smoked roasted depth of Roasted Zest."
+    },
+    {
+      "id": "light-up",
+      "slug": "light-up",
+      "title": "LIGHT UP",
+      "visualDirection": "A flick of flame illuminating glossy red lips, midnight allure, and spontaneous sparks.",
+      "description": "For electric nights sparked by bold confidence and magnetic warmth.",
+      "image": "/moods/light-up.jpg",
+      "recommendedProductId": "cacao-citrine",
+      "recommendedProductIds": [
+        "cacao-citrine",
+        "roasted-zest"
+      ],
+      "storySnippet": "A sudden spark in the velvet dark. A flick of a flame illuminating glossy lips, smoky allure, and unspoken chemistry. Cacao Citrine captures this intoxicating energy with radiant solar citrus freshness that melts into the rich, addictive warmth of hazelnut cream and roasted cacao."
+    }
+  ],
+  "orders": [
+    {
+      "id": "VAL-ORD-571867",
+      "createdAt": "2026-11-06T21:11:17.114Z",
+      "customer": {
+        "fullName": "Test Customer",
+        "email": "test@valcura.com",
+        "phone": "9876543210",
+        "address": "100 Luxury Avenue",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400001"
+      },
+      "items": [
+        {
+          "productId": "cacao-citrine",
+          "productName": "Cacao Citrine",
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paymentPlan": "standard_full",
+          "unitDeposit": 499,
+          "unitBalance": 0,
+          "unitTotal": 499,
+          "paidToday": 499,
+          "remainingBalance": 0,
+          "totalItemValue": 499
+        }
+      ],
+      "plan": "standard_full",
+      "totalQuantity": 1,
+      "amountPaidToday": 499,
+      "remainingBalance": 0,
+      "totalOrderValue": 499,
+      "paymentStatus": "Payment Pending",
+      "orderStatus": "Payment Pending",
+      "paymentMethod": "UPI / Cards (Indian Gateway)",
+      "paymentTransactionId": "",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "status": "Payment Pending",
+          "timestamp": "2026-11-06T21:11:17.114Z",
+          "note": "Pre-order created. Total payable today: ₹499, remaining balance: ₹0."
+        }
+      ]
+    },
+    {
+      "id": "VAL-ORD-535146",
+      "createdAt": "2026-11-06T21:11:17.085Z",
+      "customer": {
+        "fullName": "Test Customer",
+        "email": "test@valcura.com",
+        "phone": "9876543210",
+        "address": "100 Luxury Avenue",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400001"
+      },
+      "items": [
+        {
+          "productId": "cacao-citrine",
+          "productName": "Cacao Citrine",
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paymentPlan": "preorder_deposit",
+          "unitDeposit": 314,
+          "unitBalance": 135,
+          "unitTotal": 449,
+          "paidToday": 314,
+          "remainingBalance": 135,
+          "totalItemValue": 449
+        }
+      ],
+      "plan": "preorder_deposit",
+      "totalQuantity": 1,
+      "amountPaidToday": 314,
+      "remainingBalance": 135,
+      "totalOrderValue": 449,
+      "paymentStatus": "Payment Pending",
+      "orderStatus": "Payment Pending",
+      "paymentMethod": "UPI / Cards (Indian Gateway)",
+      "paymentTransactionId": "",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "status": "Payment Pending",
+          "timestamp": "2026-11-06T21:11:17.085Z",
+          "note": "Pre-order created. Total payable today: ₹314, remaining balance: ₹135."
+        }
+      ]
+    },
+    {
+      "id": "VAL-ORD-933325",
+      "createdAt": "2026-11-06T21:11:17.036Z",
+      "customer": {
+        "fullName": "Test Customer",
+        "email": "test@valcura.com",
+        "phone": "9876543210",
+        "address": "100 Luxury Avenue",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400001"
+      },
+      "items": [
+        {
+          "productId": "cacao-citrine",
+          "productName": "Cacao Citrine",
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paymentPlan": "preorder_full",
+          "unitDeposit": 399,
+          "unitBalance": 0,
+          "unitTotal": 399,
+          "paidToday": 399,
+          "remainingBalance": 0,
+          "totalItemValue": 399
+        }
+      ],
+      "plan": "preorder_full",
+      "totalQuantity": 1,
+      "amountPaidToday": 399,
+      "remainingBalance": 0,
+      "totalOrderValue": 399,
+      "paymentStatus": "Payment Pending",
+      "orderStatus": "Payment Pending",
+      "paymentMethod": "UPI / Cards (Indian Gateway)",
+      "paymentTransactionId": "",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "status": "Payment Pending",
+          "timestamp": "2026-11-06T21:11:17.038Z",
+          "note": "Pre-order created. Total payable today: ₹399, remaining balance: ₹0."
+        }
+      ]
+    },
+    {
+      "id": "VAL-DEMO-1001",
+      "createdAt": "2026-11-05T14:30:00.000Z",
+      "customer": {
+        "fullName": "Aarav Sharma",
+        "email": "aarav.sharma@example.com",
+        "phone": "+91 98201 12345",
+        "address": "B-402, Signature Towers, Bandra West",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400050"
+      },
+      "items": [
+        {
+          "productId": "cacao-citrine",
+          "productName": "Cacao Citrine",
+          "category": "Unisex | 50 ML",
+          "quantity": 2,
+          "paymentPlan": "deposit",
+          "unitDeposit": 329,
+          "unitBalance": 141,
+          "unitTotal": 470,
+          "paidToday": 658,
+          "remainingBalance": 282,
+          "totalItemValue": 940
+        }
+      ],
+      "plan": "deposit",
+      "totalQuantity": 2,
+      "amountPaidToday": 658,
+      "remainingBalance": 282,
+      "totalOrderValue": 940,
+      "paymentStatus": "Deposit Paid",
+      "orderStatus": "Deposit Paid — Awaiting Availability",
+      "paymentMethod": "UPI (Razorpay Verified)",
+      "paymentTransactionId": "pay_val_dep_9831a2",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "status": "Deposit Paid — Awaiting Availability",
+          "timestamp": "2026-11-05T14:30:00.000Z",
+          "note": "Initial 70% deposit payment of ₹658 received. Order reserved."
+        }
+      ]
+    },
+    {
+      "id": "VAL-DEMO-1002",
+      "createdAt": "2026-11-05T16:15:00.000Z",
+      "customer": {
+        "fullName": "Priya Sen",
+        "email": "priya.sen@example.com",
+        "phone": "+91 98112 87654",
+        "address": "Flat 12, Golf Green Gardens",
+        "city": "Kolkata",
+        "state": "West Bengal",
+        "pincode": "700095"
+      },
+      "items": [
+        {
+          "productId": "cacao-citrine",
+          "productName": "Cacao Citrine",
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paymentPlan": "full",
+          "unitDeposit": 450,
+          "unitBalance": 0,
+          "unitTotal": 450,
+          "paidToday": 450,
+          "remainingBalance": 0,
+          "totalItemValue": 450
+        }
+      ],
+      "plan": "full",
+      "totalQuantity": 1,
+      "amountPaidToday": 450,
+      "remainingBalance": 0,
+      "totalOrderValue": 450,
+      "paymentStatus": "Fully Paid",
+      "orderStatus": "Fully Paid",
+      "paymentMethod": "Credit Card (Razorpay Verified)",
+      "paymentTransactionId": "pay_val_ful_4419b7",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "status": "Fully Paid",
+          "timestamp": "2026-11-05T16:15:00.000Z",
+          "note": "Full payment of ₹450 received. Reservation confirmed."
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "brandName": "VALCURA",
+    "tagline": "A scent for every side of you.",
+    "founderStatement": "At VALCURA, fragrance is more than a finishing touch. It is a way of expressing the many sides of who you are. Some moments call for freshness; others ask for warmth, comfort or quiet confidence. We believe every moment deserves a fragrance that feels like you.",
+    "supportEmail": "care@valcurafragrance.com",
+    "supportPhone": "+91 99887 76655",
+    "shipping": "Complimentary standard delivery on all pre-orders across India.",
+    "cancellationPolicy": "Pre-orders can be modified or cancelled before dispatch. For reservation deposits, cancellations are eligible for a 100% full refund before the final balance payment request is issued."
+  }
+}
