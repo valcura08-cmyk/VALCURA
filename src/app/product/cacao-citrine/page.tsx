@@ -11,8 +11,9 @@ import {
   ArrowRight,
   Sparkles,
   Droplets,
-  Clock,
   Layers,
+  Clock,
+  Compass,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
@@ -20,7 +21,7 @@ export default function CacaoCitrineProductPage() {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [activeAccordion, setActiveAccordion] = useState<'feel' | 'mood' | 'specs' | null>(null);
+  const [activeTab, setActiveTab] = useState<'evolution' | 'moods' | 'ritual'>('evolution');
 
   const images = [
     {
@@ -78,7 +79,7 @@ export default function CacaoCitrineProductPage() {
   };
 
   return (
-    <div className="bg-[#FAF7F2] text-[#110D09] min-h-[calc(100vh-70px)] pb-10">
+    <div className="bg-[#FAF7F2] text-[#110D09] min-h-[calc(100vh-70px)] pb-12">
       {/* Compact Editorial Breadcrumb */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 text-[11px] text-[#554D45] font-light flex items-center justify-between border-b border-[#E8DFD3]/70">
         <div className="flex items-center space-x-2">
@@ -141,7 +142,7 @@ export default function CacaoCitrineProductPage() {
                 <ChevronRight className="w-4 h-4" />
               </button>
 
-              {/* Minimal caption */}
+              {/* Minimal Caption Strip */}
               <div className="absolute bottom-2.5 inset-x-3 bg-black/60 backdrop-blur-xs px-3 py-1.5 rounded-lg text-white text-[11px] font-sans flex items-center justify-between">
                 <span>{images[activeImageIndex].caption}</span>
                 <span className="text-[9px] font-mono text-[#FAF7F2]/75 uppercase tracking-wider">Tap angles below</span>
@@ -178,12 +179,12 @@ export default function CacaoCitrineProductPage() {
           </div>
 
           {/* ============================================================== */}
-          {/* RIGHT: COMPACT PRODUCT SUMMARY, NOTES & PURCHASE CONTROLS */}
+          {/* RIGHT: BESPOKE ATELIER DOSSIER, PYRAMID & ACQUISITION */}
           {/* ============================================================== */}
-          <div className="lg:col-span-6 space-y-3.5">
+          <div className="lg:col-span-6 space-y-4">
             
             {/* Header: Hierarchy & Title */}
-            <div className="space-y-1 pb-2 border-b border-[#E8DFD3]">
+            <div className="space-y-1 pb-2.5 border-b border-[#E8DFD3]">
               <div className="flex items-center space-x-2">
                 <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold">
                   VALCURA • COLLECTION 01
@@ -197,87 +198,75 @@ export default function CacaoCitrineProductPage() {
                 Cacao Citrine
               </h1>
 
-              {/* Exact Requested Quote Line */}
-              <p className="text-xs sm:text-sm font-sans italic text-[#8C6D42] font-medium pt-0.5">
+              {/* Fragrance Soul Line */}
+              <p className="text-xs sm:text-sm font-serif italic text-[#8C6D42] font-medium pt-0.5">
                 &ldquo;Mixture of chocolate and citrus gives you fresh creamy smell.&rdquo;
               </p>
             </div>
 
             {/* ========================================================== */}
-            {/* 3 NOTES IN COMPACT POINTER STYLE WITH INGREDIENT IMAGES */}
+            {/* BESPOKE OLFACTORY ARCHITECTURE (NO PICTURES, NO EQUAL SIGN) */}
+            {/* NOTE NAME SIT S DIRECTLY BELOW TOP NOTE / HEART NOTE / BASE NOTE */}
             {/* ========================================================== */}
-            <div className="p-3 bg-white rounded-xl border border-[#E8DFD3] space-y-2.5 shadow-2xs">
-              <span className="text-[9px] font-mono uppercase tracking-widest text-[#8C6D42] font-bold block">
-                The Olfactory Pyramid:
-              </span>
+            <div className="bg-[#FAF6EE] rounded-2xl border border-[#E8DFD3] p-4 sm:p-4.5 shadow-2xs space-y-3">
+              <div className="flex items-center justify-between pb-1.5 border-b border-[#E8DFD3]/80">
+                <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold">
+                  Olfactory Architecture
+                </span>
+                <span className="text-[9px] font-mono text-[#554D45]/70 uppercase tracking-widest">
+                  Three Pure Tiers
+                </span>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                {/* 1. Top Note */}
-                <div className="flex items-center space-x-2.5 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/70 hover:border-[#8C6D42] transition-colors">
-                  <div className="relative w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-white">
-                    <Image
-                      src="/notes/citrus-note.jpg"
-                      alt="Citrus"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0 font-sans">
-                    <span className="text-[10px] font-bold uppercase text-[#8C6D42] block leading-none">
-                      • Top Note
-                    </span>
-                    <span className="text-xs font-semibold text-[#110D09] truncate block mt-1">
-                      = Citrus
-                    </span>
-                  </div>
+              {/* 3 Tier Grid: Values positioned cleanly directly below each note header */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-0 sm:divide-x sm:divide-[#E8DFD3]">
+                
+                {/* 1. TOP NOTE */}
+                <div className="sm:pr-3.5 space-y-0.5">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-semibold block">
+                    Top Note
+                  </span>
+                  <h3 className="text-sm sm:text-base font-serif font-bold text-[#110D09] tracking-wide leading-tight">
+                    Citrus
+                  </h3>
+                  <span className="text-[10px] text-[#554D45] font-light block pt-0.5">
+                    Sun-drenched Calabrian Bergamot
+                  </span>
                 </div>
 
-                {/* 2. Heart Note */}
-                <div className="flex items-center space-x-2.5 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/70 hover:border-[#8C6D42] transition-colors">
-                  <div className="relative w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-white">
-                    <Image
-                      src="/notes/hazelnut-vanilla-note.jpg"
-                      alt="Creamy Hazelnut & Vanilla"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0 font-sans">
-                    <span className="text-[10px] font-bold uppercase text-[#8C6D42] block leading-none">
-                      • Heart Note
-                    </span>
-                    <span className="text-xs font-semibold text-[#110D09] truncate block mt-1">
-                      = Creamy Hazel Nut &amp; Vanilla
-                    </span>
-                  </div>
+                {/* 2. HEART NOTE */}
+                <div className="sm:px-3.5 space-y-0.5">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-semibold block">
+                    Heart Note
+                  </span>
+                  <h3 className="text-sm sm:text-base font-serif font-bold text-[#110D09] tracking-wide leading-tight">
+                    Creamy Hazelnut &amp; Vanilla
+                  </h3>
+                  <span className="text-[10px] text-[#554D45] font-light block pt-0.5">
+                    Velvety Roasted Praline Core
+                  </span>
                 </div>
 
-                {/* 3. Base Note */}
-                <div className="flex items-center space-x-2.5 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/70 hover:border-[#8C6D42] transition-colors">
-                  <div className="relative w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-white">
-                    <Image
-                      src="/notes/rose-fresh-note.jpg"
-                      alt="Rose plus Fresh"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0 font-sans">
-                    <span className="text-[10px] font-bold uppercase text-[#8C6D42] block leading-none">
-                      • Base Note
-                    </span>
-                    <span className="text-xs font-semibold text-[#110D09] truncate block mt-1">
-                      = Rose + Fresh
-                    </span>
-                  </div>
+                {/* 3. BASE NOTE */}
+                <div className="sm:pl-3.5 space-y-0.5">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-semibold block">
+                    Base Note
+                  </span>
+                  <h3 className="text-sm sm:text-base font-serif font-bold text-[#110D09] tracking-wide leading-tight">
+                    Rose + Fresh
+                  </h3>
+                  <span className="text-[10px] text-[#554D45] font-light block pt-0.5">
+                    Clean Air &amp; Sheer Cashmere Musks
+                  </span>
                 </div>
+
               </div>
             </div>
 
             {/* ========================================================== */}
-            {/* COMPACT PRICING & INSTANT PURCHASE */}
+            {/* BOUTIQUE ACQUISITION BAR */}
             {/* ========================================================== */}
-            <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-xl p-3.5 sm:p-4 space-y-3 shadow-2xs">
+            <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl p-4 space-y-3.5 shadow-2xs">
               <div className="flex items-baseline justify-between">
                 <div>
                   <div className="flex items-baseline space-x-2">
@@ -287,26 +276,27 @@ export default function CacaoCitrineProductPage() {
                     <span className="text-xs font-mono text-[#888075] line-through">
                       ₹{totalStandard}
                     </span>
-                    <span className="text-[10px] tracking-wider uppercase font-mono px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-sm font-semibold">
+                    <span className="text-[10px] tracking-wider uppercase font-mono px-2 py-0.5 bg-[#EFE9DF] text-[#6E532F] border border-[#D5CDC2] rounded-sm font-semibold">
                       Save ₹{totalStandard - totalFull}
                     </span>
                   </div>
                   <span className="text-[10px] text-[#8C6D42] font-mono block mt-0.5">
-                    Taxes Included • Complimentary Pan-India Delivery
+                    All Taxes Included • Complimentary Pan-India Delivery
                   </span>
                 </div>
-                <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 bg-[#110D09] text-white rounded-sm font-bold">
+                <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 bg-[#110D09] text-white rounded-md font-bold">
                   In Stock
                 </span>
               </div>
 
               {/* Quantity Selector & Action Button */}
               <div className="flex items-center gap-2.5">
-                <div className="inline-flex items-center border border-[#D5CDC2] bg-white rounded-lg overflow-hidden shrink-0">
+                <div className="inline-flex items-center border border-[#D5CDC2] bg-white rounded-xl overflow-hidden shrink-0 shadow-2xs">
                   <button
                     type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-8 h-10 text-sm hover:text-[#8C6D42] transition-colors font-mono font-bold"
+                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold"
+                    aria-label="Decrease quantity"
                   >
                     -
                   </button>
@@ -316,7 +306,8 @@ export default function CacaoCitrineProductPage() {
                   <button
                     type="button"
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-8 h-10 text-sm hover:text-[#8C6D42] transition-colors font-mono font-bold"
+                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold"
+                    aria-label="Increase quantity"
                   >
                     +
                   </button>
@@ -325,117 +316,153 @@ export default function CacaoCitrineProductPage() {
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className="flex-1 btn-luxury-primary py-3 px-4 text-xs font-semibold tracking-luxury uppercase flex items-center justify-center space-x-2 rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer"
+                  className="flex-1 h-11 bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] text-xs font-serif font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-[#C5A880]/30"
                 >
-                  <span>Add to Bag • ₹{totalFull}</span>
+                  <span>Acquire Bottle • ₹{totalFull}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               {/* Trust Reassurances */}
               <div className="flex items-center justify-between pt-2 border-t border-[#E8DFD3] text-[10px] font-mono text-[#554D45]">
-                <span className="flex items-center space-x-1">
+                <span className="flex items-center space-x-1.5">
                   <Truck className="w-3.5 h-3.5 text-[#8C6D42]" />
-                  <span>Pan-India Air Express</span>
+                  <span>Pan-India Air Express (2-4 Days)</span>
                 </span>
-                <span className="flex items-center space-x-1">
+                <span className="flex items-center space-x-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#8C6D42]" />
-                  <span>100% Authentic Formulation</span>
+                  <span>Tamper-Evident Atelier Packaging</span>
                 </span>
               </div>
             </div>
 
             {/* ========================================================== */}
-            {/* LOW-PROFILE COMPACT ACCORDION (OPTIONAL DISCOVERY) */}
+            {/* INTERACTIVE SEGMENTED ATELIER DOSSIER (NOT BORING ACCORDIONS) */}
             {/* ========================================================== */}
-            <div className="divide-y divide-[#E8DFD3] border-y border-[#E8DFD3] text-xs">
-              {/* Accordion 1: Sensory Aura */}
-              <div>
+            <div className="bg-white border border-[#E8DFD3] rounded-2xl p-4 space-y-3 shadow-2xs">
+              {/* Segmented Switcher Header */}
+              <div className="grid grid-cols-3 p-1 bg-[#FAF7F2] rounded-xl border border-[#E8DFD3]/80 text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider">
                 <button
                   type="button"
-                  onClick={() => setActiveAccordion(activeAccordion === 'feel' ? null : 'feel')}
-                  className="w-full py-2.5 flex items-center justify-between text-left font-serif font-bold uppercase tracking-wider text-[#110D09] hover:text-[#8C6D42] transition-colors cursor-pointer"
+                  onClick={() => setActiveTab('evolution')}
+                  className={`py-1.5 px-1 rounded-lg transition-all text-center cursor-pointer ${
+                    activeTab === 'evolution'
+                      ? 'bg-[#110D09] text-white shadow-xs'
+                      : 'text-[#554D45] hover:text-[#110D09]'
+                  }`}
                 >
-                  <span className="flex items-center space-x-2">
-                    <Sparkles className="w-3.5 h-3.5 text-[#8C6D42]" />
-                    <span>Sensory Aura &amp; Evolution</span>
-                  </span>
-                  <span className="font-mono text-sm text-[#8C6D42]">
-                    {activeAccordion === 'feel' ? '−' : '+'}
-                  </span>
+                  Evolution
                 </button>
-                {activeAccordion === 'feel' && (
-                  <div className="pb-3 text-xs text-[#554D45] font-light leading-relaxed animate-fadeIn space-y-1">
-                    <p>
-                      Cacao Citrine opens with radiant Italian citrus zest that effortlessly melts into an intimate, creamy heart of roasted hazelnut and cocoa butter, settling into a comfortable 10–12 hour second-skin sillage.
-                    </p>
-                  </div>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('moods')}
+                  className={`py-1.5 px-1 rounded-lg transition-all text-center cursor-pointer ${
+                    activeTab === 'moods'
+                      ? 'bg-[#110D09] text-white shadow-xs'
+                      : 'text-[#554D45] hover:text-[#110D09]'
+                  }`}
+                >
+                  Atmospheres
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('ritual')}
+                  className={`py-1.5 px-1 rounded-lg transition-all text-center cursor-pointer ${
+                    activeTab === 'ritual'
+                      ? 'bg-[#110D09] text-white shadow-xs'
+                      : 'text-[#554D45] hover:text-[#110D09]'
+                  }`}
+                >
+                  Vessel &amp; Ritual
+                </button>
               </div>
 
-              {/* Accordion 2: Atmospheric Pairings */}
-              <div>
-                <button
-                  type="button"
-                  onClick={() => setActiveAccordion(activeAccordion === 'mood' ? null : 'mood')}
-                  className="w-full py-2.5 flex items-center justify-between text-left font-serif font-bold uppercase tracking-wider text-[#110D09] hover:text-[#8C6D42] transition-colors cursor-pointer"
-                >
-                  <span className="flex items-center space-x-2">
-                    <Droplets className="w-3.5 h-3.5 text-[#8C6D42]" />
-                    <span>Atmospheric Mood Pairings</span>
-                  </span>
-                  <span className="font-mono text-sm text-[#8C6D42]">
-                    {activeAccordion === 'mood' ? '−' : '+'}
-                  </span>
-                </button>
-                {activeAccordion === 'mood' && (
-                  <div className="pb-3 text-xs text-[#554D45] animate-fadeIn space-y-2">
-                    <p className="font-light">Engineered for intimate morning rituals and alluring late-evening occasions:</p>
-                    <div className="flex flex-wrap gap-1.5 pt-0.5">
-                      {moodLinks.map((m) => (
-                        <Link
-                          key={m.slug}
-                          href={`/moods/${m.slug}`}
-                          className="px-2.5 py-1 bg-white border border-[#E8DFD3] rounded-md text-[10px] font-mono text-[#110D09] hover:border-[#8C6D42] hover:text-[#8C6D42] transition-colors flex items-center space-x-1"
-                        >
-                          <span>{m.title}</span>
-                          <span className="text-[#8C6D42] font-semibold">→</span>
-                        </Link>
-                      ))}
+              {/* Tab 1: Skin Evolution Timeline */}
+              {activeTab === 'evolution' && (
+                <div className="space-y-2 pt-1 animate-fadeIn text-xs">
+                  <div className="flex items-start space-x-3 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/60">
+                    <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-white border border-[#E8DFD3] rounded text-[#8C6D42] font-bold shrink-0">
+                      00–30 Mins
+                    </span>
+                    <p className="text-[#110D09]/80 leading-relaxed font-light">
+                      High-voltage Italian citrus sparkle; crystalline solar opening that immediately lifts the senses.
+                    </p>
+                  </div>
+                  <div className="flex items-start space-x-3 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/60">
+                    <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-white border border-[#E8DFD3] rounded text-[#8C6D42] font-bold shrink-0">
+                      30m–04 Hrs
+                    </span>
+                    <p className="text-[#110D09]/80 leading-relaxed font-light">
+                      Warms into velvety roasted hazelnut praline and smooth cocoa butter, creating a tactile second-skin indulgence.
+                    </p>
+                  </div>
+                  <div className="flex items-start space-x-3 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/60">
+                    <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-white border border-[#E8DFD3] rounded text-[#8C6D42] font-bold shrink-0">
+                      04–12+ Hrs
+                    </span>
+                    <p className="text-[#110D09]/80 leading-relaxed font-light">
+                      Intimate dry-down of dewy damascena rose, crisp mountain air, and magnetic cashmere musks with a 3-foot aura.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: Atmospheric Pairings */}
+              {activeTab === 'moods' && (
+                <div className="space-y-2 pt-1 animate-fadeIn text-xs">
+                  <p className="text-[#554D45] font-light">
+                    Engineered to harmonize seamlessly with personal occasions and times of day:
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 pt-0.5">
+                    {moodLinks.map((m) => (
+                      <Link
+                        key={m.slug}
+                        href={`/moods/${m.slug}`}
+                        className="p-2 bg-[#FAF8F5] border border-[#E8DFD3] rounded-lg text-left hover:border-[#8C6D42] transition-colors group"
+                      >
+                        <span className="text-[9px] font-mono text-[#8C6D42] block uppercase tracking-wider">
+                          {m.tag}
+                        </span>
+                        <span className="text-xs font-serif font-bold text-[#110D09] group-hover:text-[#8C6D42] transition-colors block">
+                          {m.title} →
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 3: Vessel Craft & Application Ritual */}
+              {activeTab === 'ritual' && (
+                <div className="space-y-2 pt-1 animate-fadeIn text-xs text-[#554D45]">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="p-2.5 bg-[#FAF8F5] border border-[#E8DFD3]/70 rounded-lg space-y-1">
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
+                        Concentration &amp; Purity
+                      </span>
+                      <p className="font-light leading-relaxed">
+                        20% Extrait-grade Eau de Parfum oil ratio. 100% vegan, cruelty-free, and phthalate-free on clean botanical alcohol.
+                      </p>
+                    </div>
+                    <div className="p-2.5 bg-[#FAF8F5] border border-[#E8DFD3]/70 rounded-lg space-y-1">
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
+                        Flacon Architecture
+                      </span>
+                      <p className="font-light leading-relaxed">
+                        Weighted Italian crystal glass, precision micro-mist atomization pump, and magnetic obsidian closure.
+                      </p>
                     </div>
                   </div>
-                )}
-              </div>
-
-              {/* Accordion 3: Specifications & Ritual */}
-              <div>
-                <button
-                  type="button"
-                  onClick={() => setActiveAccordion(activeAccordion === 'specs' ? null : 'specs')}
-                  className="w-full py-2.5 flex items-center justify-between text-left font-serif font-bold uppercase tracking-wider text-[#110D09] hover:text-[#8C6D42] transition-colors cursor-pointer"
-                >
-                  <span className="flex items-center space-x-2">
-                    <Layers className="w-3.5 h-3.5 text-[#8C6D42]" />
-                    <span>Flacon Engineering &amp; Application Ritual</span>
-                  </span>
-                  <span className="font-mono text-sm text-[#8C6D42]">
-                    {activeAccordion === 'specs' ? '−' : '+'}
-                  </span>
-                </button>
-                {activeAccordion === 'specs' && (
-                  <div className="pb-3 text-xs text-[#554D45] font-light leading-relaxed animate-fadeIn space-y-1.5">
-                    <p>
-                      • <strong>Concentration:</strong> 20% Eau de Parfum (Extrait-grade oil ratio, IFRA certified clean).
-                    </p>
-                    <p>
-                      • <strong>Flacon Vessel:</strong> 50 ML weighted crystal bottle with micro-mist atomization and obsidian magnetic cap.
-                    </p>
-                    <p>
-                      • <strong>Application Ritual:</strong> Mist 2–3 pumps across lateral pulse points (wrists, lateral neck, collarbone). Allow to air-dry without rubbing.
+                  <div className="p-2.5 bg-[#FAF8F5] border border-[#E8DFD3]/70 rounded-lg space-y-1">
+                    <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
+                      Application Ritual
+                    </span>
+                    <p className="font-light leading-relaxed">
+                      Apply 2–3 mists to lateral neck, wrists, and collarbone. Allow to air-dry naturally; never rub wrists to protect the delicate citrus top note esters.
                     </p>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
           </div>
