@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
@@ -16,13 +16,20 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#FAF7F2',
+};
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth overflow-x-hidden">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -30,14 +37,16 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
+        {/* Official Google Identity Services SDK for Real One-Tap & Google Login */}
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
       </head>
-      <body className="bg-white text-[#110D09] min-h-screen flex flex-col font-sans antialiased selection:bg-[#110D09] selection:text-[#FAF7F2]">
+      <body className="bg-white text-[#110D09] min-h-screen flex flex-col font-sans antialiased selection:bg-[#110D09] selection:text-[#FAF7F2] overflow-x-hidden w-full max-w-full">
         <AuthProvider>
           <CartProvider>
             <Navbar />
             <CartDrawer />
             <AuthModal />
-            <main className="flex-1 pt-20">{children}</main>
+            <main className="flex-1 pt-16 sm:pt-20 overflow-x-hidden w-full max-w-full">{children}</main>
             <Footer />
           </CartProvider>
         </AuthProvider>

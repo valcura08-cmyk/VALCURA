@@ -50,14 +50,14 @@ export default function Navbar() {
             : 'bg-[#FAF7F2]/90 backdrop-blur-sm py-5 border-b border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Mobile Menu Button */}
             <div className="flex items-center lg:hidden">
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="text-[#110D09] p-2 hover:text-[#A68455] transition-colors"
+                className="text-[#110D09] p-1.5 sm:p-2 hover:text-[#A68455] transition-colors"
                 aria-label="Open mobile navigation"
               >
                 <Menu className="w-5 h-5" />
@@ -83,8 +83,8 @@ export default function Navbar() {
 
             {/* Center Logo: Crisp Authentic Dark VALCURA Logo */}
             <div className="flex-1 lg:flex-none flex justify-center items-center">
-              <Link href="/" className="group flex items-center space-x-2.5 py-1">
-                <div className="relative w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-500 group-hover:scale-105">
+              <Link href="/" className="group flex items-center space-x-1.5 sm:space-x-2.5 py-1">
+                <div className="relative w-6 h-6 sm:w-8 sm:h-8 transition-transform duration-500 group-hover:scale-105">
                   <Image
                     src="/brand/valcura-emblem-dark.png"
                     alt="VALCURA Emblem"
@@ -93,7 +93,7 @@ export default function Navbar() {
                     priority
                   />
                 </div>
-                <div className="relative w-28 h-5 sm:w-32 sm:h-6">
+                <div className="relative w-24 h-4.5 sm:w-32 sm:h-6">
                   <Image
                     src="/brand/valcura-wordmark-dark.png"
                     alt="VALCURA"
@@ -106,7 +106,7 @@ export default function Navbar() {
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-center space-x-4 sm:space-x-6">
+            <div className="flex items-center space-x-2.5 sm:space-x-6">
               {/* Search Icon */}
               <button
                 onClick={() => setSearchOpen(true)}

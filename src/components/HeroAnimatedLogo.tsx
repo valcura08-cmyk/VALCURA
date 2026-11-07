@@ -152,42 +152,42 @@ export default function HeroAnimatedLogo() {
         >
           <Link
             href="/shop"
-            className="btn-luxury-primary flex items-center space-x-2.5 group px-6 py-3 text-xs shadow-md hover:shadow-lg cursor-pointer"
+            className="w-full sm:w-auto btn-luxury-primary flex items-center justify-center space-x-2.5 group px-6 py-3 text-xs shadow-md hover:shadow-lg cursor-pointer"
           >
             <span>Explore By Scents</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
             href="/moods"
-            className="btn-luxury-outline flex items-center space-x-2 px-6 py-3 text-xs bg-white/70 hover:bg-white cursor-pointer"
+            className="w-full sm:w-auto btn-luxury-outline flex items-center justify-center space-x-2 px-6 py-3 text-xs bg-white/70 hover:bg-white cursor-pointer"
           >
             <Compass className="w-3.5 h-3.5 text-[#8C6D42]" />
             <span>Explore By Moods</span>
           </Link>
         </div>
-      </div>
 
-      {/* Scroll Down Indicator */}
-      <button
-        type="button"
-        onClick={() => {
-          const target = document.getElementById('discovery-gateways');
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-          } else {
-            window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' });
-          }
-        }}
-        className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 transition-all duration-1000 cursor-pointer group ${
-          isCtaVisible ? 'opacity-60 hover:opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-        title="Scroll down to discover"
-      >
-        <span className="text-[10px] tracking-luxury uppercase text-[#18120E]/60 font-mono group-hover:text-[#8C6D42] transition-colors">
-          Scroll To Discover
-        </span>
-        <div className="w-px h-8 bg-gradient-to-b from-[#18120E] to-transparent animate-pulse group-hover:from-[#8C6D42]" />
-      </button>
+        {/* Scroll Down Indicator - Positioned cleanly below CTAs with no overlap */}
+        <button
+          type="button"
+          onClick={() => {
+            const target = document.getElementById('discovery-gateways');
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              window.scrollTo({ top: window.innerHeight * 0.75, behavior: 'smooth' });
+            }
+          }}
+          className={`mt-6 sm:mt-8 flex flex-col items-center space-y-1.5 transition-all duration-1000 cursor-pointer group ${
+            isCtaVisible ? 'opacity-60 hover:opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          title="Scroll down to discover"
+        >
+          <span className="text-[9px] sm:text-[10px] tracking-luxury uppercase text-[#18120E]/60 font-mono group-hover:text-[#8C6D42] transition-colors">
+            Scroll To Discover
+          </span>
+          <div className="w-px h-6 sm:h-8 bg-gradient-to-b from-[#18120E] to-transparent animate-pulse group-hover:from-[#8C6D42]" />
+        </button>
+      </div>
     </section>
   );
 }

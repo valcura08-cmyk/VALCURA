@@ -36,6 +36,7 @@ const slides: BannerSlide[] = [
 export default function HomeRotatingBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   // Auto-rotate automatically every 5 seconds (5000ms), pauses on hover
   useEffect(() => {
@@ -54,16 +55,34 @@ export default function HomeRotatingBanner() {
     setCurrentIndex((prev) => (prev + 1) % slides.length);
   };
 
+  // Touch swipe support for mobile devices
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (diff > 45) {
+      nextSlide(); // Swiped left -> next slide
+    } else if (diff < -45) {
+      prevSlide(); // Swiped right -> previous slide
+    }
+    setTouchStartX(null);
+  };
+
   const currentSlide = slides[currentIndex];
 
   return (
-    <section className="px-2 sm:px-4 md:px-6 lg:px-8 w-full max-w-[1440px] mx-auto -mt-2 sm:-mt-4 mb-8 sm:mb-12">
-      {/* Sleek Wide Rectangular Banner Frame (Decreased length/height, increased width) */}
+    <section className="px-2 sm:px-4 md:px-6 lg:px-8 w-full max-w-[1440px] mx-auto -mt-1 sm:-mt-4 mb-6 sm:mb-12">
+      {/* Sleek Wide Rectangular Banner Frame - Natural 1024/346 ratio preserves full image on mobile and desktop without cutting */}
       <div
-        className="relative w-full aspect-[16/7] sm:aspect-[21/9] md:aspect-[2.7/1] lg:aspect-[3/1] min-h-[200px] sm:min-h-[260px] md:min-h-[320px] max-h-[380px] rounded-xl sm:rounded-2xl overflow-hidden border-2 border-[#110D09] shadow-[0_16px_40px_-12px_rgba(17,13,9,0.25)] transition-colors duration-700 group select-none"
+        className="relative w-full aspect-[1024/346] rounded-xl sm:rounded-2xl overflow-hidden border border-[#110D09]/80 sm:border-2 sm:border-[#110D09] shadow-[0_12px_36px_-12px_rgba(17,13,9,0.2)] transition-colors duration-700 group select-none touch-pan-y"
         style={{ backgroundColor: currentSlide.bgColor }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Preload and render all slides for instant zero-lag rotation */}
         {slides.map((slide, idx) => {
@@ -87,7 +106,7 @@ export default function HomeRotatingBanner() {
                     alt={slide.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 1440px"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
                     style={{ objectPosition: slide.objectPosition || 'center center' }}
                     priority={idx === 0}
                   />
@@ -97,7 +116,7 @@ export default function HomeRotatingBanner() {
           );
         })}
 
-        {/* Floating Arrows to Change (Left & Right) */}
+        {/* Floating Arrows to Change (Left & Right - Scaled for Mobile) */}
         <button
           type="button"
           onClick={(e) => {
@@ -105,10 +124,10 @@ export default function HomeRotatingBanner() {
             e.stopPropagation();
             prevSlide();
           }}
-          className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-white text-[#110D09] border border-[#E8DFD3] shadow-lg flex items-center justify-center transition-all opacity-85 group-hover:opacity-100 hover:scale-105 cursor-pointer z-30"
+          className="absolute left-1.5 sm:left-4 top-1/2 -translate-y-1/2 w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-[#110D09] border border-[#E8DFD3] shadow-md flex items-center justify-center transition-all opacity-70 group-hover:opacity-100 hover:scale-105 cursor-pointer z-30"
           aria-label="Previous Slide"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
         </button>
 
         <button
@@ -118,24 +137,24 @@ export default function HomeRotatingBanner() {
             e.stopPropagation();
             nextSlide();
           }}
-          className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-white text-[#110D09] border border-[#E8DFD3] shadow-lg flex items-center justify-center transition-all opacity-85 group-hover:opacity-100 hover:scale-105 cursor-pointer z-30"
+          className="absolute right-1.5 sm:right-4 top-1/2 -translate-y-1/2 w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-[#110D09] border border-[#E8DFD3] shadow-md flex items-center justify-center transition-all opacity-70 group-hover:opacity-100 hover:scale-105 cursor-pointer z-30"
           aria-label="Next Slide"
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
         </button>
 
-        {/* Bottom Clean Slide Dots (No Text Badges) */}
-        <div className="absolute bottom-3 sm:bottom-4 inset-x-0 z-20 flex items-center justify-center pointer-events-none">
-          <div className="flex items-center space-x-2 pointer-events-auto bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15">
+        {/* Bottom Clean Slide Dots (Scaled for Mobile) */}
+        <div className="absolute bottom-1.5 sm:bottom-3 inset-x-0 z-20 flex items-center justify-center pointer-events-none">
+          <div className="flex items-center space-x-1.5 sm:space-x-2 pointer-events-auto bg-black/40 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/15">
             {slides.map((slide, idx) => (
               <button
                 key={slide.id}
                 type="button"
                 onClick={() => setCurrentIndex(idx)}
-                className={`h-1.5 sm:h-2 rounded-full transition-all cursor-pointer ${
+                className={`h-1 sm:h-2 rounded-full transition-all cursor-pointer ${
                   currentIndex === idx
-                    ? 'w-7 sm:w-8 bg-white shadow-md'
-                    : 'w-2 sm:w-2 bg-white/50 hover:bg-white/80'
+                    ? 'w-5 sm:w-8 bg-white shadow-md'
+                    : 'w-1.5 sm:w-2 bg-white/50 hover:bg-white/80'
                 }`}
                 aria-label={`Jump to slide 0${idx + 1}`}
               />
