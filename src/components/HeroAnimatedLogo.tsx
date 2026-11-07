@@ -166,6 +166,31 @@ export default function HeroAnimatedLogo() {
           </Link>
         </div>
 
+        {/* Creative Olfactory Keywords Pill Bar */}
+        <div
+          className={`mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-2xl px-2 transition-all duration-1000 ease-out ${
+            isCtaVisible ? 'opacity-90 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
+          }`}
+        >
+          {[
+            'Calabrian Bergamot',
+            'Roasted Cacao Absolute',
+            'Hazelnut Praline',
+            'Golden Amber Silk',
+            '20% Eau De Parfum',
+            'Second-Skin Sillage',
+            'Clean Botanicals',
+          ].map((keyword) => (
+            <span
+              key={keyword}
+              className="inline-flex items-center px-2.5 py-1 rounded-full bg-white/75 border border-[#E8DFD3] text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#554D45] hover:text-[#110D09] hover:bg-white hover:border-[#8C6D42] transition-colors shadow-xs"
+            >
+              <span className="w-1 h-1 rounded-full bg-[#8C6D42] mr-1.5 opacity-80" />
+              {keyword}
+            </span>
+          ))}
+        </div>
+
         {/* Scroll Down Indicator - Positioned cleanly below CTAs with no overlap */}
         <button
           type="button"
@@ -177,7 +202,7 @@ export default function HeroAnimatedLogo() {
               window.scrollTo({ top: window.innerHeight * 0.75, behavior: 'smooth' });
             }
           }}
-          className={`mt-6 sm:mt-8 flex flex-col items-center space-y-1.5 transition-all duration-1000 cursor-pointer group ${
+          className={`mt-5 sm:mt-6 flex flex-col items-center space-y-1.5 transition-all duration-1000 cursor-pointer group ${
             isCtaVisible ? 'opacity-60 hover:opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           title="Scroll down to discover"

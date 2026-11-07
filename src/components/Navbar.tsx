@@ -35,9 +35,11 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
+    { label: 'Home', href: '/' },
     { label: 'Explore By Moods', href: '/moods' },
     { label: 'Explore By Scents', href: '/shop' },
-    { label: 'Our Collections', href: '/collections/cacao' },
+    { label: 'Our Collections', href: '/collections' },
+    { label: 'Fragrance Finder', href: '/fragrance-finder' },
     { label: 'Our Story', href: '/our-story' },
   ];
 
@@ -64,21 +66,28 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Desktop Left Nav Links */}
-            <nav className="hidden lg:flex items-center space-x-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={`text-xs tracking-luxury uppercase transition-colors duration-300 ${
-                    pathname === link.href
-                      ? 'text-[#110D09] font-semibold border-b border-[#110D09] pb-0.5'
-                      : 'text-[#110D09]/75 hover:text-[#A68455]'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+            {/* Desktop Left Nav Links - Includes HOME & Creative Navigation Options */}
+            <nav className="hidden lg:flex items-center space-x-3 xl:space-x-5">
+              {navLinks.map((link) => {
+                const isActive =
+                  link.href === '/'
+                    ? pathname === '/'
+                    : pathname.startsWith(link.href);
+
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={`text-[11px] xl:text-xs tracking-luxury uppercase transition-colors duration-300 ${
+                      isActive
+                        ? 'text-[#110D09] font-bold border-b border-[#110D09] pb-0.5'
+                        : 'text-[#110D09]/75 hover:text-[#A68455]'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Center Logo: Crisp Authentic Dark VALCURA Logo */}
@@ -278,22 +287,29 @@ export default function Navbar() {
 
             <div className="mt-4">
               <p className="text-[10px] tracking-luxury uppercase text-[#8C6D42] mb-2 font-mono">
-                Quick Discoveries
+                Creative Olfactory Discoveries
               </p>
               <div className="flex flex-wrap gap-2">
                 {[
                   { name: 'Cacao Citrine', href: '/product/cacao-citrine' },
-                  { name: 'Cacao Collection', href: '/collections/cacao' },
-                  { name: 'Explore the Mood', href: '/moods' },
-                  { name: 'Citrus & Hazelnut Notes', href: '/product/cacao-citrine' },
+                  { name: 'Calabrian Bergamot', href: '/product/cacao-citrine' },
+                  { name: 'Roasted Cacao Absolute', href: '/product/cacao-citrine' },
+                  { name: 'Hazelnut Praline Notes', href: '/product/cacao-citrine' },
+                  { name: 'Golden Amber Silk', href: '/product/cacao-citrine' },
+                  { name: '20% Eau De Parfum', href: '/product/cacao-citrine' },
+                  { name: 'The Coffee Date (Mood 01)', href: '/moods/coffee-date' },
+                  { name: 'After Hours (Mood 02)', href: '/moods/after-hours' },
+                  { name: 'Slow Moments (Mood 04)', href: '/moods/slow-moments' },
+                  { name: 'The Cacao Collection', href: '/collections/cacao' },
                   { name: 'Fragrance Finder Quiz', href: '/fragrance-finder' },
-                  { name: 'Our Story', href: '/our-story' },
+                  { name: 'Pre-Order Privilege (₹399)', href: '/product/cacao-citrine' },
+                  { name: 'Atelier Philosophy', href: '/our-story' },
                 ].map((tag) => (
                   <Link
                     key={tag.name}
                     href={tag.href}
                     onClick={() => setSearchOpen(false)}
-                    className="text-xs bg-[#FAF8F5] text-[#110D09]/80 hover:text-[#110D09] hover:bg-[#F3EFE8] px-3 py-1.5 transition-colors border border-[#E8E2D8]"
+                    className="text-xs bg-[#FAF8F5] text-[#110D09]/80 hover:text-[#110D09] hover:bg-[#F3EFE8] px-3 py-1.5 transition-colors border border-[#E8E2D8] rounded-sm"
                   >
                     {tag.name}
                   </Link>
