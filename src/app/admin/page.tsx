@@ -11,13 +11,35 @@ import {
   Search,
   Edit,
   Save,
+  Users,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  CheckCircle,
 } from 'lucide-react';
 import { Order, Product } from '@/lib/db';
+
+export interface AdminCustomer {
+  email: string;
+  fullName: string;
+  phone: string;
+  address?: string;
+  registeredAt: string;
+  lastActiveAt: string;
+  provider?: string;
+  source?: string;
+  ordersCount: number;
+  totalSpent: number;
+  pendingBalance: number;
+  recentOrderId?: string | null;
+}
 
 export default function AdminDashboardPage() {
   const [data, setData] = useState<{
     products: Product[];
     orders: Order[];
+    customers?: AdminCustomer[];
     stats: {
       totalOrders: number;
       fullyPaidCount: number;
@@ -25,13 +47,15 @@ export default function AdminDashboardPage() {
       totalRevenueCollected: number;
       totalPendingBalances: number;
       totalBottlesReserved: number;
+      totalRegisteredCustomers?: number;
     };
   } | null>(null);
 
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'orders' | 'products'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'customers' | 'products'>('orders');
   const [orderFilter, setOrderFilter] = useState<'all' | 'full' | 'deposit' | 'balance_due' | 'fulfilment'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [customerSearchQuery, setCustomerSearchQuery] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [notificationBanner, setNotificationBanner] = useState<string | null>(null);
 
@@ -164,6 +188,17 @@ export default function AdminDashboardPage() {
     return true;
   });
 
+  // Filter registered customers
+  const filteredCustomers = (data.customers || []).filter((cust) => {
+    if (!customerSearchQuery) return true;
+    const q = customerSearchQuery.toLowerCase();
+    const matchName = cust.fullName?.toLowerCase().includes(q);
+    const matchEmail = cust.email?.toLowerCase().includes(q);
+    const matchPhone = cust.phone?.toLowerCase().includes(q);
+    const matchAddr = cust.address?.toLowerCase().includes(q);
+    return matchName || matchEmail || matchPhone || matchAddr;
+  });
+
   return (
     <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen pb-24">
       {/* Top Header */}
@@ -218,7 +253,7 @@ export default function AdminDashboardPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
         {/* KPI OVERVIEW CARDS */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
           {/* KPI 1: Total Revenue Collected */}
           <div className="bg-white border border-[#E8E2D8] p-5 space-y-2 shadow-sm">
             <span className="text-[10px] tracking-widest uppercase text-[#110D09]/50 font-mono block">
@@ -264,7 +299,7 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* KPI 5: Partially Paid Deposit Orders */}
-          <div className="bg-white border border-[#E8E2D8] p-5 space-y-2 col-span-2 lg:col-span-1 shadow-sm">
+          <div className="bg-white border border-[#E8E2D8] p-5 space-y-2 shadow-sm">
             <span className="text-[10px] tracking-widest uppercase text-[#110D09]/50 font-mono block">
               70% Deposit Orders
             </span>
@@ -273,9 +308,20 @@ export default function AdminDashboardPage() {
             </p>
             <p className="text-[10px] text-amber-700/80 font-mono">Awaiting balance settlement</p>
           </div>
+
+          {/* KPI 6: Registered Clients */}
+          <div className="bg-white border border-[#E8E2D8] p-5 space-y-2 shadow-sm">
+            <span className="text-[10px] tracking-widest uppercase text-[#110D09]/50 font-mono block">
+              Registered Clients
+            </span>
+            <p className="text-2xl font-serif text-[#8C6D42] font-bold">
+              {data.stats.totalRegisteredCustomers ?? data.customers?.length ?? 0}
+            </p>
+            <p className="text-[10px] text-emerald-700 font-mono">Saved in Cloud / DB</p>
+          </div>
         </div>
 
-        {/* TABS: Orders vs Products */}
+        {/* TABS: Orders vs Clients vs Products */}
         <div className="flex border-b border-[#E8E2D8]">
           <button
             onClick={() => setActiveTab('orders')}
@@ -288,6 +334,16 @@ export default function AdminDashboardPage() {
             Orders & Reservations ({data.orders.length})
           </button>
           <button
+            onClick={() => setActiveTab('customers')}
+            className={`pb-4 px-6 text-xs tracking-luxury uppercase font-mono transition-all border-b-2 ${
+              activeTab === 'customers'
+                ? 'border-[#110D09] text-[#110D09] font-bold'
+                : 'border-transparent text-[#110D09]/50 hover:text-[#110D09]'
+            }`}
+          >
+            Clients & Accounts ({data.customers?.length || 0})
+          </button>
+          <button
             onClick={() => setActiveTab('products')}
             className={`pb-4 px-6 text-xs tracking-luxury uppercase font-mono transition-all border-b-2 ${
               activeTab === 'products'
@@ -295,7 +351,7 @@ export default function AdminDashboardPage() {
                 : 'border-transparent text-[#110D09]/50 hover:text-[#110D09]'
             }`}
           >
-            Products & Availability Controls ({data.products.length})
+            Products & Availability ({data.products.length})
           </button>
         </div>
 
@@ -456,7 +512,150 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* TAB 2: PRODUCTS & AVAILABILITY WORKFLOW */}
+        {/* TAB 2: REGISTERED CLIENTS & ACCOUNTS */}
+        {activeTab === 'customers' && (
+          <div className="space-y-6">
+            {/* Header & Search */}
+            <div className="bg-white border border-[#E8E2D8] p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+              <div className="relative w-full md:w-80">
+                <Search className="w-4 h-4 text-[#8C6D42] absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  placeholder="Search by client name, email, phone..."
+                  value={customerSearchQuery}
+                  onChange={(e) => setCustomerSearchQuery(e.target.value)}
+                  className="w-full bg-[#FAF8F5] border border-[#D5CDC2] pl-9 pr-3 py-2 text-xs text-[#110D09] focus:outline-none focus:border-[#110D09] focus:bg-white"
+                />
+              </div>
+
+              <div className="flex items-center space-x-3 text-xs font-mono text-[#110D09]/60">
+                <span>
+                  Showing {filteredCustomers.length} of {data.customers?.length || 0} registered clients
+                </span>
+              </div>
+            </div>
+
+            {/* Clients Table */}
+            <div className="bg-white border border-[#E8E2D8] overflow-x-auto shadow-sm">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="border-b border-[#E8E2D8] bg-[#FAF8F5] text-[10px] tracking-widest font-mono uppercase text-[#110D09]/60">
+                    <th className="py-3 px-4">Client</th>
+                    <th className="py-3 px-4">Contact</th>
+                    <th className="py-3 px-4">Delivery Address</th>
+                    <th className="py-3 px-4 text-center">Orders</th>
+                    <th className="py-3 px-4">Total Spent</th>
+                    <th className="py-3 px-4">Outstanding</th>
+                    <th className="py-3 px-4">Last Active</th>
+                    <th className="py-3 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E8E2D8]">
+                  {filteredCustomers.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="py-12 text-center text-[#110D09]/50 font-mono">
+                        No clients matching your search criteria.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredCustomers.map((cust) => {
+                      const initials = (cust.fullName || 'CL')
+                        .split(' ')
+                        .map((n: string) => n[0])
+                        .join('')
+                        .toUpperCase()
+                        .slice(0, 2);
+
+                      return (
+                        <tr key={cust.email} className="hover:bg-[#FAF8F5]/60 transition-colors">
+                          <td className="py-3.5 px-4">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-8 h-8 rounded-full bg-[#3D2314] text-[#FAF7F2] font-mono text-xs flex items-center justify-center font-bold flex-shrink-0">
+                                {initials || 'CL'}
+                              </div>
+                              <div>
+                                <span className="font-bold text-[#110D09] block">{cust.fullName}</span>
+                                <span className="text-[10px] text-[#8C6D42] font-mono">
+                                  {cust.provider === 'google'
+                                    ? 'Google Account'
+                                    : cust.provider === 'microsoft'
+                                    ? 'Microsoft Account'
+                                    : cust.source || 'Atelier Member'}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td className="py-3.5 px-4 font-mono text-[11px]">
+                            <div className="text-[#110D09] flex items-center space-x-1.5">
+                              <Mail className="w-3 h-3 text-[#8C6D42]" />
+                              <span>{cust.email}</span>
+                            </div>
+                            {cust.phone && (
+                              <div className="text-[#110D09]/70 flex items-center space-x-1.5 mt-0.5">
+                                <Phone className="w-3 h-3 text-[#8C6D42]" />
+                                <span>{cust.phone}</span>
+                              </div>
+                            )}
+                          </td>
+
+                          <td className="py-3.5 px-4 text-[11px] text-[#110D09]/75 max-w-xs truncate">
+                            {cust.address ? (
+                              <div className="flex items-start space-x-1">
+                                <MapPin className="w-3 h-3 text-[#8C6D42] flex-shrink-0 mt-0.5" />
+                                <span className="truncate">{cust.address}</span>
+                              </div>
+                            ) : (
+                              <span className="text-[#110D09]/40 italic">Not provided yet</span>
+                            )}
+                          </td>
+
+                          <td className="py-3.5 px-4 text-center font-mono font-bold text-[#110D09]">
+                            {cust.ordersCount}
+                          </td>
+
+                          <td className="py-3.5 px-4 font-mono font-bold text-emerald-800">
+                            ₹{cust.totalSpent}
+                          </td>
+
+                          <td className="py-3.5 px-4 font-mono text-amber-700">
+                            {cust.pendingBalance > 0 ? `₹${cust.pendingBalance}` : '—'}
+                          </td>
+
+                          <td className="py-3.5 px-4 font-mono text-[10px] text-[#110D09]/60">
+                            {new Date(cust.lastActiveAt).toLocaleDateString('en-IN', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric',
+                            })}
+                          </td>
+
+                          <td className="py-3.5 px-4 text-right">
+                            {cust.ordersCount > 0 ? (
+                              <button
+                                onClick={() => {
+                                  setSearchQuery(cust.email);
+                                  setActiveTab('orders');
+                                }}
+                                className="text-xs text-[#8C6D42] hover:text-[#110D09] font-mono underline font-medium"
+                              >
+                                View Orders ({cust.ordersCount}) →
+                              </button>
+                            ) : (
+                              <span className="text-[10px] font-mono text-[#110D09]/40">No orders yet</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: PRODUCTS & AVAILABILITY WORKFLOW */}
         {activeTab === 'products' && (
           <div className="space-y-6">
             <div className="bg-white border border-[#E8E2D8] p-6 space-y-3 shadow-sm">

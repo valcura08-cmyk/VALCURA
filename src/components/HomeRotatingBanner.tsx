@@ -62,38 +62,50 @@ export default function HomeRotatingBanner() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* Ambient matching blurred background so frame is seamlessly filled */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <Image
-            key={`blur-${currentSlide.id}`}
-            src={currentSlide.image}
-            alt=""
-            fill
-            className="object-cover blur-2xl opacity-35 scale-110 transition-opacity duration-700"
-            aria-hidden
-            priority
-          />
-          <div className="absolute inset-0 bg-black/20" />
-        </div>
+        {/* Preload and render all slides for instant zero-lag rotation */}
+        {slides.map((slide, idx) => {
+          const isActive = idx === currentIndex;
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              {/* Ambient matching blurred background */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <Image
+                  src={slide.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1152px"
+                  className="object-cover blur-2xl opacity-35 scale-110"
+                  aria-hidden
+                  priority
+                />
+                <div className="absolute inset-0 bg-black/20" />
+              </div>
 
-        {/* Clickable Full-Size Slide Link */}
-        <Link
-          href={currentSlide.link}
-          className="absolute inset-0 z-10 block w-full h-full cursor-pointer flex items-center justify-center p-2 sm:p-4"
-          aria-label={currentSlide.title}
-        >
-          {/* Main Foreground Image — 100% Full Size, Uncropped */}
-          <div className="relative w-full h-full flex items-center justify-center">
-            <Image
-              key={currentSlide.id}
-              src={currentSlide.image}
-              alt={currentSlide.title}
-              fill
-              className="object-contain object-center transition-opacity duration-700 ease-in-out drop-shadow-lg"
-              priority
-            />
-          </div>
-        </Link>
+              {/* Clickable Full-Size Slide Link */}
+              <Link
+                href={slide.link}
+                className="absolute inset-0 block w-full h-full cursor-pointer flex items-center justify-center p-2 sm:p-4"
+                aria-label={slide.title}
+              >
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 1152px"
+                    className="object-contain object-center drop-shadow-lg"
+                    priority
+                  />
+                </div>
+              </Link>
+            </div>
+          );
+        })}
 
         {/* Floating Arrows to Change (Left & Right) */}
         <button

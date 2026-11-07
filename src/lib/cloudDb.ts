@@ -232,3 +232,28 @@ export async function recordContactInquiry(inquiry: {
     return false;
   }
 }
+
+/**
+ * Fetch all registered customers from Supabase
+ */
+export async function getCustomersFromCloud(): Promise<any[]> {
+  const config = getSupabaseConfig();
+  if (!config) return [];
+
+  try {
+    const res = await fetch(`${config.url}/rest/v1/customers?select=*&order=last_active_at.desc`, {
+      headers: {
+        apikey: config.key,
+        Authorization: `Bearer ${config.key}`,
+      },
+    });
+
+    if (res.ok) {
+      return await res.json();
+    }
+    return [];
+  } catch (err) {
+    console.error('Failed to fetch customers from cloud:', err);
+    return [];
+  }
+}

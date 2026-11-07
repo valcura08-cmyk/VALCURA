@@ -135,19 +135,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithGoogle = async (customEmail?: string, customName?: string): Promise<UserProfile> => {
-    const email = (customEmail || 'aarav.sharma@gmail.com').trim().toLowerCase();
-    const fullName = customName || 'Aarav Sharma';
+    const email = (customEmail || 'guest.client@valcura.com').trim().toLowerCase();
+    const fullName = customName || 'Valued Client';
+
+    try {
+      await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'login',
+          email,
+          fullName,
+          provider: 'google',
+        }),
+      });
+    } catch (e) {
+      console.error('Failed to register Google login to server', e);
+    }
+
     const profile: UserProfile = {
       id: `usr_g_${Math.floor(100000 + Math.random() * 900000)}`,
       email,
       fullName,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&crop=face',
       provider: 'google',
-      phone: '+91 98201 12345',
-      address: 'B-402, Signature Towers, Bandra West',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      pincode: '400050',
       memberSince: 'November 2026',
     };
 
@@ -157,19 +167,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithMicrosoft = async (customEmail?: string, customName?: string): Promise<UserProfile> => {
-    const email = (customEmail || 'priya.sen@outlook.com').trim().toLowerCase();
-    const fullName = customName || 'Priya Sen';
+    const email = (customEmail || 'guest.client@valcura.com').trim().toLowerCase();
+    const fullName = customName || 'Valued Client';
+
+    try {
+      await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'login',
+          email,
+          fullName,
+          provider: 'microsoft',
+        }),
+      });
+    } catch (e) {
+      console.error('Failed to register Microsoft login to server', e);
+    }
+
     const profile: UserProfile = {
       id: `usr_ms_${Math.floor(100000 + Math.random() * 900000)}`,
       email,
       fullName,
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&crop=face',
       provider: 'microsoft',
-      phone: '+91 98112 87654',
-      address: 'Flat 12, Golf Green Gardens',
-      city: 'Kolkata',
-      state: 'West Bengal',
-      pincode: '700095',
       memberSince: 'November 2026',
     };
 
@@ -181,6 +201,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithEmail = async (email: string, fullName: string, phone?: string): Promise<UserProfile> => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanName = fullName.trim() || cleanEmail.split('@')[0];
+
+    try {
+      await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'login',
+          email: cleanEmail,
+          fullName: cleanName,
+          phone: phone || '',
+          provider: 'email',
+        }),
+      });
+    } catch (e) {
+      console.error('Failed to register email login to server', e);
+    }
+
     const profile: UserProfile = {
       id: `usr_em_${Math.floor(100000 + Math.random() * 900000)}`,
       email: cleanEmail,

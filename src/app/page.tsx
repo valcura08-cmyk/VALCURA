@@ -47,6 +47,7 @@ export default function HomePage() {
                 src="/editorial/explore-by-moods-banner.jpg"
                 alt="Explore By Moods - VALCURA"
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 380px"
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 priority
               />
@@ -88,6 +89,7 @@ export default function HomePage() {
                 src="/editorial/explore-by-scents-banner.jpg"
                 alt="Explore By Scents - VALCURA"
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 380px"
                 className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 priority
               />
@@ -128,6 +130,7 @@ export default function HomePage() {
                 src="/editorial/explore-all-collections-banner.jpg"
                 alt="Explore All Collections - VALCURA"
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 380px"
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 priority
               />

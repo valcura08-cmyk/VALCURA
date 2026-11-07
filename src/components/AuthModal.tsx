@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { X, Check, Lock, Mail, User, Sparkles, ArrowRight } from 'lucide-react';
+import { X, Lock, Mail, User, Phone, ArrowRight, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export default function AuthModal() {
@@ -18,44 +18,66 @@ export default function AuthModal() {
   const [mode, setMode] = useState<'signin' | 'signup'>(authModalMode || 'signin');
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [customSocialEmail, setCustomSocialEmail] = useState('');
-  const [showCustomEmailInput, setShowCustomEmailInput] = useState(false);
-  const [pendingProvider, setPendingProvider] = useState<'google' | 'microsoft' | null>(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   if (!isAuthModalOpen) return null;
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) return;
+    setErrorMsg('');
+    setSuccessMsg('');
+
+    if (!email || !email.includes('@')) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMsg('Password must be at least 6 characters.');
+      return;
+    }
+
+    if (mode === 'signup' && !fullName.trim()) {
+      setErrorMsg('Please enter your full name.');
+      return;
+    }
 
     setLoading(true);
     try {
-      await loginWithEmail(email, fullName || email.split('@')[0]);
+      const cleanName = fullName.trim() || email.split('@')[0];
+      await loginWithEmail(email, cleanName, phone);
+      setSuccessMsg(mode === 'signup' ? 'Welcome to VALCURA! Account created.' : 'Signed in successfully.');
+      setTimeout(() => {
+        closeAuthModal();
+      }, 600);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Authentication error. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleSocialClick = async (provider: 'google' | 'microsoft') => {
+    setErrorMsg('');
     setLoading(true);
     try {
       if (provider === 'google') {
-        await loginWithGoogle(customSocialEmail || undefined);
+        await loginWithGoogle();
       } else {
-        await loginWithMicrosoft(customSocialEmail || undefined);
+        await loginWithMicrosoft();
       }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQuickDemo = async (demoEmail: string, demoName: string) => {
-    setLoading(true);
-    try {
-      await loginWithGoogle(demoEmail, demoName);
+      setSuccessMsg('Signed in successfully.');
+      setTimeout(() => {
+        closeAuthModal();
+      }, 600);
+    } catch (err: any) {
+      setErrorMsg('Social sign-in temporarily unavailable. Please use email.');
     } finally {
       setLoading(false);
     }
@@ -63,25 +85,25 @@ export default function AuthModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in"
       onClick={closeAuthModal}
     >
       <div
         className="relative w-full max-w-md bg-[#FAF7F2] border border-[#E8DFD3] p-6 sm:p-8 shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Prominent Cross Button on Top Upper Side */}
+        {/* Prominent Circular Cross Button */}
         <button
           type="button"
           onClick={closeAuthModal}
-          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border-2 border-[#110D09] text-[#110D09] hover:bg-[#110D09] hover:text-[#FAF7F2] flex items-center justify-center transition-all duration-200 shadow-md z-30 cursor-pointer group"
+          className="absolute top-4 right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-[#D5CDC2] text-[#110D09] hover:bg-[#110D09] hover:text-[#FAF7F2] flex items-center justify-center transition-all duration-200 shadow-sm z-30 cursor-pointer group"
           title="Close and continue browsing"
           aria-label="Close login dialog"
         >
-          <X className="w-5 h-5 stroke-[2.5] transition-transform group-hover:rotate-90 duration-300" />
+          <X className="w-5 h-5 stroke-[2] transition-transform group-hover:rotate-90 duration-300" />
         </button>
 
-        {/* Brand Logo & Heading */}
+        {/* Brand Header */}
         <div className="text-center space-y-2 mb-6">
           <div className="relative w-8 h-8 mx-auto opacity-90">
             <Image
@@ -91,14 +113,14 @@ export default function AuthModal() {
               className="object-contain"
             />
           </div>
-          <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
+          <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-semibold block">
             VALCURA Client Portal
           </span>
-          <h2 className="text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
-            {mode === 'signin' ? 'Access Your Account' : 'Create Atelier Account'}
+          <h2 className="text-2xl font-serif uppercase tracking-wide text-[#110D09]">
+            {mode === 'signin' ? 'Sign In To Atelier' : 'Create Atelier Account'}
           </h2>
           <p className="text-xs text-[#110D09]/65 font-light">
-            Sign in to access your running account, order history, and fragrance allocations.
+            Access your orders, reservation balances, and personalized fragrance allocations.
           </p>
         </div>
 
@@ -106,7 +128,10 @@ export default function AuthModal() {
         <div className="flex border-b border-[#E8DFD3] mb-6">
           <button
             type="button"
-            onClick={() => setMode('signin')}
+            onClick={() => {
+              setMode('signin');
+              setErrorMsg('');
+            }}
             className={`flex-1 pb-3 text-xs font-serif font-bold uppercase tracking-[0.18em] transition-colors border-b-2 ${
               mode === 'signin'
                 ? 'border-[#110D09] text-[#110D09]'
@@ -117,7 +142,10 @@ export default function AuthModal() {
           </button>
           <button
             type="button"
-            onClick={() => setMode('signup')}
+            onClick={() => {
+              setMode('signup');
+              setErrorMsg('');
+            }}
             className={`flex-1 pb-3 text-xs font-serif font-bold uppercase tracking-[0.18em] transition-colors border-b-2 ${
               mode === 'signup'
                 ? 'border-[#110D09] text-[#110D09]'
@@ -128,14 +156,27 @@ export default function AuthModal() {
           </button>
         </div>
 
-        {/* 1. SOCIAL LOGIN BUTTONS (GOOGLE & MICROSOFT) */}
-        <div className="space-y-3 mb-6">
-          {/* Google Button */}
+        {/* Feedback Messages */}
+        {errorMsg && (
+          <div className="mb-4 bg-red-50 border border-red-200 p-3 text-xs text-red-700 flex items-center space-x-2">
+            <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        {successMsg && (
+          <div className="mb-4 bg-emerald-50 border border-emerald-200 p-3 text-xs text-emerald-800 text-center font-medium">
+            {successMsg}
+          </div>
+        )}
+
+        {/* Social Authentication */}
+        <div className="space-y-2.5 mb-5">
           <button
             type="button"
             disabled={loading}
             onClick={() => handleSocialClick('google')}
-            className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-white border border-[#D5CDC2] hover:border-[#110D09] hover:shadow-sm text-[#110D09] text-xs font-serif font-bold tracking-wider transition-all duration-200"
+            className="w-full flex items-center justify-center space-x-3 py-2.5 px-4 bg-white border border-[#D5CDC2] hover:border-[#110D09] hover:shadow-sm text-[#110D09] text-xs font-serif font-semibold tracking-wider transition-all duration-200"
           >
             <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
               <path
@@ -158,12 +199,11 @@ export default function AuthModal() {
             <span>Continue with Google</span>
           </button>
 
-          {/* Microsoft Button */}
           <button
             type="button"
             disabled={loading}
             onClick={() => handleSocialClick('microsoft')}
-            className="w-full flex items-center justify-center space-x-3 py-3 px-4 bg-white border border-[#D5CDC2] hover:border-[#110D09] hover:shadow-sm text-[#110D09] text-xs font-serif font-bold tracking-wider transition-all duration-200"
+            className="w-full flex items-center justify-center space-x-3 py-2.5 px-4 bg-white border border-[#D5CDC2] hover:border-[#110D09] hover:shadow-sm text-[#110D09] text-xs font-serif font-semibold tracking-wider transition-all duration-200"
           >
             <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 23 23">
               <path fill="#f35325" d="M1 1h10v10H1z" />
@@ -176,37 +216,55 @@ export default function AuthModal() {
         </div>
 
         {/* Divider */}
-        <div className="relative flex items-center justify-center mb-6">
+        <div className="relative flex items-center justify-center mb-5">
           <div className="w-full border-t border-[#E8DFD3]" />
           <span className="absolute px-3 bg-[#FAF7F2] text-[10px] font-mono uppercase text-[#8C6D42] tracking-widest">
             Or With Email
           </span>
         </div>
 
-        {/* 2. EMAIL FORM */}
-        <form onSubmit={handleEmailSubmit} className="space-y-4">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           {mode === 'signup' && (
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider text-[#110D09]/75 mb-1">
-                Full Name
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Aarav Sharma"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-white border border-[#D5CDC2] px-3 py-2.5 text-xs text-[#110D09] placeholder:text-[#110D09]/30 focus:outline-none focus:border-[#110D09]"
-                />
-                <User className="w-3.5 h-3.5 text-[#8C6D42] absolute right-3 top-3" />
+            <>
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-wider text-[#110D09]/75 mb-1">
+                  Full Name *
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Aarav Sharma"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="w-full bg-white border border-[#D5CDC2] px-3 py-2.5 text-xs text-[#110D09] placeholder:text-[#110D09]/30 focus:outline-none focus:border-[#110D09]"
+                  />
+                  <User className="w-3.5 h-3.5 text-[#8C6D42] absolute right-3 top-3" />
+                </div>
               </div>
-            </div>
+
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-wider text-[#110D09]/75 mb-1">
+                  Mobile Number (Optional)
+                </label>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    placeholder="+91 98765 43210"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full bg-white border border-[#D5CDC2] px-3 py-2.5 text-xs text-[#110D09] placeholder:text-[#110D09]/30 focus:outline-none focus:border-[#110D09]"
+                  />
+                  <Phone className="w-3.5 h-3.5 text-[#8C6D42] absolute right-3 top-3" />
+                </div>
+              </div>
+            </>
           )}
 
           <div>
             <label className="block text-[11px] font-mono uppercase tracking-wider text-[#110D09]/75 mb-1">
-              Email Address
+              Email Address *
             </label>
             <div className="relative">
               <input
@@ -222,23 +280,41 @@ export default function AuthModal() {
           </div>
 
           <div>
-            <label className="block text-[11px] font-mono uppercase tracking-wider text-[#110D09]/75 mb-1">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-[#110D09]/75">
+                Password *
+              </label>
+              {mode === 'signin' && (
+                <button
+                  type="button"
+                  onClick={() => alert('Please contact our concierge at care@valcurafragrance.com to reset your credentials.')}
+                  className="text-[10px] text-[#8C6D42] hover:underline"
+                >
+                  Forgot?
+                </button>
+              )}
+            </div>
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-white border border-[#D5CDC2] px-3 py-2.5 text-xs text-[#110D09] placeholder:text-[#110D09]/30 focus:outline-none focus:border-[#110D09]"
               />
-              <Lock className="w-3.5 h-3.5 text-[#8C6D42] absolute right-3 top-3" />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2.5 text-[#8C6D42] hover:text-[#110D09]"
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
-          {/* Remember Me Checkbox */}
+          {/* Remember Me */}
           <div className="flex items-center justify-between text-xs pt-1">
             <label className="flex items-center space-x-2 cursor-pointer">
               <input
@@ -247,7 +323,7 @@ export default function AuthModal() {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="w-3.5 h-3.5 accent-[#110D09] rounded-none"
               />
-              <span className="text-[11px] text-[#110D09]/70">Save login on this device</span>
+              <span className="text-[11px] text-[#110D09]/70">Save session on this device</span>
             </label>
           </div>
 
@@ -255,46 +331,27 @@ export default function AuthModal() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full btn-luxury-primary py-3 text-xs font-serif font-bold uppercase tracking-[0.2em] flex items-center justify-center space-x-2 shadow-sm"
+            className="w-full btn-luxury-primary py-3 text-xs font-serif font-bold uppercase tracking-[0.2em] flex items-center justify-center space-x-2 shadow-sm disabled:opacity-50"
           >
-            <span>{loading ? 'Authenticating...' : mode === 'signin' ? 'Sign In To Account' : 'Create My Account'}</span>
+            <span>
+              {loading
+                ? 'Authenticating...'
+                : mode === 'signin'
+                ? 'Sign In To Account'
+                : 'Create Atelier Account'}
+            </span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </form>
 
-        {/* 3. ONE-CLICK DEMO TEST ACCOUNTS */}
-        <div className="mt-6 pt-4 border-t border-[#E8DFD3]/80">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-semibold block text-center mb-2">
-            ⚡ Quick Test Running Accounts with Orders
-          </span>
-          <div className="grid grid-cols-2 gap-2 text-[11px]">
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('aarav.sharma@example.com', 'Aarav Sharma')}
-              className="p-2 bg-white border border-[#E8DFD3] hover:border-[#110D09] text-left transition-colors"
-            >
-              <span className="font-bold block text-[#110D09]">Aarav Sharma</span>
-              <span className="text-[9px] text-[#8C6D42] font-mono">2 Orders Saved</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('priya.sen@example.com', 'Priya Sen')}
-              className="p-2 bg-white border border-[#E8DFD3] hover:border-[#110D09] text-left transition-colors"
-            >
-              <span className="font-bold block text-[#110D09]">Priya Sen</span>
-              <span className="text-[9px] text-[#8C6D42] font-mono">1 Order Saved</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 4. DISMISS & CONTINUE BROWSING AS GUEST */}
+        {/* Dismiss Link */}
         <div className="mt-4 pt-2 text-center">
           <button
             type="button"
             onClick={closeAuthModal}
-            className="text-[11px] font-mono uppercase tracking-widest text-[#110D09]/60 hover:text-[#110D09] transition-colors underline"
+            className="text-[10px] font-mono uppercase tracking-widest text-[#110D09]/50 hover:text-[#110D09] transition-colors underline"
           >
-            ✕ Dismiss & Continue Browsing As Guest
+            ✕ Dismiss & Continue Browsing
           </button>
         </div>
       </div>
