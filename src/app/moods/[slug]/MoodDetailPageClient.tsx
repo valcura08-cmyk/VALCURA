@@ -281,7 +281,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
           <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-[#110D09] pb-3 gap-2">
             <div>
               <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
-                The Atelier Flacons
+                Paired Perfumes
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-wide text-[#110D09] mt-0.5">
                 Fragrances Paired For {mood.title}

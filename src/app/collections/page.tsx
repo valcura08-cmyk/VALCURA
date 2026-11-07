@@ -71,11 +71,6 @@ export default function CollectionsOverviewPage() {
                   Collection 01
                 </span>
               </div>
-              <div className="absolute bottom-2.5 right-2.5">
-                <span className="text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 bg-white/95 text-[#110D09] font-bold backdrop-blur-sm border border-[#E8DFD3] rounded-full shadow-xs">
-                  Debut Trilogy
-                </span>
-              </div>
             </div>
 
             {/* Compact Clean Details - No excessive filling */}

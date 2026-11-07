@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Compass, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import HeroAnimatedLogo from '@/components/HeroAnimatedLogo';
 import HomeRotatingBanner from '@/components/HomeRotatingBanner';
 
@@ -51,12 +51,6 @@ export default function HomePage() {
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 priority
               />
-              <div className="absolute top-3 left-3">
-                <span className="text-[9px] font-mono tracking-widest uppercase px-3 py-1 bg-black/70 backdrop-blur-md text-[#FAF7F2] font-bold rounded-full shadow-md border border-white/15 flex items-center space-x-1.5">
-                  <Compass className="w-2.5 h-2.5 text-[#C5A880]" />
-                  <span>Interactive Journey</span>
-                </span>
-              </div>
             </div>
 
             <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
@@ -93,11 +87,6 @@ export default function HomePage() {
                 className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 priority
               />
-              <div className="absolute top-3 left-3">
-                <span className="text-[9px] font-mono tracking-widest uppercase px-3 py-1 bg-black/70 backdrop-blur-md text-[#FAF7F2] font-bold rounded-full shadow-md border border-white/15">
-                  The Atelier Flacons
-                </span>
-              </div>
             </div>
 
             <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
@@ -134,12 +123,6 @@ export default function HomePage() {
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 priority
               />
-              <div className="absolute top-3 left-3">
-                <span className="text-[9px] font-mono tracking-widest uppercase px-3 py-1 bg-black/70 backdrop-blur-md text-[#FAF7F2] font-bold rounded-full shadow-md border border-white/15 flex items-center space-x-1.5">
-                  <Sparkles className="w-2.5 h-2.5 text-[#C5A880]" />
-                  <span>Themed Chapters</span>
-                </span>
-              </div>
             </div>
 
             <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
@@ -178,8 +161,8 @@ export default function HomePage() {
           <h3 className="text-lg sm:text-xl font-serif font-bold text-[#110D09] tracking-[0.25em] uppercase">
             VALCURA
           </h3>
-          <p className="text-xs sm:text-sm font-serif italic text-[#110D09]/70 font-light">
-            More than a fragrance. An expression of you.
+          <p className="text-xs sm:text-sm font-serif italic text-[#110D09]/75 font-light">
+            A scent for every side of you.
           </p>
         </div>
       </section>

@@ -46,7 +46,7 @@ export default function ExploreByScents({ products }: Props) {
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto space-y-2">
           <span className="text-[11px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
-            The Atelier Flacons
+            Fragrance Catalogue
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold tracking-wide text-[#110D09] uppercase">
             Explore By Scents
