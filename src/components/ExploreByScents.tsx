@@ -54,7 +54,7 @@ export default function ExploreByScents({ products }: Props) {
         </div>
 
         {/* 3 Fragrances Grid - Compact in one view ("one see") */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 max-w-4xl mx-auto items-stretch">
           {products.map((product) => {
             const isCacaoCitrine = product.id === 'cacao-citrine';
             const price = 499;
@@ -64,12 +64,12 @@ export default function ExploreByScents({ products }: Props) {
               return (
                 <div
                   key={product.id}
-                  className="bg-[#FAF6EE] border border-[#18120E] flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+                  className="bg-[#FAF6EE] border border-[#18120E] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300"
                 >
                   {/* Smaller compact image for single-view glance */}
                   <Link
                     href={`/product/${product.slug}`}
-                    className="relative aspect-[4/3] max-h-56 bg-[#F4ECE1] overflow-hidden block group"
+                    className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F4ECE1] overflow-hidden block group"
                   >
                     <Image
                       src={product.images[0]}
@@ -78,60 +78,60 @@ export default function ExploreByScents({ products }: Props) {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       priority
                     />
-                    <div className="absolute top-2.5 left-2.5">
-                      <span className="text-[9px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#18120E] text-[#FAF7F2] font-bold shadow-sm">
+                    <div className="absolute top-2 left-2">
+                      <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#18120E] text-[#FAF7F2] font-bold rounded-full shadow-xs">
                         Available Now • 50 ML
                       </span>
                     </div>
                   </Link>
 
                   {/* Clean details - No extra clutter text */}
-                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-1 text-center">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-semibold block">
+                  <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
+                    <div className="space-y-0.5 text-center">
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-semibold block">
                         Unisex • Eau de Parfum
                       </span>
                       <Link href={`/product/${product.slug}`}>
-                        <h3 className="text-xl sm:text-2xl font-serif font-bold tracking-wide uppercase text-[#110D09] hover:text-[#8C6D42] transition-colors">
+                        <h3 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] hover:text-[#8C6D42] transition-colors leading-tight">
                           {product.name}
                         </h3>
                       </Link>
                     </div>
 
                     {/* Pricing & Quantity Selector */}
-                    <div className="pt-2 border-t border-[#E8DFD3] space-y-3">
-                      <div className="flex items-baseline justify-center space-x-3">
-                        <span className="text-2xl font-serif font-bold text-[#110D09]">
+                    <div className="pt-2 border-t border-[#E8DFD3] space-y-2">
+                      <div className="flex items-baseline justify-center space-x-2">
+                        <span className="text-lg sm:text-xl font-serif font-bold text-[#110D09]">
                           ₹{price}
                         </span>
-                        <span className="text-xs text-[#110D09]/40 line-through font-mono">
+                        <span className="text-[10px] text-[#110D09]/40 line-through font-mono">
                           ₹{mrp}
                         </span>
-                        <span className="text-[10px] font-mono font-bold uppercase text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
+                        <span className="text-[9px] font-mono font-bold uppercase text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 rounded">
                           Save ₹100
                         </span>
                       </div>
 
                       {/* Quantity Selector */}
                       <div className="flex items-center justify-between text-xs px-1">
-                        <span className="font-mono text-[#110D09]/70 font-semibold uppercase text-[10px]">
+                        <span className="font-mono text-[#110D09]/70 font-semibold uppercase text-[9px]">
                           Quantity:
                         </span>
-                        <div className="inline-flex items-center border border-[#D5CDC2] bg-[#FAF7F2]">
+                        <div className="inline-flex items-center border border-[#D5CDC2] bg-[#FAF7F2] rounded overflow-hidden h-7">
                           <button
                             type="button"
                             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                            className="px-2.5 py-1 text-xs hover:text-[#8C6D42] transition-colors"
+                            className="px-2 py-0.5 text-xs hover:text-[#8C6D42] transition-colors font-mono font-bold"
                           >
                             -
                           </button>
-                          <span className="px-3 py-1 font-mono font-bold text-xs">
+                          <span className="px-2.5 py-0.5 font-mono font-bold text-xs">
                             {quantity}
                           </span>
                           <button
                             type="button"
                             onClick={() => setQuantity((q) => q + 1)}
-                            className="px-2.5 py-1 text-xs hover:text-[#8C6D42] transition-colors"
+                            className="px-2 py-0.5 text-xs hover:text-[#8C6D42] transition-colors font-mono font-bold"
                           >
                             +
                           </button>
@@ -142,16 +142,16 @@ export default function ExploreByScents({ products }: Props) {
                       <button
                         type="button"
                         onClick={handleAddToCart}
-                        className="w-full btn-luxury-primary py-3 text-xs font-bold tracking-luxury uppercase flex items-center justify-center space-x-2 shadow-sm"
+                        className="w-full btn-luxury-primary py-2 px-3 text-[11px] font-bold tracking-luxury uppercase flex items-center justify-center space-x-1.5 rounded-lg shadow-2xs cursor-pointer"
                       >
                         {addedSuccess ? (
                           <>
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            <Check className="w-3 h-3 text-emerald-400" />
                             <span>Added to Bag!</span>
                           </>
                         ) : (
                           <>
-                            <ShoppingBag className="w-3.5 h-3.5" />
+                            <ShoppingBag className="w-3 h-3" />
                             <span>Add to Cart • ₹{price * quantity}</span>
                           </>
                         )}
@@ -159,7 +159,7 @@ export default function ExploreByScents({ products }: Props) {
 
                       <Link
                         href={`/product/${product.slug}`}
-                        className="w-full text-center block text-[10px] tracking-luxury uppercase text-[#110D09]/70 hover:text-[#110D09] pt-0.5 transition-colors font-bold font-mono"
+                        className="w-full text-center block text-[9px] tracking-luxury uppercase text-[#110D09]/70 hover:text-[#110D09] pt-0.5 transition-colors font-bold font-mono"
                       >
                         Discover Cacao Citrine →
                       </Link>
@@ -170,41 +170,40 @@ export default function ExploreByScents({ products }: Props) {
             }
 
             // COMING SOON PERFUMES (Silken Sambac & Roasted Zest)
-            // User requested: "make these two perfumes in comming soon nothing else just our perfume name should be there"
             return (
               <div
                 key={product.id}
-                className="bg-[#FAF6EE] border border-[#E8DFD3] flex flex-col justify-between overflow-hidden shadow-sm hover:border-[#110D09]/40 transition-all duration-300"
+                className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:border-[#110D09]/40 transition-all duration-300"
               >
                 {/* Smaller compact image for single-view glance */}
-                <div className="relative aspect-[4/3] max-h-56 bg-[#F4ECE1] overflow-hidden block">
+                <div className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F4ECE1] overflow-hidden block">
                   <Image
                     src={product.images[0]}
                     alt={product.name}
                     fill
                     className="object-cover opacity-90"
                   />
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="text-[9px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#FAF7F2]/95 text-[#110D09] border border-[#D5CDC2] font-bold">
+                  <div className="absolute top-2 left-2">
+                    <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#FAF7F2]/95 text-[#110D09] border border-[#D5CDC2] rounded-full font-bold">
                       {product.category}
                     </span>
                   </div>
                 </div>
 
                 {/* Just perfume name and Coming Soon - NO EXTRA CLUTTER TEXT */}
-                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between items-center text-center space-y-6">
-                  <div className="space-y-1.5 pt-2">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-semibold block">
+                <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between items-center text-center space-y-2.5">
+                  <div className="space-y-1 pt-1">
+                    <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-semibold block">
                       {product.collection}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-serif font-bold tracking-wide uppercase text-[#110D09]">
+                    <h3 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] leading-tight">
                       {product.name}
                     </h3>
                   </div>
 
                   {/* Clean Coming Soon Banner */}
-                  <div className="w-full pt-4 border-t border-[#E8DFD3]">
-                    <div className="w-full py-3 px-4 bg-[#FAF7F2] border border-[#D5CDC2] text-center text-xs font-mono font-bold tracking-luxury uppercase text-[#110D09]">
+                  <div className="w-full pt-2 border-t border-[#E8DFD3]">
+                    <div className="w-full py-2 px-3 bg-[#FAF7F2] border border-[#D5CDC2] text-center text-[10px] font-mono font-bold tracking-luxury uppercase text-[#110D09] rounded-lg">
                       Coming Soon
                     </div>
                   </div>

@@ -49,10 +49,10 @@ export default function ShopAllFragrancesPage() {
               return (
                 <div
                   key={product.id}
-                  className="bg-white border border-[#110D09] flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+                  className="bg-white border border-[#110D09] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300"
                 >
                   {/* Compact Image */}
-                  <Link href={`/product/${product.slug}`} className="relative aspect-[4/3] max-h-56 bg-[#F8F5F0] overflow-hidden block group">
+                  <Link href={`/product/${product.slug}`} className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F8F5F0] overflow-hidden block group">
                     <Image
                       src={product.images[0]}
                       alt={product.name}
@@ -61,43 +61,43 @@ export default function ShopAllFragrancesPage() {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       priority
                     />
-                    <div className="absolute top-3 left-3">
-                      <span className="text-[10px] tracking-luxury uppercase px-2.5 py-1 bg-[#110D09] text-white font-bold">
+                    <div className="absolute top-2 left-2">
+                      <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#110D09] text-white font-bold rounded-full shadow-xs">
                         Available Now • 50 ML
                       </span>
                     </div>
                   </Link>
 
                   {/* Details */}
-                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2 text-center">
-                      <span className="text-[10px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
+                  <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
+                    <div className="space-y-0.5 text-center">
+                      <span className="text-[9px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
                         Unisex • Eau de Parfum
                       </span>
 
                       <Link href={`/product/${product.slug}`}>
-                        <h2 className="text-xl sm:text-2xl font-serif font-bold tracking-wide uppercase text-[#110D09] hover:text-[#8C6D42] transition-colors">
+                        <h2 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] hover:text-[#8C6D42] transition-colors leading-tight">
                           {product.name}
                         </h2>
                       </Link>
 
-                      <div className="pt-2 flex items-baseline justify-center space-x-3">
-                        <span className="text-2xl font-serif text-[#110D09] font-bold">
+                      <div className="pt-1.5 flex items-baseline justify-center space-x-2">
+                        <span className="text-lg sm:text-xl font-serif text-[#110D09] font-bold">
                           ₹{product.fullPrice || 499}
                         </span>
-                        <span className="text-xs text-[#110D09]/40 line-through font-mono">
+                        <span className="text-[10px] text-[#110D09]/40 line-through font-mono">
                           ₹{product.standardPrice || 599}
                         </span>
-                        <span className="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200 font-mono font-bold">
+                        <span className="text-[9px] text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 font-mono font-bold rounded">
                           Save ₹100
                         </span>
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-[#E8E2D8]">
+                    <div className="pt-2 border-t border-[#E8E2D8]">
                       <Link
                         href={`/product/${product.slug}`}
-                        className="w-full btn-luxury-primary text-center block text-xs font-bold py-3 uppercase tracking-luxury"
+                        className="w-full btn-luxury-primary text-center block text-[11px] font-bold py-2 px-3 uppercase tracking-luxury rounded-lg shadow-2xs"
                       >
                         Explore Fragrance →
                       </Link>
@@ -111,10 +111,10 @@ export default function ShopAllFragrancesPage() {
             return (
               <div
                 key={product.id}
-                className="bg-white border border-[#E8E2D8] flex flex-col justify-between overflow-hidden shadow-sm transition-all duration-300"
+                className="bg-white border border-[#E8E2D8] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs transition-all duration-300"
               >
                 {/* Compact Image */}
-                <div className="relative aspect-[4/3] max-h-56 bg-[#F8F5F0] overflow-hidden block">
+                <div className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F8F5F0] overflow-hidden block">
                   <Image
                     src={product.images[0]}
                     alt={product.name}
@@ -122,26 +122,26 @@ export default function ShopAllFragrancesPage() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
                     className="object-cover opacity-90"
                   />
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[9px] font-mono tracking-widest uppercase px-2 py-0.5 bg-white/90 text-[#110D09] border border-[#D5CDC2] font-bold">
+                  <div className="absolute top-2 left-2">
+                    <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-white/90 text-[#110D09] border border-[#D5CDC2] font-bold rounded-full">
                       {product.category}
                     </span>
                   </div>
                 </div>
 
                 {/* Just perfume name and Coming Soon */}
-                <div className="p-5 flex-1 flex flex-col justify-between items-center text-center space-y-6">
-                  <div className="space-y-1.5 pt-2">
-                    <span className="text-[10px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
+                <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between items-center text-center space-y-2.5">
+                  <div className="space-y-1 pt-1">
+                    <span className="text-[9px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
                       {product.collection}
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-serif font-bold tracking-wide uppercase text-[#110D09]">
+                    <h2 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] leading-tight">
                       {product.name}
                     </h2>
                   </div>
 
-                  <div className="w-full pt-3 border-t border-[#E8E2D8]">
-                    <div className="w-full py-3 px-4 bg-[#FAF8F5] border border-[#D5CDC2] text-center text-xs font-mono font-bold tracking-luxury uppercase text-[#110D09]">
+                  <div className="w-full pt-2 border-t border-[#E8E2D8]">
+                    <div className="w-full py-2 px-3 bg-[#FAF8F5] border border-[#D5CDC2] text-center text-[10px] font-mono font-bold tracking-luxury uppercase text-[#110D09] rounded-lg">
                       Coming Soon
                     </div>
                   </div>

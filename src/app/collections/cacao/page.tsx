@@ -64,7 +64,7 @@ export default function CacaoCollectionPage() {
                   {/* Compact Product Image */}
                   <Link
                     href={`/product/${product.slug}`}
-                    className="relative aspect-[4/3] max-h-56 bg-[#F4ECE1] overflow-hidden block group"
+                    className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F4ECE1] overflow-hidden block group"
                   >
                     <Image
                       src={product.images[0]}
@@ -74,43 +74,43 @@ export default function CacaoCollectionPage() {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       priority
                     />
-                    <div className="absolute top-3 left-3">
-                      <span className="text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 bg-[#110D09] text-[#FAF7F2] font-bold rounded-full shadow-md">
+                    <div className="absolute top-2 left-2">
+                      <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#110D09] text-[#FAF7F2] font-bold rounded-full shadow-xs">
                         Available Now • 50 ML
                       </span>
                     </div>
                   </Link>
 
                   {/* Product Card Details */}
-                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2 text-center">
-                      <span className="text-[10px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
+                  <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
+                    <div className="space-y-0.5 text-center">
+                      <span className="text-[9px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
                         Unisex • Eau de Parfum
                       </span>
                       <Link href={`/product/${product.slug}`}>
-                        <h2 className="text-xl sm:text-2xl font-serif font-bold tracking-wide uppercase text-[#110D09] hover:text-[#8C6D42] transition-colors">
+                        <h2 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] hover:text-[#8C6D42] transition-colors leading-tight">
                           {product.name}
                         </h2>
                       </Link>
 
-                      <div className="pt-2 flex items-baseline justify-center space-x-3">
-                        <span className="text-2xl font-serif text-[#110D09] font-bold">
+                      <div className="pt-1.5 flex items-baseline justify-center space-x-2">
+                        <span className="text-lg sm:text-xl font-serif text-[#110D09] font-bold">
                           ₹{product.fullPrice || 499}
                         </span>
-                        <span className="text-xs text-[#110D09]/40 line-through font-mono">
+                        <span className="text-[10px] text-[#110D09]/40 line-through font-mono">
                           ₹{product.standardPrice || 599}
                         </span>
-                        <span className="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200 rounded-md font-mono font-bold">
+                        <span className="text-[9px] text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 rounded font-mono font-bold">
                           Save ₹100
                         </span>
                       </div>
                     </div>
 
                     {/* Action Button */}
-                    <div className="pt-3 border-t border-[#E8DFD3]">
+                    <div className="pt-2 border-t border-[#E8DFD3]">
                       <Link
                         href={`/product/${product.slug}`}
-                        className="w-full btn-luxury-primary text-center block text-xs font-serif font-bold py-3 uppercase tracking-[0.2em] rounded-xl"
+                        className="w-full btn-luxury-primary text-center block text-[11px] font-serif font-bold py-2 px-3 uppercase tracking-[0.15em] rounded-lg shadow-2xs"
                       >
                         Explore Fragrance →
                       </Link>
@@ -124,10 +124,10 @@ export default function CacaoCollectionPage() {
             return (
               <div
                 key={product.id}
-                className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-2xl flex flex-col justify-between overflow-hidden shadow-sm transition-all duration-300"
+                className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs transition-all duration-300"
               >
                 {/* Compact Product Image */}
-                <div className="relative aspect-[4/3] max-h-56 bg-[#F4ECE1] overflow-hidden block">
+                <div className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F4ECE1] overflow-hidden block">
                   <Image
                     src={product.images[0]}
                     alt={product.name}
@@ -135,26 +135,26 @@ export default function CacaoCollectionPage() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
                     className="object-cover opacity-90"
                   />
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[9px] font-mono tracking-widest uppercase px-2.5 py-0.5 bg-[#FAF7F2]/95 text-[#110D09] border border-[#D5CDC2] rounded-full font-bold">
+                  <div className="absolute top-2 left-2">
+                    <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#FAF7F2]/95 text-[#110D09] border border-[#D5CDC2] rounded-full font-bold">
                       {product.category}
                     </span>
                   </div>
                 </div>
 
                 {/* Just perfume name and Coming Soon - NO EXTRA CLUTTER */}
-                <div className="p-5 flex-1 flex flex-col justify-between items-center text-center space-y-6">
-                  <div className="space-y-1.5 pt-2">
-                    <span className="text-[10px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
+                <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between items-center text-center space-y-2.5">
+                  <div className="space-y-1 pt-1">
+                    <span className="text-[9px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
                       {product.collection}
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-serif font-bold tracking-wide uppercase text-[#110D09]">
+                    <h2 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] leading-tight">
                       {product.name}
                     </h2>
                   </div>
 
-                  <div className="w-full pt-3 border-t border-[#E8DFD3]">
-                    <div className="w-full py-3 px-4 bg-[#FAF7F2] border border-[#D5CDC2] text-center text-xs font-mono font-bold tracking-luxury uppercase text-[#110D09] rounded-xl">
+                  <div className="w-full pt-2 border-t border-[#E8DFD3]">
+                    <div className="w-full py-2 px-3 bg-[#FAF7F2] border border-[#D5CDC2] text-center text-[10px] font-mono font-bold tracking-luxury uppercase text-[#110D09] rounded-lg">
                       Coming Soon
                     </div>
                   </div>
