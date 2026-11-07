@@ -37,83 +37,69 @@ export default function CollectionsOverviewPage() {
         </div>
       </section>
 
-      {/* Collections Grid - Square Presentation Card for The Cacao Collection */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16">
-        <div className="text-center max-w-md mx-auto mb-10 space-y-1">
-          <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
+      {/* Collections Grid - Compact Small Square Box */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12">
+        <div className="text-center max-w-md mx-auto mb-8 space-y-1">
+          <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
             Archival Chapters
           </span>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold uppercase text-[#110D09]">
+          <h2 className="text-xl sm:text-2xl font-serif font-bold uppercase text-[#110D09]">
             Select A Collection
           </h2>
           <p className="text-xs text-[#110D09]/60 font-light">
-            Click below to open the collection and reveal all included flacons
+            Click to explore the collection and reveal all included flacons
           </p>
         </div>
 
-        {/* The Cacao Collection Square Box */}
-        <div className="max-w-sm sm:max-w-md mx-auto">
+        {/* The Cacao Collection - Small Compact Square Box */}
+        <div className="flex justify-center">
           <Link
             href="/collections/cacao"
-            className="group bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#110D09] rounded-2xl sm:rounded-3xl transition-all duration-500 shadow-sm hover:shadow-xl overflow-hidden flex flex-col justify-between"
+            className="group w-full max-w-[310px] sm:max-w-[330px] bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#110D09] rounded-2xl transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1 overflow-hidden flex flex-col justify-between"
           >
-            {/* Top Bar */}
-            <div className="px-5 py-3 bg-[#FAF6EE] border-b border-[#E8DFD3] flex items-center justify-between">
-              <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-[#8C6D42] font-bold">
-                Collection 01
-              </span>
-              <span className="text-[10px] font-serif uppercase tracking-[0.2em] text-[#110D09] font-bold group-hover:text-[#8C6D42] transition-colors">
-                Open Collection →
-              </span>
-            </div>
-
-            {/* Square Aspect Image */}
-            <div className="relative aspect-square w-full overflow-hidden bg-[#F4ECE1]">
+            {/* Square Aspect Image - Compact, not overly filled */}
+            <div className="relative aspect-square w-full bg-[#F4ECE1] overflow-hidden">
               <Image
                 src="/editorial/cacao-collection-citrus.jpg"
                 alt="The Cacao Collection by VALCURA"
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
                 priority
               />
-              <div className="absolute top-3 left-3">
-                <span className="text-[10px] font-mono tracking-widest uppercase px-3 py-1 bg-[#110D09] text-[#FAF7F2] font-bold rounded-full shadow-md">
-                  3 Fragrances
+              <div className="absolute top-2.5 left-2.5">
+                <span className="text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 bg-[#110D09] text-[#FAF7F2] font-bold rounded-full shadow-sm">
+                  Collection 01
                 </span>
               </div>
-              <div className="absolute bottom-3 right-3">
-                <span className="text-[10px] font-mono tracking-widest uppercase px-2.5 py-1 bg-[#FAF7F2]/95 text-[#110D09] font-bold backdrop-blur-sm border border-[#E8DFD3] rounded-full shadow-sm">
+              <div className="absolute bottom-2.5 right-2.5">
+                <span className="text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 bg-white/95 text-[#110D09] font-bold backdrop-blur-sm border border-[#E8DFD3] rounded-full shadow-xs">
                   Debut Trilogy
                 </span>
               </div>
             </div>
 
-            {/* Details */}
-            <div className="p-6 flex flex-col text-center space-y-3 bg-[#FAF6EE]">
-              <div className="space-y-1">
-                <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
+            {/* Compact Clean Details - No excessive filling */}
+            <div className="p-4 sm:p-5 flex flex-col text-center space-y-2 bg-[#FAF6EE]">
+              <div>
+                <span className="text-[9px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block mb-1">
                   Available Now & In Formulation
                 </span>
-                <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09] group-hover:text-[#8C6D42] transition-colors">
+                <h3 className="text-lg sm:text-xl font-serif font-bold uppercase tracking-wide text-[#110D09] group-hover:text-[#8C6D42] transition-colors">
                   The Cacao Collection
                 </h3>
-                <p className="text-[11px] font-mono text-[#110D09]/60 uppercase tracking-wider">
+                <p className="text-[10px] font-mono text-[#110D09]/60 uppercase tracking-wider mt-0.5">
                   50 ML Eau de Parfum • 20% Concentration
                 </p>
               </div>
 
-              <p className="text-xs sm:text-sm text-[#110D09]/75 font-light leading-relaxed">
-                Featuring flagship <span className="font-semibold text-[#110D09]">Cacao Citrine</span> alongside upcoming creations <span className="font-semibold text-[#110D09]">Silken Sambac</span> & <span className="font-semibold text-[#110D09]">Roasted Zest</span>.
+              <p className="text-xs text-[#110D09]/75 font-light leading-snug">
+                Featuring flagship <span className="font-semibold text-[#110D09]">Cacao Citrine</span> alongside upcoming chapters.
               </p>
 
-              <div className="text-[11px] text-[#8C6D42] font-mono font-semibold pt-1">
-                1 Active Launch • 2 In Formulation
-              </div>
-
-              <div className="pt-3 border-t border-[#E8DFD3]">
-                <div className="w-full inline-flex items-center justify-center space-x-2 px-6 py-3 bg-[#110D09] group-hover:bg-[#8C6D42] text-[#FAF7F2] text-xs font-serif font-bold uppercase tracking-[0.2em] rounded-xl transition-all duration-300 shadow-sm">
-                  <span>View Full Collection</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <div className="pt-2 border-t border-[#E8DFD3]">
+                <div className="w-full inline-flex items-center justify-center space-x-1.5 py-2.5 px-4 bg-[#110D09] group-hover:bg-[#8C6D42] text-[#FAF7F2] text-xs font-serif font-bold uppercase tracking-wider rounded-lg transition-all duration-300 shadow-xs">
+                  <span>Open Collection</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
             </div>
