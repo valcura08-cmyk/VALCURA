@@ -159,7 +159,7 @@ export default function AccountPage() {
               <div className="space-y-3">
                 <button
                   type="button"
-                  onClick={() => loginWithGoogle()}
+                  onClick={() => openAuthModal('signin')}
                   className="w-full flex items-center justify-center space-x-3 py-3.5 px-4 bg-[#FAF7F2] border border-[#D5CDC2] hover:border-[#110D09] hover:bg-white text-[#110D09] text-xs font-serif font-bold tracking-wider transition-all duration-200"
                 >
                   <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
@@ -185,7 +185,7 @@ export default function AccountPage() {
 
                 <button
                   type="button"
-                  onClick={() => loginWithMicrosoft()}
+                  onClick={() => openAuthModal('signin')}
                   className="w-full flex items-center justify-center space-x-3 py-3.5 px-4 bg-[#FAF7F2] border border-[#D5CDC2] hover:border-[#110D09] hover:bg-white text-[#110D09] text-xs font-serif font-bold tracking-wider transition-all duration-200"
                 >
                   <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 23 23">
@@ -214,7 +214,7 @@ export default function AccountPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Aarav Sharma"
+                    placeholder="Enter your name"
                     value={nameInput}
                     onChange={(e) => setNameInput(e.target.value)}
                     className="w-full bg-[#FAF8F5] border border-[#D5CDC2] px-3.5 py-2.5 text-xs text-[#110D09] focus:outline-none focus:border-[#110D09]"
@@ -242,31 +242,6 @@ export default function AccountPage() {
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </form>
-
-              {/* Test Accounts Shortcut */}
-              <div className="pt-4 border-t border-[#E8DFD3] space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-semibold block text-center">
-                  ⚡ Test Running Accounts With Previous Orders
-                </span>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <button
-                    type="button"
-                    onClick={() => loginWithGoogle('aarav.sharma@example.com', 'Aarav Sharma')}
-                    className="p-3 bg-[#FAF8F5] border border-[#E8DFD3] hover:border-[#110D09] text-left transition-colors"
-                  >
-                    <span className="font-bold block text-[#110D09]">Aarav Sharma</span>
-                    <span className="text-[10px] text-[#8C6D42] font-mono">2 Orders Saved</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => loginWithMicrosoft('priya.sen@example.com', 'Priya Sen')}
-                    className="p-3 bg-[#FAF8F5] border border-[#E8DFD3] hover:border-[#110D09] text-left transition-colors"
-                  >
-                    <span className="font-bold block text-[#110D09]">Priya Sen</span>
-                    <span className="text-[10px] text-[#8C6D42] font-mono">1 Order Saved</span>
-                  </button>
-                </div>
-              </div>
             </div>
 
             {/* Right: Guest Order Lookup */}
@@ -279,7 +254,7 @@ export default function AccountPage() {
                   Lookup Guest Order
                 </h3>
                 <p className="text-xs text-[#110D09]/70 font-light">
-                  If you ordered without an account, enter your reference (e.g., VAL-DEMO-1001) to view status.
+                  If you ordered without an account, enter your reference (e.g., VAL-ORD-849201) to view status.
                 </p>
               </div>
 
@@ -756,7 +731,7 @@ export default function AccountPage() {
                   Lookup Order by Reference ID
                 </h3>
                 <p className="text-xs text-[#110D09]/70 font-light">
-                  Enter any VALCURA order reference (e.g. VAL-DEMO-1001 or VAL-ORD-XXXXXX).
+                  Enter your VALCURA order reference (e.g. VAL-ORD-849201).
                 </p>
               </div>
 

@@ -134,9 +134,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     fetchOrdersForEmail(profile.email);
   };
 
-  const loginWithGoogle = async (customEmail?: string, customName?: string): Promise<UserProfile> => {
-    const email = (customEmail || 'guest.client@valcura.com').trim().toLowerCase();
-    const fullName = customName || 'Valued Client';
+  const loginWithGoogle = async (googleEmail: string, googleName?: string): Promise<UserProfile> => {
+    if (!googleEmail || !googleEmail.includes('@')) {
+      throw new Error('Please enter a valid Google Account email.');
+    }
+    const cleanEmail = googleEmail.trim().toLowerCase();
+    const cleanName = googleName?.trim() || cleanEmail.split('@')[0];
 
     try {
       await fetch('/api/auth', {
@@ -144,8 +147,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'login',
-          email,
-          fullName,
+          email: cleanEmail,
+          fullName: cleanName,
           provider: 'google',
         }),
       });
@@ -155,10 +158,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const profile: UserProfile = {
       id: `usr_g_${Math.floor(100000 + Math.random() * 900000)}`,
-      email,
-      fullName,
+      email: cleanEmail,
+      fullName: cleanName,
       provider: 'google',
-      memberSince: 'November 2026',
+      memberSince: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
     };
 
     saveSession(profile);
@@ -166,9 +169,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return profile;
   };
 
-  const loginWithMicrosoft = async (customEmail?: string, customName?: string): Promise<UserProfile> => {
-    const email = (customEmail || 'guest.client@valcura.com').trim().toLowerCase();
-    const fullName = customName || 'Valued Client';
+  const loginWithMicrosoft = async (msEmail: string, msName?: string): Promise<UserProfile> => {
+    if (!msEmail || !msEmail.includes('@')) {
+      throw new Error('Please enter a valid Microsoft Account email.');
+    }
+    const cleanEmail = msEmail.trim().toLowerCase();
+    const cleanName = msName?.trim() || cleanEmail.split('@')[0];
 
     try {
       await fetch('/api/auth', {
@@ -176,8 +182,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'login',
-          email,
-          fullName,
+          email: cleanEmail,
+          fullName: cleanName,
           provider: 'microsoft',
         }),
       });
@@ -187,10 +193,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const profile: UserProfile = {
       id: `usr_ms_${Math.floor(100000 + Math.random() * 900000)}`,
-      email,
-      fullName,
+      email: cleanEmail,
+      fullName: cleanName,
       provider: 'microsoft',
-      memberSince: 'November 2026',
+      memberSince: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
     };
 
     saveSession(profile);
