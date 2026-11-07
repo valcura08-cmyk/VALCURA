@@ -29,6 +29,8 @@ module.exports = {
         serif: ["var(--font-cormorant)", "Cormorant Garamond", "Cinzel", "Playfair Display", "Georgia", "serif"],
         sans: ["var(--font-sans)", "Plus Jakarta Sans", "Inter", "sans-serif"],
         display: ["var(--font-cinzel)", "Cinzel", "Cormorant Garamond", "serif"],
+        condensed: ["Antonio", "Barlow Condensed", "Oswald", "sans-serif"],
+        handwriting: ["Caveat", "Playfair Display", "cursive"],
       },
       letterSpacing: {
         widest: ".25em",
