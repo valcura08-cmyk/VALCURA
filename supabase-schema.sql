@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS public.orders (
     history JSONB NOT NULL DEFAULT '[]'::jsonb
 );
 
--- Index for searching orders quickly
 CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON public.orders(customer_email);
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON public.orders(created_at DESC);
 
@@ -69,14 +68,28 @@ ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.contact_inquiries ENABLE ROW LEVEL SECURITY;
 
--- Allow server backend (Service Role) full control
+-- Service Role policies
+DROP POLICY IF EXISTS "Service Role full access on orders" ON public.orders;
 CREATE POLICY "Service Role full access on orders" ON public.orders FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Service Role full access on customers" ON public.customers;
 CREATE POLICY "Service Role full access on customers" ON public.customers FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Service Role full access on newsletter" ON public.newsletter_subscribers;
 CREATE POLICY "Service Role full access on newsletter" ON public.newsletter_subscribers FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Service Role full access on contact" ON public.contact_inquiries;
 CREATE POLICY "Service Role full access on contact" ON public.contact_inquiries FOR ALL USING (true);
 
--- Allow public frontend (anon key) to insert orders and contact inquiries safely
+-- Anon public policies
+DROP POLICY IF EXISTS "Anon insert orders" ON public.orders;
 CREATE POLICY "Anon insert orders" ON public.orders FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anon insert customers" ON public.customers;
 CREATE POLICY "Anon insert customers" ON public.customers FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anon insert newsletter" ON public.newsletter_subscribers;
 CREATE POLICY "Anon insert newsletter" ON public.newsletter_subscribers FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anon insert contact" ON public.contact_inquiries;
 CREATE POLICY "Anon insert contact" ON public.contact_inquiries FOR INSERT WITH CHECK (true);
