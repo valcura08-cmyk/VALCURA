@@ -17,6 +17,7 @@
   }
 
   html {
+    zoom: 0.92;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;

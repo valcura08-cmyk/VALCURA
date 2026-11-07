@@ -39,7 +39,7 @@ export default function HeroAnimatedLogo() {
   const isCtaVisible = stage >= 3;
 
   return (
-    <section className="relative flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center pt-6 sm:pt-8 pb-8 sm:pb-10 overflow-hidden bg-[#FBF3E5]">
+    <section className="relative flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center pt-5 sm:pt-6 pb-5 sm:pb-6 overflow-hidden bg-[#FBF3E5]">
       
       {/* Soft Vignette Gradients */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#FBF3E5]/40 via-transparent to-[#FBF3E5] pointer-events-none" />
@@ -62,11 +62,11 @@ export default function HeroAnimatedLogo() {
         {/* ============================================================ */}
         {/* HERO LOGO: ADJUSTED PROPORTIONED V EMBLEM + POP OUT VALCURA */}
         {/* ============================================================ */}
-        <div className="relative flex flex-col items-center justify-center w-full my-2 select-none">
+        <div className="relative flex flex-col items-center justify-center w-full my-1.5 select-none">
           
           {/* 1. TOP: THE ICONIC V EMBLEM (Refined Size) */}
           <div
-            className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 z-20 cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 z-20 cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               stage >= 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
             }`}
             onClick={handleReplay}
@@ -82,7 +82,7 @@ export default function HeroAnimatedLogo() {
           </div>
 
           {/* 2. BELOW THE LOGO: "VAL" and "CURA" POP OUT DOWNWARDS (Refined Height) */}
-          <div className="relative flex items-center justify-center h-8 sm:h-10 md:h-12 lg:h-14 w-full max-w-xs sm:max-w-sm md:max-w-md -mt-1 sm:-mt-2 z-10 overflow-visible">
+          <div className="relative flex items-center justify-center h-7 sm:h-9 md:h-10 lg:h-11 w-full max-w-xs sm:max-w-sm md:max-w-md -mt-1 sm:-mt-1.5 z-10 overflow-visible">
             
             {/* "VAL" POPS DOWN-LEFT */}
             <div
@@ -91,7 +91,7 @@ export default function HeroAnimatedLogo() {
                 aspectRatio: '330 / 152',
                 transform: isPoppedOut
                   ? 'translateY(0) translateX(0) scale(1)'
-                  : 'translateY(-35px) translateX(20px) scale(0.6)',
+                  : 'translateY(-30px) translateX(15px) scale(0.6)',
                 opacity: isPoppedOut ? 1 : 0,
                 filter: isPoppedOut ? 'blur(0px)' : 'blur(4px)',
               }}
@@ -112,7 +112,7 @@ export default function HeroAnimatedLogo() {
                 aspectRatio: '462 / 152',
                 transform: isPoppedOut
                   ? 'translateY(0) translateX(0) scale(1)'
-                  : 'translateY(-35px) translateX(-20px) scale(0.6)',
+                  : 'translateY(-30px) translateX(-15px) scale(0.6)',
                 opacity: isPoppedOut ? 1 : 0,
                 filter: isPoppedOut ? 'blur(0px)' : 'blur(4px)',
               }}
@@ -131,13 +131,13 @@ export default function HeroAnimatedLogo() {
 
         {/* Brand Tagline: "A scent for every side of you." */}
         <div
-          className={`mt-3 sm:mt-4 max-w-lg transition-all duration-1000 ease-out ${
+          className={`mt-2.5 sm:mt-3 max-w-lg transition-all duration-1000 ease-out ${
             isTaglineVisible
               ? 'opacity-100 translate-y-0 filter-none'
               : 'opacity-0 translate-y-3 blur-sm'
           }`}
         >
-          <p className="text-base sm:text-lg md:text-xl font-serif text-[#18120E] tracking-wider italic font-light">
+          <p className="text-sm sm:text-base md:text-lg font-serif text-[#18120E] tracking-wider italic font-light">
             A scent for every side of you.
           </p>
         </div>

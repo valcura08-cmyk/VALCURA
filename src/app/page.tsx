@@ -42,7 +42,7 @@ export default function HomePage() {
             href="/moods"
             className="group bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#110D09] rounded-2xl transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md hover:-translate-y-0.5"
           >
-            <div className="relative aspect-[4/5] bg-[#F4ECE1] overflow-hidden">
+            <div className="relative aspect-[16/10] sm:aspect-[4/3] bg-[#F4ECE1] overflow-hidden">
               <Image
                 src="/editorial/explore-by-moods-banner.jpg"
                 alt="Explore By Moods - VALCURA"
@@ -84,7 +84,7 @@ export default function HomePage() {
             href="/shop"
             className="group bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#110D09] rounded-2xl transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md hover:-translate-y-0.5"
           >
-            <div className="relative aspect-[4/5] bg-[#F4ECE1] overflow-hidden">
+            <div className="relative aspect-[16/10] sm:aspect-[4/3] bg-[#F4ECE1] overflow-hidden">
               <Image
                 src="/editorial/explore-by-scents-banner.jpg"
                 alt="Explore By Scents - VALCURA"
@@ -125,7 +125,7 @@ export default function HomePage() {
             href="/collections"
             className="group bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#110D09] rounded-2xl transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md hover:-translate-y-0.5"
           >
-            <div className="relative aspect-[4/5] bg-[#F4ECE1] overflow-hidden">
+            <div className="relative aspect-[16/10] sm:aspect-[4/3] bg-[#F4ECE1] overflow-hidden">
               <Image
                 src="/editorial/explore-all-collections-banner.jpg"
                 alt="Explore All Collections - VALCURA"
