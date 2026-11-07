@@ -421,7 +421,7 @@ export default function CacaoCitrineProductPage() {
                   The Notes
                 </h3>
                 <p className={`text-[11px] font-light leading-snug line-clamp-1 mt-0.5 ${openSection === 'notes' ? 'text-[#FAF7F2]/80' : 'text-[#554D45]'}`}>
-                  Sunlit Citrus & Roasted Cacao
+                  Citrus, Hazelnut &amp; Vanilla, Rose
                 </p>
               </div>
             </button>
@@ -598,76 +598,83 @@ export default function CacaoCitrineProductPage() {
               {/* -------------------------------------------------------- */}
               {openSection === 'notes' && (
                 <div className="space-y-6 animate-fadeIn">
-                  <div className="max-w-2xl">
-                    <p className="text-sm sm:text-base font-serif italic text-[#110D09]/85 font-light leading-relaxed">
-                      A deliberate harmony of bright Calabrian sunlight and rich artisanal cocoa warmth. Three pure tiers engineered for dynamic skin evolution.
-                    </p>
-                  </div>
-
-                  {/* ONLY THREE LINES: Top Note, Heart Note, Base Note */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* 3 LINES IN POINTER STYLE WITH INGREDIENT IMAGES */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                     {/* Top Note */}
-                    <div className="bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#8C6D42] rounded-2xl p-5 space-y-3 transition-colors shadow-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C6D42] px-2.5 py-1 bg-white rounded-md border border-[#E8DFD3]">
+                    <div className="group bg-white rounded-2xl border border-[#E8DFD3] p-4 sm:p-5 shadow-xs hover:border-[#110D09] hover:shadow-md transition-all duration-300 flex flex-col space-y-3.5">
+                      <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-[#FAF7F2]">
+                        <Image
+                          src="/notes/citrus-note.jpg"
+                          alt="Citrus Top Note"
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                      <div className="flex items-center space-x-2.5 font-sans pt-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#110D09] group-hover:bg-[#8C6D42] transition-colors shrink-0" />
+                        <span className="px-2.5 py-1 rounded-md bg-[#110D09] text-white text-[11px] font-bold uppercase tracking-wider">
                           Top Note
                         </span>
-                        <span className="text-[10px] font-mono text-[#554D45]">00 – 30 Min</span>
+                        <span className="text-base font-bold text-[#8C6D42]">=</span>
+                        <span className="text-sm font-semibold uppercase tracking-wide text-[#110D09]">
+                          Citrus
+                        </span>
                       </div>
-                      <h4 className="text-lg sm:text-xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                        Sun-Drenched Bergamot & Mandarin Peel
-                      </h4>
-                      <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-                        Sparkling solar zest opening like Mediterranean dawn. Fresh, clean, and immediately uplifting.
-                      </p>
                     </div>
 
                     {/* Heart Note */}
-                    <div className="bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#8C6D42] rounded-2xl p-5 space-y-3 transition-colors shadow-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C6D42] px-2.5 py-1 bg-white rounded-md border border-[#E8DFD3]">
+                    <div className="group bg-white rounded-2xl border border-[#E8DFD3] p-4 sm:p-5 shadow-xs hover:border-[#110D09] hover:shadow-md transition-all duration-300 flex flex-col space-y-3.5">
+                      <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-[#FAF7F2]">
+                        <Image
+                          src="/notes/hazelnut-vanilla-note.jpg"
+                          alt="Creamy Hazelnut and Vanilla Heart Note"
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                      <div className="flex items-center space-x-2.5 font-sans pt-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#110D09] group-hover:bg-[#8C6D42] transition-colors shrink-0" />
+                        <span className="px-2.5 py-1 rounded-md bg-[#110D09] text-white text-[11px] font-bold uppercase tracking-wider">
                           Heart Note
                         </span>
-                        <span className="text-[10px] font-mono text-[#554D45]">30 Min – 04 Hrs</span>
+                        <span className="text-base font-bold text-[#8C6D42]">=</span>
+                        <span className="text-sm font-semibold uppercase tracking-wide text-[#110D09]">
+                          Creamy Hazel Nut &amp; Vanilla
+                        </span>
                       </div>
-                      <h4 className="text-lg sm:text-xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                        Roasted Hazelnut Cream & Cocoa Butter
-                      </h4>
-                      <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-                        A tactile, velvety praline core melting into smooth cocoa butter with comforting second-skin indulgence.
-                      </p>
                     </div>
 
                     {/* Base Note */}
-                    <div className="bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#8C6D42] rounded-2xl p-5 space-y-3 transition-colors shadow-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C6D42] px-2.5 py-1 bg-white rounded-md border border-[#E8DFD3]">
+                    <div className="group bg-white rounded-2xl border border-[#E8DFD3] p-4 sm:p-5 shadow-xs hover:border-[#110D09] hover:shadow-md transition-all duration-300 flex flex-col space-y-3.5">
+                      <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-[#FAF7F2]">
+                        <Image
+                          src="/notes/rose-fresh-note.jpg"
+                          alt="Rose plus Fresh Base Note"
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                      <div className="flex items-center space-x-2.5 font-sans pt-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#110D09] group-hover:bg-[#8C6D42] transition-colors shrink-0" />
+                        <span className="px-2.5 py-1 rounded-md bg-[#110D09] text-white text-[11px] font-bold uppercase tracking-wider">
                           Base Note
                         </span>
-                        <span className="text-[10px] font-mono text-[#554D45]">04 – 12+ Hrs</span>
+                        <span className="text-base font-bold text-[#8C6D42]">=</span>
+                        <span className="text-sm font-semibold uppercase tracking-wide text-[#110D09]">
+                          Rose + Fresh
+                        </span>
                       </div>
-                      <h4 className="text-lg sm:text-xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                        Pure Roasted Cacao & Cashmere Musks
-                      </h4>
-                      <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-                        Slow-roasted volcanic beans bound with cashmere musks for an intoxicating, enduring trail.
-                      </p>
                     </div>
                   </div>
 
-                  {/* ONLY ONE SIGNATURE LINE (Exact quote formatted with high luxury) */}
-                  <div className="p-4 sm:p-5 bg-gradient-to-r from-[#110D09] via-[#1C1612] to-[#2B1E17] text-[#FAF7F2] rounded-2xl shadow-md border border-[#C5A880]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="space-y-1">
-                      <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#C5A880] font-bold block">
-                        Signature Olfactory Synthesis
-                      </span>
-                      <p className="text-base sm:text-lg font-serif italic font-medium tracking-wide text-white">
-                        &ldquo;Mixture of chocolate and citrus gives you fresh creamy smell.&rdquo;
-                      </p>
-                    </div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest px-3 py-1 bg-white/10 text-[#C5A880] border border-[#C5A880]/40 rounded-full font-bold whitespace-nowrap self-start sm:self-center">
-                      VALCURA Atelier
-                    </span>
+                  {/* ONLY ONE SIGNATURE LINE */}
+                  <div className="p-4 sm:p-5 bg-[#110D09] text-white rounded-2xl shadow-sm text-center">
+                    <p className="text-sm sm:text-base font-sans font-medium tracking-wide text-[#FAF7F2]">
+                      &ldquo;Mixture of chocolate and citrus gives you fresh creamy smell.&rdquo;
+                    </p>
                   </div>
                 </div>
               )}
