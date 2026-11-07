@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, saveDb, Order, OrderItem, calculatePreorderPricing } from '@/lib/db';
+import { syncOrderToCloud } from '@/lib/cloudDb';
 
 export async function POST(req: NextRequest) {
   try {
@@ -107,6 +108,9 @@ export async function POST(req: NextRequest) {
 
     db.orders.unshift(newOrder);
     saveDb(db);
+
+    // Persist order and customer details to Cloud Database (Supabase)
+    await syncOrderToCloud(newOrder);
 
     return NextResponse.json({
       success: true,

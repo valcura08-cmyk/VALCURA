@@ -5,11 +5,33 @@ import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
 
 export default function ContactUsPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSubmitted(true);
+        setForm({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setErrorMsg(data.error || 'Failed to submit message. Please try again.');
+      }
+    } catch (err) {
+      setErrorMsg('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -150,11 +172,18 @@ export default function ContactUsPage() {
                     </div>
                   </div>
 
+                  {errorMsg && (
+                    <div className="bg-red-50 border border-red-300 p-3 text-xs text-red-700">
+                      {errorMsg}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full btn-luxury-primary py-3.5 text-xs tracking-luxury uppercase flex items-center justify-center space-x-2"
+                    disabled={loading}
+                    className="w-full btn-luxury-primary py-3.5 text-xs tracking-luxury uppercase flex items-center justify-center space-x-2 disabled:opacity-50"
                   >
-                    <span>Transmit Message</span>
+                    <span>{loading ? 'Transmitting...' : 'Transmit Message'}</span>
                     <Send className="w-3.5 h-3.5" />
                   </button>
                 </form>

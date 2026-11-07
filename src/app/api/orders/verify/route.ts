@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, saveDb } from '@/lib/db';
+import { syncOrderToCloud, updateOrderInCloud } from '@/lib/cloudDb';
 
 export async function POST(req: NextRequest) {
   try {
@@ -48,6 +49,9 @@ export async function POST(req: NextRequest) {
 
     db.orders[orderIndex] = order;
     saveDb(db);
+
+    // Sync verified state to Cloud Database
+    await syncOrderToCloud(order);
 
     return NextResponse.json({
       success: true,

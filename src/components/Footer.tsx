@@ -6,6 +6,37 @@ import Image from 'next/image';
 import { ArrowRight, Instagram, Mail, ShieldCheck } from 'lucide-react';
 
 export default function Footer() {
+  const [newsletterEmail, setNewsletterEmail] = React.useState('');
+  const [newsletterStatus, setNewsletterStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsletterMessage, setNewsletterMessage] = React.useState('');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail || !newsletterEmail.includes('@')) return;
+    setNewsletterStatus('loading');
+    setNewsletterMessage('');
+
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail, source: 'footer' }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setNewsletterStatus('success');
+        setNewsletterMessage('Thank you for subscribing to the VALCURA private journal.');
+        setNewsletterEmail('');
+      } else {
+        setNewsletterStatus('error');
+        setNewsletterMessage(data.error || 'Subscription failed. Please try again.');
+      }
+    } catch (err) {
+      setNewsletterStatus('error');
+      setNewsletterMessage('Network error. Please try again.');
+    }
+  };
+
   return (
     <footer className="bg-[#F5EFE6] text-[#18120E] border-t border-[#E8DFD3] pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,26 +79,31 @@ export default function Footer() {
                 Be the first to know about private reserve drops, upcoming fragrance debuts, and olfactory journals.
               </p>
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert('Thank you for subscribing to the VALCURA private journal.');
-                }}
+                onSubmit={handleNewsletterSubmit}
                 className="flex flex-col sm:flex-row gap-2"
               >
                 <input
                   type="email"
                   required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="Enter your email address"
                   className="bg-[#F5EFE6] border border-[#D5CDC2] px-4 py-3 text-xs text-[#18120E] tracking-wide focus:outline-none focus:border-[#18120E] flex-1 placeholder:text-[#18120E]/40"
                 />
                 <button
                   type="submit"
-                  className="btn-luxury-primary px-6 py-3 text-xs font-semibold flex items-center justify-center space-x-2"
+                  disabled={newsletterStatus === 'loading'}
+                  className="btn-luxury-primary px-6 py-3 text-xs font-semibold flex items-center justify-center space-x-2 disabled:opacity-50"
                 >
-                  <span>Subscribe</span>
+                  <span>{newsletterStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </form>
+              {newsletterMessage && (
+                <p className={`text-[11px] mt-2.5 font-light ${newsletterStatus === 'success' ? 'text-emerald-800 font-medium' : 'text-red-700'}`}>
+                  {newsletterMessage}
+                </p>
+              )}
             </div>
           </div>
         </div>
