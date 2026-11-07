@@ -156,6 +156,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Failed to register Google login to server', e);
     }
 
+    // Remember in device Google accounts list
+    try {
+      const saved = JSON.parse(localStorage.getItem('valcura_saved_google_accounts') || '[]');
+      const filtered = saved.filter((a: any) => a.email?.toLowerCase() !== cleanEmail);
+      filtered.unshift({
+        email: cleanEmail,
+        name: cleanName,
+        lastUsed: new Date().toISOString(),
+      });
+      localStorage.setItem('valcura_saved_google_accounts', JSON.stringify(filtered.slice(0, 5)));
+    } catch (e) {
+      // Ignore localStorage error
+    }
+
     const profile: UserProfile = {
       id: `usr_g_${Math.floor(100000 + Math.random() * 900000)}`,
       email: cleanEmail,
@@ -189,6 +203,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
     } catch (e) {
       console.error('Failed to register Microsoft login to server', e);
+    }
+
+    // Remember in device Microsoft accounts list
+    try {
+      const saved = JSON.parse(localStorage.getItem('valcura_saved_microsoft_accounts') || '[]');
+      const filtered = saved.filter((a: any) => a.email?.toLowerCase() !== cleanEmail);
+      filtered.unshift({
+        email: cleanEmail,
+        name: cleanName,
+        lastUsed: new Date().toISOString(),
+      });
+      localStorage.setItem('valcura_saved_microsoft_accounts', JSON.stringify(filtered.slice(0, 5)));
+    } catch (e) {
+      // Ignore localStorage error
     }
 
     const profile: UserProfile = {

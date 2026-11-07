@@ -72,24 +72,18 @@ export default function HomeRotatingBanner() {
                 isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
-              {/* Ambient matching blurred background */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <Image
-                  src={slide.image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 100vw, 1152px"
-                  className="object-cover blur-2xl opacity-35 scale-110"
-                  aria-hidden
-                  priority
-                />
-                <div className="absolute inset-0 bg-black/20" />
-              </div>
+              {/* Ambient matching glow */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-40"
+                style={{
+                  background: `radial-gradient(circle at center, ${slide.bgColor} 0%, rgba(0,0,0,0.4) 100%)`,
+                }}
+              />
 
               {/* Clickable Full-Size Slide Link */}
               <Link
                 href={slide.link}
-                className="absolute inset-0 block w-full h-full cursor-pointer flex items-center justify-center p-2 sm:p-4"
+                className="absolute inset-0 block w-full h-full cursor-pointer flex items-center justify-center p-2 sm:p-4 z-10"
                 aria-label={slide.title}
               >
                 <div className="relative w-full h-full flex items-center justify-center">
@@ -99,7 +93,7 @@ export default function HomeRotatingBanner() {
                     fill
                     sizes="(max-width: 768px) 100vw, 1152px"
                     className="object-contain object-center drop-shadow-lg"
-                    priority
+                    priority={idx === 0}
                   />
                 </div>
               </Link>

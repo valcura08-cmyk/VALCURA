@@ -276,7 +276,7 @@ export default function CheckoutPage() {
                       type="text"
                       name="fullName"
                       required
-                      placeholder="e.g. Reyansh Singhania"
+                      placeholder="Enter your full name"
                       value={formData.fullName}
                       onChange={handleInputChange}
                       className="w-full bg-[#FAF8F5] border border-[#D5CDC2] px-3.5 py-2.5 text-[#110D09] focus:outline-none focus:border-[#110D09] focus:bg-white"
@@ -291,7 +291,7 @@ export default function CheckoutPage() {
                       type="email"
                       name="email"
                       required
-                      placeholder="e.g. reyansh@example.com"
+                      placeholder="your.email@domain.com"
                       value={formData.email}
                       onChange={handleInputChange}
                       className="w-full bg-[#FAF8F5] border border-[#D5CDC2] px-3.5 py-2.5 text-[#110D09] focus:outline-none focus:border-[#110D09] focus:bg-white"

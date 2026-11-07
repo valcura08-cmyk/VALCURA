@@ -227,7 +227,7 @@ export default function AccountPage() {
                   <input
                     type="email"
                     required
-                    placeholder="name@example.com"
+                    placeholder="your.email@domain.com"
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     className="w-full bg-[#FAF8F5] border border-[#D5CDC2] px-3.5 py-2.5 text-xs text-[#110D09] focus:outline-none focus:border-[#110D09]"

@@ -70,7 +70,9 @@ export default function CacaoCollectionPage() {
                       src={product.images[0]}
                       alt={product.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      priority
                     />
                     <div className="absolute top-3 left-3">
                       <span className="text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 bg-[#110D09] text-[#FAF7F2] font-bold rounded-full shadow-md">
@@ -130,6 +132,7 @@ export default function CacaoCollectionPage() {
                     src={product.images[0]}
                     alt={product.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
                     className="object-cover opacity-90"
                   />
                   <div className="absolute top-3 left-3">

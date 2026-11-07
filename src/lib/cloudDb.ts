@@ -257,3 +257,125 @@ export async function getCustomersFromCloud(): Promise<any[]> {
     return [];
   }
 }
+
+/**
+ * Helper to convert Supabase row to Order
+ */
+function mapCloudRowToOrder(r: any): Order {
+  return {
+    id: r.id,
+    createdAt: r.created_at,
+    customer: {
+      fullName: r.customer_name || '',
+      email: r.customer_email || '',
+      phone: r.customer_phone || '',
+      address: r.customer_address || '',
+      city: '',
+      state: '',
+      pincode: '',
+    },
+    plan: r.plan,
+    items: Array.isArray(r.items) ? r.items : [],
+    totalQuantity: r.total_quantity || 0,
+    amountPaidToday: r.amount_paid_today || 0,
+    remainingBalance: r.remaining_balance || 0,
+    totalOrderValue: r.total_order_value || 0,
+    paymentStatus: r.payment_status || '',
+    orderStatus: r.order_status || '',
+    paymentMethod: r.payment_method || '',
+    paymentTransactionId: r.payment_transaction_id || '',
+    availabilityNotified: false,
+    history: Array.isArray(r.history) ? r.history : [],
+  };
+}
+
+/**
+ * Fetch all orders from Supabase (for Admin Dashboard)
+ */
+export async function getOrdersFromCloud(): Promise<Order[]> {
+  const config = getSupabaseConfig();
+  if (!config) return [];
+
+  try {
+    const res = await fetch(`${config.url}/rest/v1/orders?select=*&order=created_at.desc`, {
+      headers: {
+        apikey: config.key,
+        Authorization: `Bearer ${config.key}`,
+      },
+    });
+
+    if (res.ok) {
+      const rows = await res.json();
+      if (Array.isArray(rows)) {
+        return rows.map(mapCloudRowToOrder);
+      }
+    }
+    return [];
+  } catch (err) {
+    console.error('Failed to fetch orders from cloud:', err);
+    return [];
+  }
+}
+
+/**
+ * Fetch a single order by ID from Supabase
+ */
+export async function getOrderFromCloud(orderId: string): Promise<Order | null> {
+  const config = getSupabaseConfig();
+  if (!config) return null;
+
+  try {
+    const res = await fetch(
+      `${config.url}/rest/v1/orders?id=eq.${encodeURIComponent(orderId)}&select=*`,
+      {
+        headers: {
+          apikey: config.key,
+          Authorization: `Bearer ${config.key}`,
+        },
+      }
+    );
+
+    if (res.ok) {
+      const rows = await res.json();
+      if (Array.isArray(rows) && rows.length > 0) {
+        return mapCloudRowToOrder(rows[0]);
+      }
+    }
+    return null;
+  } catch (err) {
+    console.error('Failed to fetch order by ID from cloud:', err);
+    return null;
+  }
+}
+
+/**
+ * Fetch all orders for a specific user email from Supabase
+ */
+export async function getUserOrdersFromCloud(email: string): Promise<Order[]> {
+  const config = getSupabaseConfig();
+  if (!config) return [];
+
+  try {
+    const cleanEmail = email.toLowerCase().trim();
+    const res = await fetch(
+      `${config.url}/rest/v1/orders?customer_email=eq.${encodeURIComponent(cleanEmail)}&select=*&order=created_at.desc`,
+      {
+        headers: {
+          apikey: config.key,
+          Authorization: `Bearer ${config.key}`,
+        },
+      }
+    );
+
+    if (res.ok) {
+      const rows = await res.json();
+      if (Array.isArray(rows)) {
+        return rows.map(mapCloudRowToOrder);
+      }
+    }
+    return [];
+  } catch (err) {
+    console.error('Failed to fetch user orders from cloud:', err);
+    return [];
+  }
+}

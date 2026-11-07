@@ -57,7 +57,9 @@ export default function ShopAllFragrancesPage() {
                       src={product.images[0]}
                       alt={product.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      priority
                     />
                     <div className="absolute top-3 left-3">
                       <span className="text-[10px] tracking-luxury uppercase px-2.5 py-1 bg-[#110D09] text-white font-bold">
@@ -117,6 +119,7 @@ export default function ShopAllFragrancesPage() {
                     src={product.images[0]}
                     alt={product.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
                     className="object-cover opacity-90"
                   />
                   <div className="absolute top-3 left-3">

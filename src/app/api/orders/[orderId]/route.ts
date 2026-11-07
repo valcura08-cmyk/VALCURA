@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
+import { getOrderFromCloud } from '@/lib/cloudDb';
 
 export async function GET(
   req: NextRequest,
@@ -7,7 +8,11 @@ export async function GET(
 ) {
   try {
     const db = getDb();
-    const order = db.orders.find((o) => o.id === params.orderId);
+    let order = db.orders.find((o) => o.id === params.orderId);
+
+    if (!order) {
+      order = (await getOrderFromCloud(params.orderId)) || undefined;
+    }
 
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });

@@ -1,28 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
-import { getCustomersFromCloud } from '@/lib/cloudDb';
+import { getDb, Order } from '@/lib/db';
+import { getCustomersFromCloud, getOrdersFromCloud } from '@/lib/cloudDb';
 
 export async function GET() {
   try {
     const db = getDb();
 
-    // 1. Order metrics
-    const totalOrders = db.orders.length;
-    const fullyPaidOrders = db.orders.filter(
+    // 1. Fetch Cloud Orders from Supabase and merge with local store
+    let cloudOrders: Order[] = [];
+    try {
+      cloudOrders = await getOrdersFromCloud();
+    } catch (e) {
+      // Gracefully continue
+    }
+
+    const orderMap = new Map<string, Order>();
+    [...cloudOrders, ...db.orders].forEach((ord) => {
+      if (ord && ord.id) {
+        orderMap.set(ord.id, ord);
+      }
+    });
+
+    const allOrders = Array.from(orderMap.values());
+    allOrders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    // 2. Order metrics
+    const totalOrders = allOrders.length;
+    const fullyPaidOrders = allOrders.filter(
       (o) =>
         o.paymentStatus === 'Fully Paid' ||
         o.orderStatus === 'Fully Paid' ||
         o.orderStatus === 'Ready for Fulfilment'
     );
-    const partiallyPaidOrders = db.orders.filter(
+    const partiallyPaidOrders = allOrders.filter(
       (o) => o.paymentStatus === 'Deposit Paid' || o.orderStatus.includes('Deposit Paid')
     );
 
-    const totalRevenueCollected = db.orders.reduce((acc, o) => acc + (o.amountPaidToday || 0), 0);
-    const totalPendingBalances = db.orders.reduce((acc, o) => acc + (o.remainingBalance || 0), 0);
-    const totalBottlesReserved = db.orders.reduce((acc, o) => acc + (o.totalQuantity || 0), 0);
+    const totalRevenueCollected = allOrders.reduce((acc, o) => acc + (o.amountPaidToday || 0), 0);
+    const totalPendingBalances = allOrders.reduce((acc, o) => acc + (o.remainingBalance || 0), 0);
+    const totalBottlesReserved = allOrders.reduce((acc, o) => acc + (o.totalQuantity || 0), 0);
 
-    // 2. Aggregate Customers from Cloud (Supabase) + Local store.json + Order history
+    // 3. Aggregate Customers from Cloud (Supabase) + Local store.json + Order history
     const customerMap = new Map<string, any>();
 
     // From local registeredUsers
@@ -45,7 +63,7 @@ export async function GET() {
     });
 
     // From Order records
-    db.orders.forEach((o) => {
+    allOrders.forEach((o) => {
       if (o.customer && o.customer.email) {
         const cleanEmail = o.customer.email.toLowerCase().trim();
         const existing = customerMap.get(cleanEmail) || {};
@@ -86,7 +104,7 @@ export async function GET() {
 
     // Compute order counts and spend for each customer
     const customers = Array.from(customerMap.values()).map((cust) => {
-      const customerOrders = db.orders.filter(
+      const customerOrders = allOrders.filter(
         (o) => o.customer?.email?.toLowerCase().trim() === cust.email
       );
       const ordersCount = customerOrders.length;
@@ -109,7 +127,7 @@ export async function GET() {
 
     return NextResponse.json({
       products: db.products,
-      orders: db.orders,
+      orders: allOrders,
       customers,
       stats: {
         totalOrders,

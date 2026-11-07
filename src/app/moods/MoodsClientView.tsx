@@ -73,6 +73,7 @@ export default function MoodsClientView({ moods }: Props) {
                     src={mood.image}
                     alt={mood.title}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 240px"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-3 left-3">

@@ -201,6 +201,7 @@ export default function CacaoCitrineProductPage() {
                       src={img.src}
                       alt={`Thumbnail 0${idx + 1}`}
                       fill
+                      sizes="80px"
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <span className="absolute bottom-1 right-1 bg-black/75 text-white font-mono text-[8px] sm:text-[9px] px-1 py-0.5 rounded-sm">
@@ -216,6 +217,7 @@ export default function CacaoCitrineProductPage() {
                   src={images[activeImageIndex].src}
                   alt={`VALCURA Cacao Citrine - ${images[activeImageIndex].caption}`}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 560px"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   priority
                 />
