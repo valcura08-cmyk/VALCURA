@@ -62,6 +62,9 @@ export interface Customer {
   email: string;
   phone: string;
   address: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  landmark?: string;
   city: string;
   state: string;
   pincode: string;
@@ -141,49 +144,20 @@ export function saveDb(data: StoreData): void {
   }
 }
 
-// Pricing calculation helper function
-export function calculatePreorderPricing(quantity: number, plan: PaymentPlanMode) {
+// Pricing calculation helper function - flat ₹399 for pre-order
+export function calculatePreorderPricing(quantity: number, plan?: PaymentPlanMode) {
   const qty = Math.max(1, quantity);
   const standardUnitPrice = 599;
+  const unitPrice = 399; // Flat ₹399 pre-order privilege price
 
-  if (plan === 'preorder_full') {
-    const unitPrice = 399;
-    return {
-      standardTotal: standardUnitPrice * qty,
-      payableToday: unitPrice * qty,
-      remainingBalance: 0,
-      totalPlanPrice: unitPrice * qty,
-      unitPayableToday: unitPrice,
-      unitRemaining: 0,
-      unitTotal: unitPrice,
-      savings: (standardUnitPrice - unitPrice) * qty,
-    };
-  } else if (plan === 'deposit' || plan === 'preorder_deposit') {
-    const totalUnit = 449;
-    const unitDeposit = 314; // 70% of 449
-    const unitBalance = 135; // 30% of 449
-    return {
-      standardTotal: standardUnitPrice * qty,
-      payableToday: unitDeposit * qty,
-      remainingBalance: unitBalance * qty,
-      totalPlanPrice: totalUnit * qty,
-      unitPayableToday: unitDeposit,
-      unitRemaining: unitBalance,
-      unitTotal: totalUnit,
-      savings: (standardUnitPrice - totalUnit) * qty,
-    };
-  } else {
-    // standard_full or legacy 'full'
-    const unitPrice = 499;
-    return {
-      standardTotal: standardUnitPrice * qty,
-      payableToday: unitPrice * qty,
-      remainingBalance: 0,
-      totalPlanPrice: unitPrice * qty,
-      unitPayableToday: unitPrice,
-      unitRemaining: 0,
-      unitTotal: unitPrice,
-      savings: (standardUnitPrice - unitPrice) * qty,
-    };
-  }
+  return {
+    standardTotal: standardUnitPrice * qty,
+    payableToday: unitPrice * qty,
+    remainingBalance: 0,
+    totalPlanPrice: unitPrice * qty,
+    unitPayableToday: unitPrice,
+    unitRemaining: 0,
+    unitTotal: unitPrice,
+    savings: (standardUnitPrice - unitPrice) * qty,
+  };
 }

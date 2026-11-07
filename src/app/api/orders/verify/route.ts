@@ -23,29 +23,16 @@ export async function POST(req: NextRequest) {
     const txnId = paymentTransactionId || `txn_val_${Math.random().toString(36).substring(2, 10)}`;
     const method = paymentMethod || 'UPI (Indian Gateway Verified)';
 
-    if (order.plan === 'full') {
-      // Full payment workflow
-      order.paymentStatus = 'Fully Paid';
-      order.orderStatus = 'Fully Paid';
-      order.paymentMethod = method;
-      order.paymentTransactionId = txnId;
-      order.history.push({
-        status: 'Fully Paid',
-        timestamp: new Date().toISOString(),
-        note: `Full payment of ₹${order.amountPaidToday} verified. Reservation confirmed. Customer notified.`,
-      });
-    } else {
-      // 70% Reservation deposit workflow
-      order.paymentStatus = 'Deposit Paid';
-      order.orderStatus = 'Deposit Paid — Awaiting Availability';
-      order.paymentMethod = method;
-      order.paymentTransactionId = txnId;
-      order.history.push({
-        status: 'Deposit Paid — Awaiting Availability',
-        timestamp: new Date().toISOString(),
-        note: `70% deposit payment of ₹${order.amountPaidToday} verified. Outstanding balance: ₹${order.remainingBalance}. Order confirmation sent.`,
-      });
-    }
+    order.paymentStatus = 'Fully Paid';
+    order.orderStatus = 'Ready for Fulfilment';
+    order.remainingBalance = 0;
+    order.paymentMethod = method;
+    order.paymentTransactionId = txnId;
+    order.history.push({
+      status: 'Fully Paid',
+      timestamp: new Date().toISOString(),
+      note: `Pre-order payment of ₹${order.amountPaidToday} fully verified via ${method} (Ref / UTR: ${txnId}). Allocation secured. Order confirmation dispatched.`,
+    });
 
     db.orders[orderIndex] = order;
     saveDb(db);

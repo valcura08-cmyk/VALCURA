@@ -73,6 +73,14 @@ export async function POST(req: NextRequest) {
 
     const orderId = `VAL-ORD-${Math.floor(100000 + Math.random() * 900000)}`;
 
+    const fullAddress = [
+      customer.addressLine1 || customer.address || '',
+      customer.addressLine2 || '',
+      customer.landmark ? `(Landmark: ${customer.landmark})` : '',
+    ]
+      .filter(Boolean)
+      .join(', ');
+
     // Prepare new Order record in Pending state
     const newOrder: Order = {
       id: orderId,
@@ -81,17 +89,20 @@ export async function POST(req: NextRequest) {
         fullName: customer.fullName.trim(),
         email: customer.email.trim(),
         phone: customer.phone.trim(),
-        address: customer.address.trim(),
+        address: fullAddress,
+        addressLine1: (customer.addressLine1 || customer.address || '').trim(),
+        addressLine2: (customer.addressLine2 || '').trim(),
+        landmark: (customer.landmark || '').trim(),
         city: customer.city?.trim() || '',
         state: customer.state?.trim() || '',
         pincode: customer.pincode?.trim() || '',
       },
       items: orderItems,
-      plan: overallPlan,
+      plan: 'preorder_full',
       totalQuantity: totalQty,
       amountPaidToday: overallPaidToday,
-      remainingBalance: overallRemainingBalance,
-      totalOrderValue: overallTotalValue,
+      remainingBalance: 0,
+      totalOrderValue: overallPaidToday,
       paymentStatus: 'Payment Pending',
       orderStatus: 'Payment Pending',
       paymentMethod: 'UPI / Cards (Indian Gateway)',

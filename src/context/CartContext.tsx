@@ -99,7 +99,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       | 'balanceUnitPrice'
       | 'reserveTotalUnitPrice'
     >,
-    paymentPlan: CartPaymentPlan = 'standard_full'
+    paymentPlan: CartPaymentPlan = 'preorder_full'
   ) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.productId === item.productId);
@@ -109,7 +109,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             ? {
                 ...i,
                 quantity: i.quantity + item.quantity,
-                paymentPlan: paymentPlan,
+                paymentPlan: 'preorder_full',
               }
             : i
         );
@@ -118,12 +118,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         ...prev,
         {
           ...item,
-          paymentPlan,
+          paymentPlan: 'preorder_full',
           standardUnitPrice: STANDARD_PRICE,
-          fullUnitPrice: FULL_PRICE,
-          depositUnitPrice: DEPOSIT_TODAY,
-          balanceUnitPrice: BALANCE_REMAINING,
-          reserveTotalUnitPrice: RESERVE_TOTAL,
+          fullUnitPrice: PREORDER_FULL_PRICE,
+          depositUnitPrice: PREORDER_FULL_PRICE,
+          balanceUnitPrice: 0,
+          reserveTotalUnitPrice: PREORDER_FULL_PRICE,
         },
       ];
     });
@@ -160,41 +160,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems([]);
   };
 
-  // Calculations
+  // Calculations - Flat ₹399 Pre-Order Rate
   const totalQuantity = items.reduce((acc, i) => acc + i.quantity, 0);
 
-  const subtotalPayableToday = items.reduce((acc, i) => {
-    let unitPay = FULL_PRICE;
-    if (i.paymentPlan === 'preorder_full') {
-      unitPay = PREORDER_FULL_PRICE;
-    } else if (i.paymentPlan === 'deposit' || i.paymentPlan === 'preorder_deposit') {
-      unitPay = DEPOSIT_TODAY;
-    } else {
-      unitPay = FULL_PRICE;
-    }
-    return acc + unitPay * i.quantity;
-  }, 0);
-
-  const totalRemainingBalance = items.reduce((acc, i) => {
-    const unitBalance =
-      i.paymentPlan === 'deposit' || i.paymentPlan === 'preorder_deposit'
-        ? BALANCE_REMAINING
-        : 0;
-    return acc + unitBalance * i.quantity;
-  }, 0);
-
-  const totalOrderPlanValue = items.reduce((acc, i) => {
-    let unitTotal = FULL_PRICE;
-    if (i.paymentPlan === 'preorder_full') {
-      unitTotal = PREORDER_FULL_PRICE;
-    } else if (i.paymentPlan === 'deposit' || i.paymentPlan === 'preorder_deposit') {
-      unitTotal = RESERVE_TOTAL;
-    } else {
-      unitTotal = FULL_PRICE;
-    }
-    return acc + unitTotal * i.quantity;
-  }, 0);
-
+  const subtotalPayableToday = totalQuantity * PREORDER_FULL_PRICE; // ₹399 per flacon
+  const totalRemainingBalance = 0; // Flat ₹399, no remaining balance
+  const totalOrderPlanValue = totalQuantity * PREORDER_FULL_PRICE;
   const totalStandardValue = totalQuantity * STANDARD_PRICE;
   const totalSavings = Math.max(0, totalStandardValue - totalOrderPlanValue);
 
