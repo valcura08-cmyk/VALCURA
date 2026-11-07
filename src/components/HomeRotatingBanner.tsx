@@ -11,6 +11,7 @@ interface BannerSlide {
   title: string;
   link: string;
   bgColor: string;
+  objectPosition?: string;
 }
 
 const slides: BannerSlide[] = [
@@ -20,6 +21,7 @@ const slides: BannerSlide[] = [
     title: 'The Cacaoaveil Is Now Live',
     link: '/collections/cacao',
     bgColor: '#3D2314',
+    objectPosition: 'center center',
   },
   {
     id: 'valcura-roses',
@@ -27,6 +29,7 @@ const slides: BannerSlide[] = [
     title: 'VALCURA Atelier Fragrances',
     link: '/shop', // Redirects to All Scents catalogue as requested!
     bgColor: '#26070B',
+    objectPosition: 'center 38%',
   },
 ];
 
@@ -54,10 +57,10 @@ export default function HomeRotatingBanner() {
   const currentSlide = slides[currentIndex];
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto -mt-2 sm:-mt-4 mb-10 sm:mb-14">
-      {/* Full Size Rectangular Banner Frame */}
+    <section className="px-2 sm:px-4 md:px-6 lg:px-8 w-full max-w-[1440px] mx-auto -mt-2 sm:-mt-4 mb-8 sm:mb-12">
+      {/* Sleek Wide Rectangular Banner Frame (Decreased length/height, increased width) */}
       <div
-        className="relative w-full aspect-[16/10] sm:aspect-[18/9] md:aspect-[2/1] min-h-[320px] sm:min-h-[440px] md:min-h-[520px] rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#110D09] shadow-[0_16px_40px_-12px_rgba(17,13,9,0.25)] transition-colors duration-700 group select-none"
+        className="relative w-full aspect-[16/7] sm:aspect-[21/9] md:aspect-[2.7/1] lg:aspect-[3/1] min-h-[200px] sm:min-h-[260px] md:min-h-[320px] max-h-[380px] rounded-xl sm:rounded-2xl overflow-hidden border-2 border-[#110D09] shadow-[0_16px_40px_-12px_rgba(17,13,9,0.25)] transition-colors duration-700 group select-none"
         style={{ backgroundColor: currentSlide.bgColor }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -72,27 +75,20 @@ export default function HomeRotatingBanner() {
                 isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
-              {/* Ambient matching glow */}
-              <div
-                className="absolute inset-0 pointer-events-none opacity-40"
-                style={{
-                  background: `radial-gradient(circle at center, ${slide.bgColor} 0%, rgba(0,0,0,0.4) 100%)`,
-                }}
-              />
-
-              {/* Clickable Full-Size Slide Link */}
+              {/* Clickable Full-Size Slide Link - Stretches edge-to-edge to full fill */}
               <Link
                 href={slide.link}
-                className="absolute inset-0 block w-full h-full cursor-pointer flex items-center justify-center p-2 sm:p-4 z-10"
+                className="absolute inset-0 block w-full h-full cursor-pointer z-10 overflow-hidden"
                 aria-label={slide.title}
               >
-                <div className="relative w-full h-full flex items-center justify-center">
+                <div className="relative w-full h-full">
                   <Image
                     src={slide.image}
                     alt={slide.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 1152px"
-                    className="object-contain object-center drop-shadow-lg"
+                    sizes="(max-width: 768px) 100vw, 1440px"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    style={{ objectPosition: slide.objectPosition || 'center center' }}
                     priority={idx === 0}
                   />
                 </div>
