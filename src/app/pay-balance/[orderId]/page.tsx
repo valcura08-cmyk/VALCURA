@@ -26,7 +26,7 @@ export default function PayBalancePortalPage({
   const [processing, setProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
-  const [upiId, setUpiId] = useState('');
+  const [balanceUtr, setBalanceUtr] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
@@ -51,8 +51,9 @@ export default function PayBalancePortalPage({
     e.preventDefault();
     if (!order) return;
 
-    if (paymentMethod === 'upi' && !upiId.includes('@')) {
-      setErrorMsg('Please enter a valid UPI ID (e.g. name@okhdfcbank).');
+    const cleanUtr = balanceUtr.trim().replace(/\D/g, '');
+    if (!/^\d{12}$/.test(cleanUtr)) {
+      setErrorMsg('Please enter your 12-digit UPI Transaction Reference (UTR) number from your bank receipt.');
       return;
     }
 
@@ -65,13 +66,8 @@ export default function PayBalancePortalPage({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId: order.id,
-          paymentMethod:
-            paymentMethod === 'upi'
-              ? `UPI (${upiId})`
-              : paymentMethod === 'card'
-              ? 'Card Payment'
-              : 'NetBanking',
-          balanceTransactionId: `bal_txn_${Math.random().toString(36).substring(2, 10)}`,
+          paymentMethod: 'UPI (QR Settlement to Raghav Sindhwani)',
+          balanceTransactionId: cleanUtr,
         }),
       });
 
@@ -238,12 +234,16 @@ export default function PayBalancePortalPage({
                   </div>
                   {paymentMethod === 'upi' && (
                     <div className="mt-3 pt-3 border-t border-[#E8E2D8] space-y-2">
+                      <label className="text-[11px] font-mono uppercase tracking-wider text-[#110D09] block">
+                        Enter 12-Digit UPI UTR Reference Number:
+                      </label>
                       <input
                         type="text"
-                        placeholder="Enter your UPI ID (e.g. yourname@okhdfcbank)"
-                        value={upiId}
-                        onChange={(e) => setUpiId(e.target.value)}
-                        className="w-full bg-white border border-[#D5CDC2] px-3 py-2 text-xs text-[#110D09] focus:outline-none focus:border-[#110D09]"
+                        maxLength={12}
+                        placeholder="e.g. 412893821948"
+                        value={balanceUtr}
+                        onChange={(e) => setBalanceUtr(e.target.value.replace(/\D/g, '').slice(0, 12))}
+                        className="w-full bg-white border border-[#D5CDC2] px-3 py-2 text-xs font-mono text-[#110D09] focus:outline-none focus:border-[#110D09]"
                       />
                     </div>
                   )}

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, saveDb } from '@/lib/db';
-import { syncOrderToCloud, updateOrderInCloud } from '@/lib/cloudDb';
+import { syncOrderToCloud } from '@/lib/cloudDb';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,6 +11,21 @@ export async function POST(req: NextRequest) {
 
     if (!orderId) {
       return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
+    }
+
+    if (!paymentTransactionId || typeof paymentTransactionId !== 'string') {
+      return NextResponse.json(
+        { error: 'Valid 12-digit UPI UTR is required. Fake or unverified orders are rejected.' },
+        { status: 400 }
+      );
+    }
+
+    const cleanUtr = paymentTransactionId.trim().replace(/\D/g, '');
+    if (!/^\d{12}$/.test(cleanUtr)) {
+      return NextResponse.json(
+        { error: 'Invalid UTR format. Indian UPI Reference Numbers must be exactly 12 numeric digits.' },
+        { status: 400 }
+      );
     }
 
     const db = getDb();
@@ -20,41 +37,35 @@ export async function POST(req: NextRequest) {
 
     const order = db.orders[orderIndex];
 
-    const txnId = paymentTransactionId || `txn_val_${Math.random().toString(36).substring(2, 10)}`;
-    const method = paymentMethod || 'UPI (Indian Gateway Verified)';
-
     // Anti-Fraud Check: Prevent duplicate UTR submission
-    if (paymentTransactionId && typeof paymentTransactionId === 'string' && paymentTransactionId.length >= 8) {
-      const duplicate = db.orders.find(
-        (o) =>
-          o.id !== orderId &&
-          o.paymentTransactionId &&
-          o.paymentTransactionId.toLowerCase() === paymentTransactionId.toLowerCase() &&
-          (o.paymentStatus === 'Fully Paid' || o.paymentStatus === 'Deposit Paid')
+    const duplicate = db.orders.find(
+      (o) =>
+        o.id !== orderId &&
+        o.paymentTransactionId &&
+        o.paymentTransactionId.trim() === cleanUtr &&
+        (o.paymentStatus === 'Fully Paid' || o.paymentStatus === 'Deposit Paid')
+    );
+    if (duplicate) {
+      return NextResponse.json(
+        { error: `This UTR (${cleanUtr}) has already been recorded on Order #${duplicate.id}. Duplicate payments are rejected.` },
+        { status: 400 }
       );
-      if (duplicate) {
-        return NextResponse.json(
-          { error: `This UTR (${paymentTransactionId}) has already been recorded on Order #${duplicate.id}. Duplicate payments are rejected.` },
-          { status: 400 }
-        );
-      }
     }
 
     order.paymentStatus = 'Fully Paid';
     order.orderStatus = 'Ready for Fulfilment';
     order.remainingBalance = 0;
-    order.paymentMethod = method;
-    order.paymentTransactionId = txnId;
+    order.paymentMethod = paymentMethod || 'UPI QR Code (Verified UTR)';
+    order.paymentTransactionId = cleanUtr;
     order.history.push({
       status: 'Fully Paid',
       timestamp: new Date().toISOString(),
-      note: `Pre-order payment of ₹${order.amountPaidToday} fully verified via ${method} (Ref / UTR: ${txnId}). Allocation secured. Order confirmation dispatched.`,
+      note: `Pre-order payment of ₹${order.amountPaidToday} fully verified via UPI (UTR: ${cleanUtr}).`,
     });
 
     db.orders[orderIndex] = order;
     saveDb(db);
 
-    // Sync verified state to Cloud Database
     await syncOrderToCloud(order);
 
     return NextResponse.json({

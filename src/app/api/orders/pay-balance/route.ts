@@ -27,8 +27,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const balTxnId =
-      balanceTransactionId || `bal_pay_${Math.random().toString(36).substring(2, 10)}`;
+    if (!balanceTransactionId || typeof balanceTransactionId !== 'string') {
+      return NextResponse.json({ error: '12-digit UPI Reference / UTR is required.' }, { status: 400 });
+    }
+
+    const cleanUtr = balanceTransactionId.trim().replace(/\D/g, '');
+    if (!/^\d{12}$/.test(cleanUtr)) {
+      return NextResponse.json(
+        { error: 'Invalid UTR format. Must be exactly 12 numeric digits.' },
+        { status: 400 }
+      );
+    }
+
+    const balTxnId = cleanUtr;
 
     const previouslyPaid = order.amountPaidToday;
     const balancePaid = order.remainingBalance;
