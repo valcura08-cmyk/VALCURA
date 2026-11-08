@@ -63,6 +63,7 @@ export default function CheckoutPage() {
   // UI state
   const [loading, setLoading] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
+  const [copiedPhone, setCopiedPhone] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
 
@@ -80,6 +81,13 @@ export default function CheckoutPage() {
     navigator.clipboard.writeText(MERCHANT_UPI_ID);
     setCopiedUpi(true);
     setTimeout(() => setCopiedUpi(false), 2200);
+  };
+
+  // Copy Phone Number to clipboard
+  const handleCopyPhone = () => {
+    navigator.clipboard.writeText('6378582047');
+    setCopiedPhone(true);
+    setTimeout(() => setCopiedPhone(false), 2200);
   };
 
   // If bag was completely empty, allow 1-click auto-add Cacao Citrine
@@ -353,7 +361,7 @@ _Hello Raghav! I have completed payment of ₹${totalPayableAmount} to your ICIC
                       Direct WhatsApp Priority Concierge
                     </h3>
                     <p className="text-xs text-emerald-800 leading-relaxed font-light">
-                      No tedious 9-field forms! Tap below to open WhatsApp directly with founder Raghav Sindhwani (`+91 6378582047`). Your flacon reservation is pre-filled, and you can simply send your delivery address or live pin directly in chat.
+                      No tedious 9-field forms! Tap below to open WhatsApp directly with founder Raghav Sindhwani (+91 6378582047). Your flacon reservation is pre-filled, and you can simply send your delivery address or live pin directly in chat.
                     </p>
                   </div>
                 </div>
@@ -437,7 +445,7 @@ _Hello Raghav! I have completed payment of ₹${totalPayableAmount} to your ICIC
               </div>
             )}
 
-            {/* MODE 2: DIRECT UPI QR PAYMENT */}
+            {/* MODE 2: DIRECT UPI PAYMENT */}
             {checkoutMode === 'direct_upi' && (
               <div className="bg-white border border-[#E8E2D8] rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
                 <div className="flex items-start gap-3 bg-amber-50/70 border border-amber-200/80 rounded-xl p-4">
@@ -449,12 +457,12 @@ _Hello Raghav! I have completed payment of ₹${totalPayableAmount} to your ICIC
                       Direct ICICI Bank UPI Transfer
                     </h3>
                     <p className="text-xs text-[#110D09]/70 leading-relaxed font-light">
-                      Pay directly using any UPI app (GPay, PhonePe, Paytm, BHIM) to official merchant Raghav Sindhwani.
+                      Transfer directly using your UPI app to official merchant Raghav Sindhwani or reach out on WhatsApp.
                     </p>
                   </div>
                 </div>
 
-                {/* Official UPI Details Box */}
+                {/* Official UPI & Contact Details Box */}
                 <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl p-5 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E8E2D8]">
                     <div>
@@ -500,33 +508,32 @@ _Hello Raghav! I have completed payment of ₹${totalPayableAmount} to your ICIC
                     </div>
                   </div>
 
-                  {/* 1-Tap App Deep Links */}
-                  <div className="pt-2 space-y-2">
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-[#110D09]/60 block">
-                      Tap your preferred app to pay ₹{totalPayableAmount}:
+                  {/* Merchant Mobile / WhatsApp Number & Copy Button */}
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] uppercase font-mono tracking-wider text-[#110D09]/70 font-semibold">
+                      Official Contact / WhatsApp Number:
                     </span>
-                    <div className="grid grid-cols-3 gap-2">
-                      <a
-                        href={`upi://pay?pa=${MERCHANT_UPI_ID}&pn=Raghav%20Sindhwani&am=${totalPayableAmount}&cu=INR&tn=VALCURA%20PreOrder`}
-                        className="p-2.5 rounded-xl border border-[#E8E2D8] bg-white hover:bg-neutral-50 text-center font-mono text-xs font-bold text-[#110D09] transition-all flex flex-col items-center justify-center gap-1"
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 bg-white border border-[#E8E2D8] rounded-xl px-4 py-2.5 font-mono text-xs sm:text-sm font-bold text-[#110D09] select-all">
+                        +91 6378582047
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleCopyPhone}
+                        className="px-4 py-2.5 rounded-xl bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 shrink-0"
                       >
-                        <Smartphone className="w-4 h-4 text-blue-600" />
-                        <span>Google Pay</span>
-                      </a>
-                      <a
-                        href={`phonepe://pay?pa=${MERCHANT_UPI_ID}&pn=Raghav%20Sindhwani&am=${totalPayableAmount}&cu=INR&tn=VALCURA%20PreOrder`}
-                        className="p-2.5 rounded-xl border border-[#E8E2D8] bg-white hover:bg-neutral-50 text-center font-mono text-xs font-bold text-[#110D09] transition-all flex flex-col items-center justify-center gap-1"
-                      >
-                        <Smartphone className="w-4 h-4 text-purple-600" />
-                        <span>PhonePe</span>
-                      </a>
-                      <a
-                        href={`paytmmp://pay?pa=${MERCHANT_UPI_ID}&pn=Raghav%20Sindhwani&am=${totalPayableAmount}&cu=INR&tn=VALCURA%20PreOrder`}
-                        className="p-2.5 rounded-xl border border-[#E8E2D8] bg-white hover:bg-neutral-50 text-center font-mono text-xs font-bold text-[#110D09] transition-all flex flex-col items-center justify-center gap-1"
-                      >
-                        <Smartphone className="w-4 h-4 text-sky-600" />
-                        <span>Paytm</span>
-                      </a>
+                        {copiedPhone ? (
+                          <>
+                            <Check className="w-4 h-4 text-emerald-400" />
+                            <span>Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-4 h-4" />
+                            <span>Copy Number</span>
+                          </>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -553,7 +560,7 @@ _Hello Raghav! I have completed payment of ₹${totalPayableAmount} to your ICIC
                   </button>
 
                   <p className="text-[11px] text-[#110D09]/60 font-mono text-center">
-                    Sends your payment reference directly to Raghav (`+91 6378582047`) for instant verification.
+                    Sends your payment reference directly to Raghav (+91 6378582047) for instant verification.
                   </p>
                 </div>
               </div>
