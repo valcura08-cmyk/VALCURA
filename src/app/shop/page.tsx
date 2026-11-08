@@ -96,7 +96,7 @@ export default function ShopAllFragrancesPage() {
                         href={`/product/${product.slug}`}
                         className="w-full btn-luxury-primary text-center block text-[11px] font-bold py-2 px-3 uppercase tracking-luxury rounded-lg shadow-2xs"
                       >
-                        Explore Fragrance →
+                        Add to Cart • ₹399
                       </Link>
                     </div>
                   </div>

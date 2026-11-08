@@ -106,7 +106,7 @@ export default function CacaoveilCollectionPage() {
                           ₹599
                         </span>
                         <span className="text-[9px] font-mono font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                          Pre-Order Privilege
+                          Save ₹200
                         </span>
                       </div>
                     </div>
@@ -116,7 +116,7 @@ export default function CacaoveilCollectionPage() {
                         href={`/product/${product.slug}`}
                         className="w-full py-2 bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all duration-200 block text-center shadow-xs"
                       >
-                        Reserve Flacon (₹399)
+                        Add to Cart • ₹399
                       </Link>
                     </div>
                   </div>
