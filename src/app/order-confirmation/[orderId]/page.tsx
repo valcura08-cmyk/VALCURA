@@ -238,13 +238,13 @@ export default async function OrderConfirmationPage({ params }: Props) {
               </p>
               <div className="pt-2">
                 <a
-                  href={`https://wa.me/91${order.customer.phone.replace(/[^0-9]/g, '')}?text=Hello%20VALCURA%20Concierge,%20inquiring%20about%20my%20booked%20order%20${order.id}`}
+                  href={`https://wa.me/916378582047?text=Hello%20VALCURA%20Concierge,%20regarding%20my%20booked%20order%20${order.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded text-[11px] font-mono font-medium transition-colors"
+                  className="inline-flex items-center space-x-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-serif font-bold uppercase tracking-wider transition-colors shadow-md"
                 >
-                  <MessageCircle className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Connect with Atelier WhatsApp Concierge</span>
+                  <MessageCircle className="w-4 h-4 text-emerald-200" />
+                  <span>Chat with Concierge on WhatsApp (+91 6378582047)</span>
                 </a>
               </div>
             </div>

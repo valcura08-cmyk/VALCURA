@@ -23,6 +23,7 @@ import {
   FileCheck,
   RefreshCw,
   ScanLine,
+  MessageCircle,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -278,12 +279,77 @@ export default function CheckoutPage() {
     return true;
   };
 
+  const CONCIERGE_WHATSAPP_NUMBER = '916378582047';
+
+  // Direct VIP WhatsApp Concierge Reservation Handler
+  const handleSendOrderToWhatsApp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setErrorMsg('');
+
+    if (!validateAllForm()) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // 1. Initialize and save order to Supabase and DB
+      const orderId = await initializeServerOrder();
+
+      // 2. Prepare structured luxury WhatsApp message
+      const itemsList = items
+        .map((i) => `• *${i.name}* (Qty: ${i.quantity}) — ₹${399 * i.quantity}`)
+        .join('\n');
+
+      const fullAddress = [
+        formData.addressLine1.trim(),
+        formData.addressLine2 ? formData.addressLine2.trim() : '',
+        formData.landmark ? `Landmark: ${formData.landmark.trim()}` : '',
+        `${formData.city.trim()}, ${formData.state.trim()} — ${formData.pincode.trim()}`,
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+      const message = `🏛️ *MAISON VALCURA — ATELIER PRE-ORDER ALLOCATION*
+---------------------------------------
+*Order Reference:* ${orderId}
+*Total Payable:* ₹${totalPayableAmount} (Flat Pre-Order Privilege Rate)
+
+*Reserved Flacon(s):*
+${itemsList}
+
+*Client Information:*
+• *Name:* ${formData.fullName.trim()}
+• *Phone:* +91 ${formData.phone.trim()}
+• *Email:* ${formData.email.trim()}
+
+*Priority Delivery Address:*
+${fullAddress}
+---------------------------------------
+_Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on the official website. Please share your payment QR code so I can complete my payment of ₹${totalPayableAmount}._`;
+
+      const whatsappUrl = `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+      // 3. Clear cart
+      clearCart();
+
+      // 4. Open WhatsApp directly in a new window/app
+      if (typeof window !== 'undefined') {
+        window.open(whatsappUrl, '_blank');
+      }
+
+      // 5. Navigate customer to confirmation screen
+      router.push(`/order-confirmation/${orderId}`);
+    } catch (err: any) {
+      console.error('WhatsApp order reservation error:', err);
+      setErrorMsg(err.message || 'Could not reserve order. Please try again.');
+      setLoading(false);
+    }
+  };
+
   const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateAllForm()) {
-      setPaymentStep('payment');
-      window.scrollTo({ top: 160, behavior: 'smooth' });
-    }
+    handleSendOrderToWhatsApp(e);
   };
 
   const handleCopyUpi = () => {
@@ -1154,18 +1220,34 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Submission CTA to Payment */}
-                  <div className="pt-4 border-t border-[#E8E2D8]">
+                  {/* Submission CTA to WhatsApp Concierge */}
+                  <div className="pt-4 border-t border-[#E8E2D8] space-y-3">
                     <button
                       type="submit"
-                      className="w-full btn-luxury-primary py-4 text-xs font-semibold tracking-luxury uppercase flex items-center justify-center space-x-2 shadow-lg"
+                      disabled={loading}
+                      className="w-full bg-[#110D09] hover:bg-[#8C6D42] text-white py-4 px-6 rounded-xl text-xs font-serif font-bold tracking-luxury uppercase flex items-center justify-center space-x-2.5 shadow-xl transition-all cursor-pointer"
                     >
-                      <span>Proceed to Payment • Pay ₹{totalPayableAmount}</span>
-                      <ArrowRight className="w-4 h-4" />
+                      {loading ? (
+                        <div className="flex items-center space-x-2">
+                          <Loader2 className="w-4 h-4 animate-spin text-[#8C6D42]" />
+                          <span>Securing Allocation & Opening WhatsApp...</span>
+                        </div>
+                      ) : (
+                        <>
+                          <MessageCircle className="w-4 h-4 text-emerald-400" />
+                          <span>Confirm Order &amp; Send to WhatsApp (+91 6378582047) • ₹{totalPayableAmount}</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
                     </button>
-                    <p className="text-[10px] text-[#110D09]/50 text-center font-light mt-2.5">
-                      ✓ Instant automated payment via Google Pay, PhonePe, Paytm or UPI Scanner
-                    </p>
+                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-center space-y-1">
+                      <p className="text-[11px] text-emerald-950 font-mono font-medium">
+                        ✓ All your delivery details will be sent directly to our Atelier Concierge on WhatsApp at <strong>+91 6378582047</strong>.
+                      </p>
+                      <p className="text-[10px] text-emerald-800 font-mono">
+                        Our Concierge will immediately reply on WhatsApp with the official payment QR code.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -1271,29 +1353,40 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {/* Official Payment Button */}
+                  {/* Official Direct WhatsApp Concierge Button */}
                   <button
                     type="button"
                     disabled={loading}
-                    onClick={() => handlePayWithOfficialGateway()}
-                    className="w-full py-4 text-xs sm:text-sm font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2 shadow-xl transition-all bg-[#110D09] hover:bg-[#8C6D42] text-white cursor-pointer"
+                    onClick={() => handleSendOrderToWhatsApp()}
+                    className="w-full py-4 text-xs sm:text-sm font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2.5 shadow-xl transition-all bg-[#110D09] hover:bg-[#8C6D42] text-white cursor-pointer"
                   >
                     {loading ? (
                       <div className="flex items-center space-x-2">
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Opening Official Payment Gateway...</span>
+                        <Loader2 className="w-4 h-4 animate-spin text-[#8C6D42]" />
+                        <span>Securing Allocation & Opening WhatsApp...</span>
                       </div>
                     ) : (
                       <>
-                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                        <span>Pay ₹{totalPayableAmount} via Official Gateway</span>
+                        <MessageCircle className="w-4 h-4 text-emerald-400" />
+                        <span>Confirm Order &amp; Send to WhatsApp (+91 6378582047) • ₹{totalPayableAmount}</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>
 
+                  {/* Secondary Instamojo gateway button */}
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => handlePayWithOfficialGateway()}
+                    className="w-full py-3 text-xs font-mono uppercase tracking-luxury rounded-xl border border-[#D5CDC2] hover:bg-[#FAF8F5] text-[#110D09] transition-all flex items-center justify-center space-x-2"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#8C6D42]" />
+                    <span>Pay via Instamojo Gateway</span>
+                  </button>
+
                   <p className="text-[11px] text-center font-mono text-[#554D45]">
-                    🔒 Only bank-verified payments confirm and book the order. Non-payments are never booked.
+                    🔒 All details are saved in the Atelier master cellar database. Verified payments are dispatched with priority.
                   </p>
                 </div>
               </div>
