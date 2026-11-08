@@ -176,78 +176,85 @@ export default function CacaoCitrineProductPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
           
           {/* ============================================================== */}
-          {/* LEFT: CLASSIC HIGH-END GALLERY (PRIMARY IMAGE + THUMBNAILS BELOW) */}
+          {/* LEFT: VERTICAL ROW GALLERY (VERTICAL THUMBNAILS ON LEFT + MAIN PHOTO) */}
           {/* ============================================================== */}
-          <div className="lg:col-span-6 space-y-3">
-            {/* Primary Bottle View */}
-            <div className="relative aspect-square max-h-[390px] sm:max-h-[440px] bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl overflow-hidden shadow-xs group">
-              <Image
-                src={images[activeImageIndex].src}
-                alt={images[activeImageIndex].alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 550px"
-                className="object-cover transition-transform duration-500 group-hover:scale-102"
-                priority
-              />
-
-              {/* Angle Badge */}
-              <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm border border-[#E8DFD3] px-2.5 py-0.5 text-[10px] tracking-widest uppercase text-[#110D09] font-mono font-bold rounded-full shadow-2xs">
-                0{activeImageIndex + 1} / 0{images.length}
-              </div>
-
-              {/* Navigation Arrows */}
-              <button
-                type="button"
-                onClick={handlePrevImage}
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
-                aria-label="Previous Perspective"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={handleNextImage}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
-                aria-label="Next Perspective"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-
-              {/* Minimal Caption Strip */}
-              <div className="absolute bottom-2.5 inset-x-3 bg-black/65 backdrop-blur-xs px-3 py-1.5 rounded-lg text-white text-[11px] font-sans flex items-center justify-between">
-                <span className="font-medium truncate">{images[activeImageIndex].caption}</span>
-                <span className="text-[9px] font-mono text-[#FAF7F2]/75 uppercase tracking-wider shrink-0 ml-2">
-                  Angle 0{activeImageIndex + 1}
+          <div className="lg:col-span-6">
+            <div className="flex flex-row items-start gap-2.5 sm:gap-3.5">
+              
+              {/* Vertical Left-Side Thumbnails Row */}
+              <div className="w-16 sm:w-20 md:w-22 flex flex-col gap-2 sm:gap-2.5 shrink-0">
+                <span className="text-[9px] font-mono uppercase tracking-widest text-[#8C6D42] text-center block pb-0.5 font-bold">
+                  Angles
                 </span>
+                {images.map((img, idx) => (
+                  <button
+                    key={img.src}
+                    type="button"
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`group relative aspect-square bg-[#FAF8F5] border rounded-xl overflow-hidden transition-all duration-200 cursor-pointer ${
+                      activeImageIndex === idx
+                        ? 'border-[#110D09] ring-2 ring-[#110D09] shadow-sm scale-[1.02]'
+                        : 'border-[#E8DFD3] opacity-70 hover:opacity-100 hover:border-[#8C6D42]'
+                    }`}
+                    aria-label={`Switch to perspective 0${idx + 1}`}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      sizes="90px"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <span className="absolute bottom-1 right-1 bg-black/75 text-white font-mono text-[8px] sm:text-[9px] px-1 py-0.2 rounded-xs">
+                      0{idx + 1}
+                    </span>
+                  </button>
+                ))}
               </div>
-            </div>
 
-            {/* Clean Horizontal Thumbnails Strip (Old Way Below Image) */}
-            <div className="grid grid-cols-4 gap-2.5 pt-0.5">
-              {images.map((img, idx) => (
+              {/* Main Product Image (To the right of the vertical thumbnails row) */}
+              <div className="relative flex-1 aspect-square max-h-[440px] sm:max-h-[470px] bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl overflow-hidden shadow-xs group">
+                <Image
+                  src={images[activeImageIndex].src}
+                  alt={images[activeImageIndex].alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 550px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-102"
+                  priority
+                />
+
+                {/* Angle Badge */}
+                <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm border border-[#E8DFD3] px-2.5 py-0.5 text-[10px] tracking-widest uppercase text-[#110D09] font-mono font-bold rounded-full shadow-2xs">
+                  0{activeImageIndex + 1} / 0{images.length}
+                </div>
+
+                {/* Navigation Arrows */}
                 <button
-                  key={img.src}
                   type="button"
-                  onClick={() => setActiveImageIndex(idx)}
-                  className={`group relative aspect-square bg-[#FAF8F5] border rounded-xl overflow-hidden transition-all duration-200 cursor-pointer ${
-                    activeImageIndex === idx
-                      ? 'border-[#110D09] ring-2 ring-[#110D09] shadow-sm'
-                      : 'border-[#E8DFD3] opacity-75 hover:opacity-100 hover:border-[#8C6D42]'
-                  }`}
-                  aria-label={`View perspective 0${idx + 1}`}
+                  onClick={handlePrevImage}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
+                  aria-label="Previous Perspective"
                 >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    sizes="120px"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span className="absolute bottom-1 right-1 bg-black/75 text-white font-mono text-[8px] px-1.5 py-0.5 rounded-xs">
-                    0{idx + 1}
-                  </span>
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={handleNextImage}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
+                  aria-label="Next Perspective"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+
+                {/* Minimal Caption Strip */}
+                <div className="absolute bottom-2.5 inset-x-3 bg-black/65 backdrop-blur-xs px-3 py-1.5 rounded-lg text-white text-[11px] font-sans flex items-center justify-between">
+                  <span className="font-medium truncate">{images[activeImageIndex].caption}</span>
+                  <span className="text-[9px] font-mono text-[#FAF7F2]/75 uppercase tracking-wider shrink-0 ml-2">
+                    Angle 0{activeImageIndex + 1}
+                  </span>
+                </div>
+              </div>
+
             </div>
           </div>
 
