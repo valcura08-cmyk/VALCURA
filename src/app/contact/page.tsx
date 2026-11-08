@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle2, Instagram } from 'lucide-react';
 
 export default function ContactUsPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -95,16 +95,12 @@ export default function ContactUsPage() {
                   <Phone className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="text-[#888075] block font-mono">Client Helpline:</span>
-                    <span className="text-[#110D09] font-medium">+91 99887 76655</span>
-                    <span className="text-[10px] text-[#888075] block">[Owner Editable Phone]</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Clock className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-[#888075] block font-mono">Operating Hours:</span>
-                    <span className="text-[#110D09] font-medium">Monday – Saturday: 10:00 AM – 7:00 PM IST</span>
+                    <a
+                      href="tel:+916378582047"
+                      className="text-[#110D09] hover:text-[#8C6D3F] font-medium transition-colors"
+                    >
+                      +91 63785 82047
+                    </a>
                   </div>
                 </div>
 
@@ -112,8 +108,7 @@ export default function ContactUsPage() {
                   <MapPin className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="text-[#888075] block font-mono">Atelier Headquarters:</span>
-                    <span className="text-[#110D09] font-medium">Mumbai, Maharashtra, India</span>
-                    <span className="text-[10px] text-[#888075] block">[Owner Editable Address]</span>
+                    <span className="text-[#110D09] font-medium">Jaipur, Rajasthan, India</span>
                   </div>
                 </div>
               </div>
