@@ -7,12 +7,18 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { customer, items } = body;
 
-    if (!customer || !customer.fullName || !customer.email || !customer.phone || !customer.address) {
-      return NextResponse.json(
-        { error: 'Incomplete delivery details provided.' },
-        { status: 400 }
-      );
-    }
+    const customerData = {
+      fullName: customer?.fullName?.trim() || 'WhatsApp Client',
+      email: customer?.email?.trim() || 'concierge@valcura.in',
+      phone: customer?.phone?.trim() || 'WhatsApp Contact',
+      address: customer?.address?.trim() || customer?.addressLine1?.trim() || 'Direct WhatsApp Dispatch',
+      addressLine1: customer?.addressLine1?.trim() || customer?.address?.trim() || 'Direct WhatsApp Dispatch',
+      addressLine2: customer?.addressLine2?.trim() || '',
+      landmark: customer?.landmark?.trim() || '',
+      city: customer?.city?.trim() || '',
+      state: customer?.state?.trim() || '',
+      pincode: customer?.pincode?.trim() || '',
+    };
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
@@ -74,28 +80,29 @@ export async function POST(req: NextRequest) {
     const orderId = `VAL-ORD-${Math.floor(100000 + Math.random() * 900000)}`;
 
     const fullAddress = [
-      customer.addressLine1 || customer.address || '',
-      customer.addressLine2 || '',
-      customer.landmark ? `(Landmark: ${customer.landmark})` : '',
+      customerData.addressLine1 || '',
+      customerData.addressLine2 || '',
+      customerData.landmark ? `(Landmark: ${customerData.landmark})` : '',
+      [customerData.city, customerData.state, customerData.pincode].filter(Boolean).join(', '),
     ]
       .filter(Boolean)
-      .join(', ');
+      .join(', ') || 'Shared directly via WhatsApp chat';
 
     // Prepare new Order record in Pending state
     const newOrder: Order = {
       id: orderId,
       createdAt: new Date().toISOString(),
       customer: {
-        fullName: customer.fullName.trim(),
-        email: customer.email.trim(),
-        phone: customer.phone.trim(),
+        fullName: customerData.fullName,
+        email: customerData.email,
+        phone: customerData.phone,
         address: fullAddress,
-        addressLine1: (customer.addressLine1 || customer.address || '').trim(),
-        addressLine2: (customer.addressLine2 || '').trim(),
-        landmark: (customer.landmark || '').trim(),
-        city: customer.city?.trim() || '',
-        state: customer.state?.trim() || '',
-        pincode: customer.pincode?.trim() || '',
+        addressLine1: customerData.addressLine1,
+        addressLine2: customerData.addressLine2,
+        landmark: customerData.landmark,
+        city: customerData.city,
+        state: customerData.state,
+        pincode: customerData.pincode,
       },
       items: orderItems,
       plan: 'preorder_full',
