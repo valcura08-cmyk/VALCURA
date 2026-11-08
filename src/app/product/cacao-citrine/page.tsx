@@ -15,12 +15,14 @@ import {
   Share2,
   Bookmark,
   Check,
+  ShoppingBag,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 export default function CacaoCitrineProductPage() {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<'notes' | 'experience' | 'details' | 'all'>('notes');
   
@@ -131,6 +133,24 @@ export default function CacaoCitrineProductPage() {
       setShareFeedback(true);
       setTimeout(() => setShareFeedback(false), 2000);
     }
+  };
+
+  const handleAddToCart = () => {
+    addToCart(
+      {
+        productId: 'cacao-citrine',
+        name: 'Cacao Citrine',
+        slug: 'cacao-citrine',
+        image: images[0].src,
+        category: 'Unisex',
+        volume: '50 ML',
+        quantity: quantity,
+        paymentPlan: 'full',
+      },
+      'full'
+    );
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 2200);
   };
 
   return (
@@ -290,6 +310,53 @@ export default function CacaoCitrineProductPage() {
                 <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 bg-[#110D09] text-white rounded-md font-bold">
                   In Stock
                 </span>
+              </div>
+
+              {/* Quantity Selector & ADD TO CART Button */}
+              <div className="flex items-center gap-2.5 pt-2">
+                <div className="inline-flex items-center border border-[#D5CDC2] bg-white rounded-xl overflow-hidden shrink-0 shadow-2xs">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold cursor-pointer"
+                    aria-label="Decrease quantity"
+                  >
+                    -
+                  </button>
+                  <span className="w-8 text-center font-mono text-sm text-[#110D09] font-semibold">
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold cursor-pointer"
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  className={`flex-1 h-11 text-xs font-serif font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border ${
+                    isAdded
+                      ? 'bg-emerald-700 text-white border-emerald-600'
+                      : 'bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] border-[#C5A880]/30'
+                  }`}
+                >
+                  {isAdded ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>ADDED TO CART!</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>ADD TO CART</span>
+                    </>
+                  )}
+                </button>
               </div>
             </div>
 

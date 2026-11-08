@@ -70,7 +70,7 @@ export default function CacaoCitrineInspirationPage() {
               className="btn-luxury-primary py-3 px-6 text-xs font-semibold tracking-luxury uppercase flex items-center space-x-2 shadow-sm"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
-              <span>{isAdded ? 'Added to Bag!' : 'Acquire Cacao Citrine • ₹399'}</span>
+              <span>{isAdded ? 'Added to Cart!' : 'Add to Cart • ₹399'}</span>
             </button>
             <Link
               href="/product/cacao-citrine"
