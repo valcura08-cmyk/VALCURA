@@ -105,15 +105,13 @@ export default function CheckoutPage() {
   }, [user]);
 
 
-  // Validation function strictly enforcing minimum 5 characters requirement
+  // Validation function ensuring standard required fields without artificial length restrictions
   const validateField = (name: string, value: string): string => {
     const trimmed = value.trim();
 
     switch (name) {
       case 'fullName':
         if (!trimmed) return 'Full Name is mandatory.';
-        if (trimmed.length < 5)
-          return 'Minimum 5 characters required (single letters like "a" are invalid).';
         if (!/^[a-zA-Z\s.]+$/.test(trimmed))
           return 'Name can only contain alphabetic characters and spaces.';
         return '';
@@ -126,8 +124,6 @@ export default function CheckoutPage() {
 
       case 'email':
         if (!trimmed) return 'Email Address is mandatory.';
-        if (trimmed.length < 5)
-          return 'Minimum 5 characters required.';
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed))
           return 'Please enter a valid email address (e.g. name@domain.com).';
         return '';
@@ -138,8 +134,6 @@ export default function CheckoutPage() {
 
       case 'city':
         if (!trimmed) return 'City selection is mandatory.';
-        if (trimmed.length < 3)
-          return 'City name must be at least 3 characters.';
         return '';
 
       case 'pincode':
@@ -150,20 +144,14 @@ export default function CheckoutPage() {
 
       case 'addressLine1':
         if (!trimmed) return 'Address Line 1 is mandatory.';
-        if (trimmed.length < 5)
-          return 'Minimum 5 characters required (e.g. Flat/House No, Building). Single letters like "a" are invalid.';
         return '';
 
       case 'addressLine2':
         if (!trimmed) return 'Address Line 2 is mandatory.';
-        if (trimmed.length < 5)
-          return 'Minimum 5 characters required (e.g. Street, Area, Colony). Single letters like "a" are invalid.';
         return '';
 
       case 'landmark':
         if (!trimmed) return 'Nearby Landmark is mandatory.';
-        if (trimmed.length < 5)
-          return 'Minimum 5 characters required (e.g. Near Metro Station / Behind Mall). Single letters like "a" are invalid.';
         return '';
 
       default:
@@ -239,7 +227,7 @@ export default function CheckoutPage() {
     setTouched(touchedAll);
 
     if (Object.keys(newErrors).length > 0) {
-      setErrorMsg('Please complete all mandatory fields with at least 5 letters or numbers.');
+      setErrorMsg('Please complete all mandatory delivery fields.');
       window.scrollTo({ top: 120, behavior: 'smooth' });
       return false;
     }
@@ -678,8 +666,8 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
                     <span className="text-[11px] tracking-luxury uppercase text-[#8C6D42] font-mono font-semibold">
                       01. Personal Information &amp; Contact
                     </span>
-                    <span className="text-[10px] text-red-600 font-mono font-medium">
-                      * All fields mandatory (min 5 chars)
+                    <span className="text-[10px] text-[#8C6D42] font-mono font-medium">
+                      * All fields mandatory
                     </span>
                   </div>
 
@@ -690,17 +678,6 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
                         <label className="text-[#110D09] font-medium">
                           Full Name <span className="text-red-500">*</span>
                         </label>
-                        <span
-                          className={`text-[10px] font-mono ${
-                            formData.fullName.trim().length >= 5
-                              ? 'text-emerald-700 font-medium'
-                              : 'text-amber-700'
-                          }`}
-                        >
-                          {formData.fullName.trim().length >= 5
-                            ? '✓ Valid'
-                            : `${formData.fullName.trim().length}/5 min letters`}
-                        </span>
                       </div>
                       <input
                         type="text"
@@ -729,17 +706,6 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
                         <label className="text-[#110D09] font-medium">
                           Mobile Number <span className="text-red-500">*</span>
                         </label>
-                        <span
-                          className={`text-[10px] font-mono ${
-                            formData.phone.trim().length === 10
-                              ? 'text-emerald-700 font-medium'
-                              : 'text-amber-700'
-                          }`}
-                        >
-                          {formData.phone.trim().length === 10
-                            ? '✓ Valid'
-                            : `${formData.phone.trim().length}/10 digits`}
-                        </span>
                       </div>
                       <div className="flex">
                         <span className="bg-[#EFEAE2] border border-r-0 border-[#D5CDC2] px-3.5 py-3 text-xs text-[#110D09] font-mono font-medium flex items-center">
@@ -774,18 +740,6 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
                         <label className="text-[#110D09] font-medium">
                           Email ID <span className="text-red-500">*</span>
                         </label>
-                        <span
-                          className={`text-[10px] font-mono ${
-                            formData.email.trim().length >= 5 &&
-                            formData.email.includes('@')
-                              ? 'text-emerald-700 font-medium'
-                              : 'text-amber-700'
-                          }`}
-                        >
-                          {formData.email.trim().length >= 5 && formData.email.includes('@')
-                            ? '✓ Valid'
-                            : `${formData.email.trim().length}/5 min chars`}
-                        </span>
                       </div>
                       <input
                         type="email"
@@ -1069,17 +1023,6 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
                           Address Line 1 (Flat, House No., Building, Apartment){' '}
                           <span className="text-red-500">*</span>
                         </label>
-                        <span
-                          className={`text-[10px] font-mono ${
-                            formData.addressLine1.trim().length >= 5
-                              ? 'text-emerald-700 font-medium'
-                              : 'text-amber-700'
-                          }`}
-                        >
-                          {formData.addressLine1.trim().length >= 5
-                            ? '✓ Valid'
-                            : `${formData.addressLine1.trim().length}/5 min chars`}
-                        </span>
                       </div>
                       <input
                         type="text"
@@ -1109,17 +1052,6 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
                           Address Line 2 (Street Name, Area, Sector, Colony){' '}
                           <span className="text-red-500">*</span>
                         </label>
-                        <span
-                          className={`text-[10px] font-mono ${
-                            formData.addressLine2.trim().length >= 5
-                              ? 'text-emerald-700 font-medium'
-                              : 'text-amber-700'
-                          }`}
-                        >
-                          {formData.addressLine2.trim().length >= 5
-                            ? '✓ Valid'
-                            : `${formData.addressLine2.trim().length}/5 min chars`}
-                        </span>
                       </div>
                       <input
                         type="text"
@@ -1149,17 +1081,6 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
                           Nearby Landmark (Prominent Reference Point){' '}
                           <span className="text-red-500">*</span>
                         </label>
-                        <span
-                          className={`text-[10px] font-mono ${
-                            formData.landmark.trim().length >= 5
-                              ? 'text-emerald-700 font-medium'
-                              : 'text-amber-700'
-                          }`}
-                        >
-                          {formData.landmark.trim().length >= 5
-                            ? '✓ Valid'
-                            : `${formData.landmark.trim().length}/5 min chars`}
-                        </span>
                       </div>
                       <input
                         type="text"
