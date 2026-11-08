@@ -23,6 +23,23 @@ export async function POST(req: NextRequest) {
     const txnId = paymentTransactionId || `txn_val_${Math.random().toString(36).substring(2, 10)}`;
     const method = paymentMethod || 'UPI (Indian Gateway Verified)';
 
+    // Anti-Fraud Check: Prevent duplicate UTR submission
+    if (paymentTransactionId && typeof paymentTransactionId === 'string' && paymentTransactionId.length >= 8) {
+      const duplicate = db.orders.find(
+        (o) =>
+          o.id !== orderId &&
+          o.paymentTransactionId &&
+          o.paymentTransactionId.toLowerCase() === paymentTransactionId.toLowerCase() &&
+          (o.paymentStatus === 'Fully Paid' || o.paymentStatus === 'Deposit Paid')
+      );
+      if (duplicate) {
+        return NextResponse.json(
+          { error: `This UTR (${paymentTransactionId}) has already been recorded on Order #${duplicate.id}. Duplicate payments are rejected.` },
+          { status: 400 }
+        );
+      }
+    }
+
     order.paymentStatus = 'Fully Paid';
     order.orderStatus = 'Ready for Fulfilment';
     order.remainingBalance = 0;
