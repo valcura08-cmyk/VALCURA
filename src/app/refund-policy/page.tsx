@@ -30,10 +30,10 @@ export default function RefundPolicyPage() {
               If you wish to cancel or modify your reservation for any reason, simply send an email
               to our concierge at{' '}
               <a
-                href="mailto:care@valcurafragrance.com"
+                href="mailto:valcura08@gmail.com"
                 className="text-[#110D09] font-medium underline hover:text-[#8C6D3F]"
               >
-                care@valcurafragrance.com
+                valcura08@gmail.com
               </a>{' '}
               within 24 hours mentioning your Order ID and the reason for cancellation. We will
               promptly cancel your order and initiate a 100% full refund back to your original
@@ -73,10 +73,10 @@ export default function RefundPolicyPage() {
             <p>
               To claim transit damage protection, simply contact us at{' '}
               <a
-                href="mailto:care@valcurafragrance.com"
+                href="mailto:valcura08@gmail.com"
                 className="text-[#110D09] font-medium underline hover:text-[#8C6D3F]"
               >
-                care@valcurafragrance.com
+                valcura08@gmail.com
               </a>{' '}
               within <strong className="text-[#110D09] font-medium">24 hours of delivery</strong> with
               your Order ID and clear photographs of the damaged bottle and outer carton packaging.

@@ -722,7 +722,7 @@ export default function AuthModal() {
                   {mode === 'signin' && (
                     <button
                       type="button"
-                      onClick={() => alert('Please contact our client concierge at care@valcurafragrance.com to reset your credentials.')}
+                      onClick={() => alert('Please contact our client concierge at valcura08@gmail.com to reset your credentials.')}
                       className="text-[10px] text-[#8C6D42] hover:underline"
                     >
                       Forgot?

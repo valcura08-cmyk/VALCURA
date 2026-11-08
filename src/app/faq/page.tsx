@@ -13,7 +13,7 @@ export default function FAQPage() {
     },
     {
       q: 'What is your cancellation and return policy?',
-      a: 'We offer 100% free cancellation within 24 hours of placing your order—simply email care@valcurafragrance.com with your details. Due to cosmetic hygiene standards, we cannot accept returns once the bottle has been opened or unsealed. If your bottle arrives damaged during transit, we offer 100% money back or an immediate replacement when contacted within 24 hours of delivery.',
+      a: 'We offer 100% free cancellation within 24 hours of placing your order—simply email valcura08@gmail.com with your details. Due to cosmetic hygiene standards, we cannot accept returns once the bottle has been opened or unsealed. If your bottle arrives damaged during transit, we offer 100% money back or an immediate replacement when contacted within 24 hours of delivery.',
     },
     {
       q: 'What fragrance notes make up Cacao Citrine?',

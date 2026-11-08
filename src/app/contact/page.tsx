@@ -68,10 +68,10 @@ export default function ContactUsPage() {
                   <div>
                     <span className="text-[#888075] block font-mono">Concierge Email:</span>
                     <a
-                      href="mailto:care@valcurafragrance.com"
+                      href="mailto:valcura08@gmail.com"
                       className="text-[#110D09] hover:text-[#8C6D3F] font-medium"
                     >
-                      care@valcurafragrance.com
+                      valcura08@gmail.com
                     </a>
                   </div>
                 </div>
