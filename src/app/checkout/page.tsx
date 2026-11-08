@@ -346,6 +346,21 @@ export default function CheckoutPage() {
     });
   };
 
+  // Dynamically load Instamojo in-page modal checkout script
+  const loadInstamojoScript = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if (typeof window === 'undefined') return resolve(false);
+      if ((window as any).Instamojo) return resolve(true);
+
+      const script = document.createElement('script');
+      script.src = 'https://js.instamojo.com/v1/checkout.js';
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   // Official Bank Gateway Trigger (Instamojo Official Payment API & Smart Link)
   const handlePayWithOfficialGateway = async () => {
     setErrorMsg('');
@@ -361,24 +376,43 @@ export default function CheckoutPage() {
         document.cookie = `valcura_pending_order_id=${orderId}; path=/; max-age=86400; SameSite=Lax`;
       }
 
-      // 3. Request official Instamojo payment URL from server API
-      const res = await fetch('/api/payment/instamojo/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: totalPayableAmount,
-          orderId,
-          customer: formData,
-        }),
-      });
+      // 3. Try official Instamojo in-page checkout modal first
+      const isSdkLoaded = await loadInstamojoScript();
+      if (isSdkLoaded && (window as any).Instamojo) {
+        (window as any).Instamojo.configure({
+          handlers: {
+            onSuccess: async function (response: any) {
+              try {
+                setLoading(true);
+                const paymentId = response.paymentId || response.payment_id || 'VERIFIED';
+                await fetch(
+                  `/api/payment/instamojo-callback?payment_id=${paymentId}&payment_status=Credit&order_id=${orderId}`
+                );
+                clearCart();
+                router.push(`/order-confirmation/${orderId}`);
+              } catch (e) {
+                clearCart();
+                router.push(`/order-confirmation/${orderId}`);
+              }
+            },
+            onClose: function () {
+              setLoading(false);
+              setErrorMsg('Payment was closed. Your order was NOT booked.');
+            },
+            onFailure: function () {
+              setLoading(false);
+              setErrorMsg('Payment failed or declined by bank.');
+            },
+          },
+        });
 
-      const data = await res.json();
-      if (res.ok && data.success && data.paymentUrl) {
-        window.location.href = data.paymentUrl;
+        (window as any).Instamojo.open(
+          'https://www.instamojo.com/@raghavsindhwani08/lb3855b83dac64b81aa79f27b632465f6/'
+        );
         return;
       }
 
-      // 4. Fallback to direct smart link
+      // 4. Fallback to direct redirect link
       const instamojoBase = 'https://imjo.in/FgJ98W';
       const paymentUrl = new URL(instamojoBase);
       paymentUrl.searchParams.set('data_name', formData.fullName.trim());
