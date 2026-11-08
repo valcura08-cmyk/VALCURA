@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, saveDb, Order } from '@/lib/db';
-import { syncOrderToCloud, getOrderFromCloud } from '@/lib/cloudDb';
+import { syncOrderToCloud, getOrderFromCloud, checkUtrExistsInCloud } from '@/lib/cloudDb';
 import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 3. Anti-Fraud Security Check: Prevent Duplicate UTR Reuse
+    // 3. Anti-Fraud Security Check: Prevent Duplicate UTR Reuse (Local DB + Supabase Cloud DB)
     const existingOrderWithUtr = db.orders.find(
       (o) =>
         o.id !== orderId &&
@@ -120,6 +120,18 @@ export async function POST(req: NextRequest) {
         {
           success: false,
           error: `Fraud Alert: This 12-digit UTR (${cleanUtr}) has already been recorded on Order #${existingOrderWithUtr.id}. Duplicate receipts and re-used transactions are strictly rejected.`,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Also check Supabase Cloud Database for duplicates
+    const cloudCheck = await checkUtrExistsInCloud(cleanUtr, orderId);
+    if (cloudCheck.exists) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Fraud Alert: This 12-digit UTR (${cleanUtr}) has already been recorded on Order #${cloudCheck.orderId}. Duplicate receipts and re-used transactions are strictly rejected.`,
         },
         { status: 400 }
       );

@@ -92,6 +92,7 @@ export default function CheckoutPage() {
     confidence?: number;
     message?: string;
     utrExtracted?: boolean;
+    timestamp?: string;
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -361,12 +362,12 @@ export default function CheckoutPage() {
       setReceiptImage(dataUrl);
       setIsUploading(false);
 
-      // Trigger AI OCR Extraction & Payment Analysis (with 6s safety timeout)
+      // Trigger AI OCR Extraction & Payment Analysis (with 18s safety window)
       setIsAnalyzingReceipt(true);
-      setScanStatus('Scanning receipt with AI & extracting payment details...');
+      setScanStatus('AI analyzing payment screenshot, recipient, cart amount & 12-digit UTR ID...');
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const timeoutId = setTimeout(() => controller.abort(), 18000);
 
       try {
         const scanRes = await fetch('/api/orders/scan-receipt', {
@@ -386,43 +387,39 @@ export default function CheckoutPage() {
           // 404 Error: Invalid Payment Screenshot
           setScanError(
             scanData.error ||
-              `Payment Receipt Invalid (404 Error): Could not verify authentic ₹${totalPayableAmount} payment to Raghav Sindhwani. Please ensure your screenshot shows the completed payment confirmation.`
+              `Payment Receipt Invalid (404 Error): Could not verify authentic ₹${totalPayableAmount} payment to Raghav Sindhwani with a valid 12-digit UTR ID. Please upload a clear screenshot showing the full transaction receipt.`
           );
           setScanSuccess(false);
           setUpiUtr('');
         } else if (scanData.success) {
-          // Authentic Payment Receipt Verified (Account & Amount match!)
+          // Authentic Payment Receipt Verified (Account, Amount & 12-Digit UTR match!)
           setScanSuccess(true);
           setScanError('');
           if (scanData.utr) {
-            setUpiUtr(scanData.utr); // Auto-fill 12-digit UTR if found
+            setUpiUtr(scanData.utr); // Automatically fill 12-digit UTR from receipt image!
           }
           setScanDetails({
             payee: scanData.payee || MERCHANT_NAME,
             amount: scanData.amount || totalPayableAmount,
-            app: scanData.app || 'PhonePe / UPI',
-            confidence: scanData.confidence || 95,
+            app: scanData.app || 'UPI Payment',
+            confidence: scanData.confidence || 98,
             message: scanData.message,
             utrExtracted: !!scanData.utr,
+            timestamp: scanData.timestamp,
           });
         }
       } catch (err: any) {
         clearTimeout(timeoutId);
-        // If aborted or timeout on slow networks, accept authentic mobile screenshot gracefully
+        setScanSuccess(false);
+        setUpiUtr('');
         if (err.name === 'AbortError' || err.message?.includes('timeout') || err.message?.includes('abort')) {
-          setScanSuccess(true);
-          setScanError('');
-          setScanDetails({
-            payee: MERCHANT_NAME,
-            amount: totalPayableAmount,
-            app: 'PhonePe / UPI',
-            confidence: 90,
-            message: 'Screenshot attached & verified. Please confirm your 12-digit UTR below.',
-            utrExtracted: false,
-          });
+          setScanError(
+            `Payment Receipt Analysis Timed Out: Please ensure your screenshot is clear, shows the 12-digit UTR ID, recipient Raghav Sindhwani, and paid amount ₹${totalPayableAmount}, then re-upload.`
+          );
         } else {
-          setScanError(`Payment Receipt Invalid (404 Error): AI scanner unable to analyze screenshot. Please re-upload a clear, authentic screenshot.`);
-          setScanSuccess(false);
+          setScanError(
+            `Payment Receipt Invalid (404 Error): AI scanner unable to analyze screenshot. Please ensure it clearly displays the 12-digit UTR ID and paid amount.`
+          );
         }
       } finally {
         setIsAnalyzingReceipt(false);
@@ -1309,17 +1306,17 @@ export default function CheckoutPage() {
                         <div>
                           <h3 className="text-sm sm:text-base font-serif font-bold uppercase tracking-wider text-[#110D09] flex items-center space-x-1.5">
                             <Sparkles className="w-4 h-4 text-[#8C6D42]" />
-                            <span>Upload Payment Screenshot &amp; 12-Digit UTR</span>
+                            <span>Upload Screenshot with UTR ID</span>
                           </h3>
                         </div>
                       </div>
                       <span className="text-[10px] font-mono uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 font-bold">
-                        Mandatory Verification
+                        Mandatory AI Verification
                       </span>
                     </div>
 
                     <p className="text-xs text-[#554D45] font-light leading-relaxed">
-                      Upload your valid payment screenshot below. Both the screenshot image and the 12-digit UPI UTR number will be strictly verified to confirm your allocation and prevent fraudulent submissions.
+                      Upload your valid payment screenshot with visible UTR ID below. Our AI strictly verifies that the screenshot shows (1) Recipient Raghav Sindhwani, (2) Exact cart total (₹{totalPayableAmount}), (3) Authentic 12-digit UPI UTR ID, and (4) Successful payment timestamp. Duplicate, fake, or re-used UTRs will be rejected.
                     </p>
 
                     {/* Hidden file input */}
@@ -1351,14 +1348,14 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <p className="text-xs sm:text-sm font-serif font-bold text-[#110D09] tracking-wide">
-                            Click or Drag &amp; Drop Payment Screenshot Here
+                            Upload Screenshot with UTR ID
                           </p>
                           <p className="text-[11px] text-[#110D09]/60 font-mono mt-1">
-                            Requires authentic screenshot from Google Pay, PhonePe, Paytm, or BHIM (PNG, JPG, WEBP • Min 15 KB)
+                            Requires authentic screenshot from Google Pay, PhonePe, Paytm, or BHIM showing the 12-digit UTR ID &amp; paid amount (₹{totalPayableAmount})
                           </p>
                         </div>
                         <span className="inline-block text-[10px] uppercase font-mono tracking-widest text-[#8C6D42] bg-white px-3 py-1 border border-[#D5CDC2] font-semibold">
-                          Choose Screenshot File
+                          Select Screenshot with UTR ID
                         </span>
                       </div>
                     ) : (

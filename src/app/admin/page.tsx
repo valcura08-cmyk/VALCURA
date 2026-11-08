@@ -36,6 +36,7 @@ import {
   Eye,
   EyeOff,
   Key,
+  Trash2,
 } from 'lucide-react';
 import { Order, Product } from '@/lib/db';
 
@@ -327,6 +328,33 @@ export default function AdminDashboardPage() {
       if (resData.success) {
         setNotificationBanner(`✓ Saved tracking info for ${orderId}: ${input.partner} (${input.awb})`);
         fetchAdminData();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
+
+  // Delete Order
+  const handleDeleteOrder = async (orderId: string) => {
+    if (!window.confirm(`Are you sure you want to permanently delete Order #${orderId}? This will remove it from local and cloud databases.`)) {
+      return;
+    }
+    setUpdatingOrderId(orderId);
+    try {
+      const res = await fetch(`/api/admin/orders?id=${encodeURIComponent(orderId)}`, {
+        method: 'DELETE',
+      });
+      const resData = await res.json();
+      if (resData.success) {
+        setNotificationBanner(`✓ Order #${orderId} deleted successfully.`);
+        if (selectedOrder?.id === orderId) {
+          setSelectedOrder(null);
+        }
+        fetchAdminData();
+      } else {
+        alert(resData.error || 'Failed to delete order');
       }
     } catch (e) {
       console.error(e);
@@ -993,6 +1021,16 @@ export default function AdminDashboardPage() {
                             className="text-xs text-[#8C6D42] hover:text-[#110D09] font-mono underline"
                           >
                             Inspect Dossier →
+                          </button>
+
+                          <button
+                            type="button"
+                            disabled={updatingOrderId === order.id}
+                            onClick={() => handleDeleteOrder(order.id)}
+                            className="p-1.5 text-rose-600 hover:text-white hover:bg-rose-600 rounded border border-rose-200 transition-colors"
+                            title="Delete Order"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </div>

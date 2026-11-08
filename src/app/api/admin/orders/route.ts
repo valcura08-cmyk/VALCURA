@@ -112,3 +112,43 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to update order' }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const cookieStore = cookies();
+    const sessionCookie = cookieStore.get('valcura_admin_session');
+    const auth = verifyAdminSessionToken(sessionCookie?.value);
+    if (!auth.valid) {
+      return NextResponse.json({ error: 'Unauthorized: Atelier session required' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const orderId = sanitizeString(searchParams.get('id') || '');
+    if (!orderId) {
+      return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
+    }
+
+    // 1. Remove from local store
+    const db = getDb();
+    const beforeCount = db.orders.length;
+    db.orders = db.orders.filter((o) => o.id !== orderId);
+    saveDb(db);
+
+    // 2. Remove from Supabase Cloud DB
+    try {
+      const { deleteOrderFromCloud } = await import('@/lib/cloudDb');
+      await deleteOrderFromCloud(orderId);
+    } catch (e) {
+      console.warn('Failed to delete order from cloud:', e);
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Order #${orderId} deleted successfully from atelier database and cloud.`,
+      deletedCount: beforeCount - db.orders.length,
+    });
+  } catch (err: any) {
+    console.error('Delete order error:', err);
+    return NextResponse.json({ error: 'Failed to delete order' }, { status: 500 });
+  }
+}

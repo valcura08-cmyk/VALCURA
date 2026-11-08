@@ -435,3 +435,68 @@ export async function getUserOrdersFromCloud(email: string): Promise<Order[]> {
     return [];
   }
 }
+
+/**
+ * Check if a 12-digit UTR has already been used on any existing paid order in Supabase
+ */
+export async function checkUtrExistsInCloud(
+  utr: string,
+  excludeOrderId?: string
+): Promise<{ exists: boolean; orderId?: string }> {
+  const config = getSupabaseConfig();
+  if (!config) return { exists: false };
+
+  try {
+    const cleanUtr = utr.trim();
+    let url = `${config.url}/rest/v1/orders?payment_transaction_id=eq.${encodeURIComponent(cleanUtr)}&select=id,payment_status`;
+    if (excludeOrderId) {
+      url += `&id=neq.${encodeURIComponent(excludeOrderId)}`;
+    }
+
+    const res = await fetch(url, {
+      headers: {
+        apikey: config.key,
+        Authorization: `Bearer ${config.key}`,
+      },
+    });
+
+    if (res.ok) {
+      const rows = await res.json();
+      if (Array.isArray(rows) && rows.length > 0) {
+        // Return duplicate match if order has been paid
+        const paidRow = rows.find(
+          (r: any) => r.payment_status === 'Fully Paid' || r.payment_status === 'Deposit Paid'
+        ) || rows[0];
+        return { exists: true, orderId: paidRow.id };
+      }
+    }
+    return { exists: false };
+  } catch (err) {
+    console.error('Failed to check UTR in cloud database:', err);
+    return { exists: false };
+  }
+}
+
+/**
+ * Delete an order from Supabase cloud database
+ */
+export async function deleteOrderFromCloud(orderId: string): Promise<boolean> {
+  const config = getSupabaseConfig();
+  if (!config) return false;
+
+  try {
+    const res = await fetch(`${config.url}/rest/v1/orders?id=eq.${encodeURIComponent(orderId)}`, {
+      method: 'DELETE',
+      headers: {
+        apikey: config.key,
+        Authorization: `Bearer ${config.key}`,
+      },
+    });
+
+    return res.ok;
+  } catch (err) {
+    console.error('Failed to delete order from cloud database:', err);
+    return false;
+  }
+}
+
