@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb, saveDb } from '@/lib/db';
-import { syncOrderToCloud } from '@/lib/cloudDb';
+import { getDb, saveDb, Order } from '@/lib/db';
+import { syncOrderToCloud, getOrderFromCloud } from '@/lib/cloudDb';
 import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
@@ -24,16 +24,23 @@ export async function POST(req: NextRequest) {
     }
 
     const db = getDb();
-    const orderIndex = db.orders.findIndex((o) => o.id === orderId.trim());
+    let order: Order | undefined = db.orders.find((o) => o.id === orderId.trim());
 
-    if (orderIndex === -1) {
+    if (!order) {
+      // Look up order in Supabase cloud database
+      const cloudOrder = await getOrderFromCloud(orderId.trim());
+      if (cloudOrder) {
+        order = cloudOrder;
+        db.orders.unshift(cloudOrder);
+      }
+    }
+
+    if (!order) {
       return NextResponse.json(
         { success: false, error: 'Order reservation not found on server.' },
         { status: 404 }
       );
     }
-
-    const order = db.orders[orderIndex];
 
     // 2. Strict 12-Digit Indian UPI UTR Validation (No fake/random numbers allowed)
     if (!utr || typeof utr !== 'string') {
@@ -246,7 +253,12 @@ export async function POST(req: NextRequest) {
       note: `Payment Verified & Confirmed. Transferred to: ${OFFICIAL_PAYEE_NAME} (${OFFICIAL_UPI_ID}), Amount: ₹${expectedAmount}, 12-Digit UTR: ${cleanUtr}. Verified receipt archived.`,
     });
 
-    db.orders[orderIndex] = order;
+    const finalIndex = db.orders.findIndex((o) => o.id === order.id);
+    if (finalIndex >= 0) {
+      db.orders[finalIndex] = order;
+    } else {
+      db.orders.unshift(order);
+    }
     saveDb(db);
 
     // Sync to Supabase cloud

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getDb, saveDb } from '@/lib/db';
-import { syncOrderToCloud } from '@/lib/cloudDb';
+import { getDb, saveDb, Order } from '@/lib/db';
+import { syncOrderToCloud, getOrderFromCloud } from '@/lib/cloudDb';
 import { verifyAdminSessionToken, sanitizeString } from '@/lib/security';
 
 export async function POST(req: NextRequest) {
@@ -22,13 +22,19 @@ export async function POST(req: NextRequest) {
     }
 
     const db = getDb();
-    const orderIndex = db.orders.findIndex((o) => o.id === orderId);
+    let order: any = db.orders.find((o) => o.id === orderId);
 
-    if (orderIndex === -1) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    if (!order) {
+      const cloudOrder = await getOrderFromCloud(orderId);
+      if (cloudOrder) {
+        order = cloudOrder;
+        db.orders.unshift(cloudOrder);
+      }
     }
 
-    const order = db.orders[orderIndex] as any;
+    if (!order) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    }
 
     // Handle delivery tick checkbox
     if (typeof isDelivered === 'boolean') {
@@ -85,7 +91,12 @@ export async function POST(req: NextRequest) {
       order.trackingPartner = trackingPartner.trim();
     }
 
-    db.orders[orderIndex] = order;
+    const finalIndex = db.orders.findIndex((o) => o.id === order.id);
+    if (finalIndex >= 0) {
+      db.orders[finalIndex] = order;
+    } else {
+      db.orders.unshift(order);
+    }
     saveDb(db);
 
     // Sync updated order state to Cloud Database

@@ -154,7 +154,140 @@
       "storySnippet": "A sudden spark in the velvet dark. A flick of a flame illuminating glossy lips, smoky allure, and unspoken chemistry. Cacao Citrine captures this intoxicating energy with radiant solar citrus freshness that melts into the rich, addictive warmth of hazelnut cream and roasted cacao."
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "VAL-ORD-629814",
+      "createdAt": "2026-11-08T10:36:23.512+00:00",
+      "customer": {
+        "fullName": "Raghav Sindhwani",
+        "email": "raghavsindhwanial@gmail.com",
+        "phone": "6378582047",
+        "address": "Scheme 2 lajpat nagar , Alwar, (Landmark: Patel hospital ), Alwar, Rajasthan - 301001",
+        "city": "Alwar",
+        "state": "",
+        "pincode": "301001"
+      },
+      "plan": "preorder_full",
+      "items": [
+        {
+          "productId": "cacao-citrine",
+          "productName": "Cacao Citrine",
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paymentPlan": "preorder_full",
+          "unitDeposit": 399,
+          "unitBalance": 0,
+          "unitTotal": 399,
+          "paidToday": 399,
+          "remainingBalance": 0,
+          "totalItemValue": 399
+        }
+      ],
+      "totalQuantity": 1,
+      "amountPaidToday": 399,
+      "remainingBalance": 0,
+      "totalOrderValue": 399,
+      "paymentStatus": "Fully Paid",
+      "orderStatus": "Ready for Fulfilment",
+      "paymentMethod": "UPI QR Code (Verified Screenshot & 12-Digit UTR)",
+      "paymentTransactionId": "431289124912",
+      "availabilityNotified": false,
+      "history": [],
+      "isDelivered": false
+    },
+    {
+      "id": "VAL-ORD-597661",
+      "createdAt": "2026-11-08T08:46:32.146+00:00",
+      "customer": {
+        "fullName": "Raghav Sindhwani",
+        "email": "raghavsindhwanial@gmail.com",
+        "phone": "6378582047",
+        "address": "Scheme 2 lajpat nagar , Alwar, (Landmark: Patel hospital ), Alwar, Rajasthan - 301001",
+        "city": "Alwar",
+        "state": "",
+        "pincode": "301001"
+      },
+      "plan": "preorder_full",
+      "items": [
+        {
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paidToday": 399,
+          "productId": "cacao-citrine",
+          "unitTotal": 399,
+          "paymentPlan": "preorder_full",
+          "productName": "Cacao Citrine",
+          "unitBalance": 0,
+          "unitDeposit": 399,
+          "totalItemValue": 399,
+          "remainingBalance": 0
+        }
+      ],
+      "totalQuantity": 1,
+      "amountPaidToday": 399,
+      "remainingBalance": 0,
+      "totalOrderValue": 399,
+      "paymentStatus": "Payment Pending",
+      "orderStatus": "Payment Pending",
+      "paymentMethod": "UPI / Cards (Indian Gateway)",
+      "paymentTransactionId": "",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "note": "Pre-order created. Total payable today: ₹399, remaining balance: ₹0.",
+          "status": "Payment Pending",
+          "timestamp": "2026-11-08T08:46:32.146Z"
+        }
+      ],
+      "isDelivered": false
+    },
+    {
+      "id": "VAL-ORD-611946",
+      "createdAt": "2026-11-08T08:44:26.52+00:00",
+      "customer": {
+        "fullName": "valcura",
+        "email": "valcura08@gmail.com",
+        "phone": "6378582047",
+        "address": "scheme 2 lajpat nagar, alwar, (Landmark: patel hospital), Alwar, Rajasthan - 301001",
+        "city": "Alwar",
+        "state": "",
+        "pincode": "301001"
+      },
+      "plan": "preorder_full",
+      "items": [
+        {
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paidToday": 399,
+          "productId": "cacao-citrine",
+          "unitTotal": 399,
+          "paymentPlan": "preorder_full",
+          "productName": "Cacao Citrine",
+          "unitBalance": 0,
+          "unitDeposit": 399,
+          "totalItemValue": 399,
+          "remainingBalance": 0
+        }
+      ],
+      "totalQuantity": 1,
+      "amountPaidToday": 399,
+      "remainingBalance": 0,
+      "totalOrderValue": 399,
+      "paymentStatus": "Payment Pending",
+      "orderStatus": "Payment Pending",
+      "paymentMethod": "UPI / Cards (Indian Gateway)",
+      "paymentTransactionId": "",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "note": "Pre-order created. Total payable today: ₹399, remaining balance: ₹0.",
+          "status": "Payment Pending",
+          "timestamp": "2026-11-08T08:44:26.520Z"
+        }
+      ],
+      "isDelivered": false
+    }
+  ],
   "settings": {
     "brandName": "VALCURA",
     "tagline": "A scent for every side of you.",

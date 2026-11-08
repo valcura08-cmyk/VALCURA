@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getDb, Order } from '@/lib/db';
+import { getDb, saveDb, Order } from '@/lib/db';
 import { getCustomersFromCloud, getOrdersFromCloud } from '@/lib/cloudDb';
 import { verifyAdminSessionToken } from '@/lib/security';
 
@@ -38,18 +38,62 @@ export async function GET() {
     try {
       cloudOrders = await getOrdersFromCloud();
     } catch (e) {
-      // Gracefully continue
+      console.error('Failed to fetch cloud orders in /api/admin/data:', e);
     }
 
     const orderMap = new Map<string, Order>();
-    [...cloudOrders, ...db.orders].forEach((ord) => {
+
+    // Seed with local orders
+    db.orders.forEach((ord) => {
       if (ord && ord.id) {
         orderMap.set(ord.id, ord);
       }
     });
 
+    // Cloud orders take precedence and enrich local state
+    cloudOrders.forEach((cloudOrd) => {
+      if (!cloudOrd || !cloudOrd.id) return;
+      const localOrd = orderMap.get(cloudOrd.id);
+      if (!localOrd) {
+        orderMap.set(cloudOrd.id, cloudOrd);
+      } else {
+        const isPaid = cloudOrd.paymentStatus === 'Fully Paid' || localOrd.paymentStatus === 'Fully Paid';
+        const isDelivered =
+          cloudOrd.orderStatus === 'Delivered' ||
+          (cloudOrd as any).isDelivered === true ||
+          localOrd.orderStatus === 'Delivered' ||
+          (localOrd as any).isDelivered === true;
+
+        orderMap.set(cloudOrd.id, {
+          ...localOrd,
+          ...cloudOrd,
+          paymentStatus: isPaid ? 'Fully Paid' : (cloudOrd.paymentStatus || localOrd.paymentStatus),
+          orderStatus: isDelivered
+            ? 'Delivered'
+            : isPaid
+            ? cloudOrd.orderStatus !== 'Payment Pending'
+              ? cloudOrd.orderStatus
+              : 'Ready for Fulfilment'
+            : cloudOrd.orderStatus,
+          paymentTransactionId: cloudOrd.paymentTransactionId || localOrd.paymentTransactionId || '',
+          isDelivered: !!isDelivered,
+          history: (cloudOrd.history?.length || 0) >= (localOrd.history?.length || 0) ? cloudOrd.history : localOrd.history,
+          customer: {
+            ...localOrd.customer,
+            ...cloudOrd.customer,
+          },
+        });
+      }
+    });
+
     const allOrders = Array.from(orderMap.values());
     allOrders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    // Sync cloud orders into local store cache
+    if (cloudOrders.length > 0 && db.orders.length !== allOrders.length) {
+      db.orders = allOrders;
+      saveDb(db);
+    }
 
     // Ensure all orders have client account ID
     allOrders.forEach((o: any) => {

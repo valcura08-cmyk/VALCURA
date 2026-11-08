@@ -151,6 +151,14 @@ export default function AdminDashboardPage() {
     checkAuth();
   }, []);
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const interval = setInterval(() => {
+      fetchAdminData();
+    }, 15000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
+
   const checkAuth = async () => {
     try {
       const res = await fetch('/api/admin/auth');
@@ -590,13 +598,18 @@ export default function AdminDashboardPage() {
 
   // Filter Orders
   const filteredOrders = data.orders.filter((order: any) => {
-    if (orderFilter === 'pending_delivery' && (order.isDelivered || order.orderStatus === 'Delivered')) {
-      return false;
+    const isPaid =
+      order.paymentStatus === 'Fully Paid' ||
+      order.orderStatus === 'Ready for Fulfilment' ||
+      order.orderStatus === 'Delivered';
+
+    if (orderFilter === 'pending_delivery') {
+      if (!isPaid || order.isDelivered || order.orderStatus === 'Delivered') return false;
     }
     if (orderFilter === 'delivered' && !order.isDelivered && order.orderStatus !== 'Delivered') {
       return false;
     }
-    if (orderFilter === 'paid' && order.paymentStatus !== 'Fully Paid') return false;
+    if (orderFilter === 'paid' && !isPaid) return false;
     if (orderFilter === 'deposit' && order.plan !== 'deposit') return false;
 
     if (searchQuery) {
@@ -876,9 +889,9 @@ export default function AdminDashboardPage() {
               <div className="flex flex-wrap gap-2 text-xs font-mono">
                 {[
                   { id: 'all', label: `All Orders (${data.orders.length})` },
-                  { id: 'pending_delivery', label: `Pending Delivery Tick (${data.stats.pendingDeliveryCount || 0})` },
+                  { id: 'paid', label: `Fully Paid (${data.stats.fullyPaidCount || 0})` },
+                  { id: 'pending_delivery', label: `Awaiting Delivery Tick (${data.stats.pendingDeliveryCount || 0})` },
                   { id: 'delivered', label: `Delivered ✓ (${data.stats.deliveredCount || 0})` },
-                  { id: 'paid', label: `Fully Paid (${data.stats.fullyPaidCount})` },
                 ].map((f) => (
                   <button
                     key={f.id}
