@@ -66,11 +66,7 @@ export default function CollectionsOverviewPage() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 priority
               />
-              <div className="absolute top-2 left-2">
-                <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#110D09] text-[#FAF7F2] font-bold rounded-full shadow-2xs">
-                  Collection 01
-                </span>
-              </div>
+
             </div>
 
             {/* Compact Minimal Details */}

@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ShieldCheck,
-  Truck,
   ArrowRight,
   Sparkles,
   Layers,
@@ -15,7 +14,6 @@ import {
   MessageCircle,
   Share2,
   Bookmark,
-  Star,
   Check,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -267,7 +265,7 @@ export default function CacaoCitrineProductPage() {
             <div className="space-y-1 pb-2.5 border-b border-[#E8DFD3]">
               <div className="flex items-center space-x-2">
                 <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold">
-                  VALCURA • COLLECTION 01
+                  VALCURA
                 </span>
                 <span className="text-[9px] tracking-wider uppercase px-2 py-0.5 bg-[#FAF8F5] text-[#110D09] border border-[#D5CDC2] font-mono font-bold rounded-sm">
                   50 ML Eau De Parfum
@@ -404,11 +402,7 @@ export default function CacaoCitrineProductPage() {
               </div>
 
               {/* Trust Reassurances */}
-              <div className="flex items-center justify-between pt-2 border-t border-[#E8DFD3] text-[10px] font-mono text-[#554D45]">
-                <span className="flex items-center space-x-1.5">
-                  <Truck className="w-3.5 h-3.5 text-[#8C6D42]" />
-                  <span>Pan-India Air Express (2-4 Days)</span>
-                </span>
+              <div className="flex items-center justify-center pt-2 border-t border-[#E8DFD3] text-[10px] font-mono text-[#554D45]">
                 <span className="flex items-center space-x-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#8C6D42]" />
                   <span>Tamper-Evident Atelier Packaging</span>
@@ -865,76 +859,6 @@ export default function CacaoCitrineProductPage() {
               </div>
             </div>
           )}
-        </section>
-
-        {/* ============================================================== */}
-        {/* ATELIER CRAFTSMANSHIP & OLFACTORY EXCELLENCE PILLARS */}
-        {/* ============================================================== */}
-        <section className="mt-8 sm:mt-10 max-w-6xl mx-auto space-y-5">
-          <div className="text-center space-y-1 max-w-xl mx-auto">
-            <span className="text-[9px] font-mono tracking-[0.25em] text-[#8C6D42] uppercase font-bold block">
-              Atelier Olfactory Standards
-            </span>
-            <h2 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
-              The Craftsmanship Behind The Scent
-            </h2>
-            <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-              Every drop of Cacao Citrine is compounded using traditional high-perfumery methods and verified clean ingredients.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl p-4 sm:p-5 space-y-2 shadow-xs hover:border-[#110D09] transition-all">
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#8C6D42] block">
-                Pillar I • Concentration &amp; Projection
-              </span>
-              <h3 className="text-base font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                20% Eau De Parfum • 4 Hours Projection
-              </h3>
-              <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-                Meticulously dosed at 20% fragrance oil concentration for 4 hours of radiant daylight projection and an intimate 10–12 hour skin trail.
-              </p>
-            </div>
-
-            <div className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl p-4 sm:p-5 space-y-2 shadow-xs hover:border-[#110D09] transition-all">
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#8C6D42] block">
-                Pillar II • Botanicals
-              </span>
-              <h3 className="text-base font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                Calabrian Bergamot &amp; Cacao
-              </h3>
-              <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-                Cold-pressed bergamot rinds paired with artisanally roasted cocoa absolutes, avoiding cloying synthetic sweeteners.
-              </p>
-            </div>
-
-            <div className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl p-4 sm:p-5 space-y-2 shadow-xs hover:border-[#110D09] transition-all">
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#8C6D42] block">
-                Pillar III • Clean Formulation
-              </span>
-              <h3 className="text-base font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                Organic Plant Alcohol Base
-              </h3>
-              <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-                Certified vegan, cruelty-free, and phthalate-free. Formulated on a skin-kind botanical alcohol carrier with zero chemical sting.
-              </p>
-            </div>
-          </div>
-
-          {/* Testimonial Quote Banner */}
-          <div className="bg-[#FAF6EE] border-2 border-[#110D09] rounded-xl sm:rounded-2xl p-5 sm:p-6 text-center space-y-2 shadow-xs">
-            <div className="flex justify-center space-x-1 text-[#8C6D42]">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-[#8C6D42]" />
-              ))}
-            </div>
-            <p className="text-sm sm:text-base font-serif italic text-[#110D09] max-w-2xl mx-auto leading-relaxed">
-              &ldquo;Cacao Citrine strikes that impossible balance: bright, sparkling citrus in the first hour that gently settles into warm hazelnut chocolate. It feels like golden morning sunlight on a bespoke cashmere coat.&rdquo;
-            </p>
-            <div className="pt-1 text-[10px] font-mono text-[#8C6D42] uppercase tracking-widest font-bold">
-              — Atelier Fragrance Collector • Verified Purchase
-            </div>
-          </div>
         </section>
       </div>
     </div>

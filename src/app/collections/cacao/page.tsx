@@ -36,7 +36,7 @@ export default function CacaoveilCollectionPage() {
           <div className="absolute inset-0 flex flex-col justify-end pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 text-center text-white">
             <div className="max-w-3xl mx-auto space-y-2.5">
               <span className="text-[10px] tracking-luxury uppercase text-[#E8D7C3] font-mono font-bold block">
-                Collection 01 • Inaugural Trilogy
+                Inaugural Trilogy
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold tracking-wide uppercase text-white drop-shadow-md">
                 Cacaoveil
