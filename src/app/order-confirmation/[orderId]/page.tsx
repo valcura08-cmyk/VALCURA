@@ -163,7 +163,7 @@ export default function OrderConfirmationPage({ params }: Props) {
                 Confirmation sent to: <strong className="text-[#110D09]">{order.customer.email}</strong>
               </p>
               <p className="text-[11px] text-[#110D09]/50 font-light leading-relaxed">
-                Dispatch notifications and balance payment alerts will be dispatched to this email and
+                Dispatch notifications, courier tracking, and priority allocation updates will be dispatched to this email and
                 mobile number.
               </p>
             </div>
