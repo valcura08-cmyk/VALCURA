@@ -2,19 +2,22 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getDb, saveDb } from '@/lib/db';
 import { syncOrderToCloud } from '@/lib/cloudDb';
+import { verifyAdminSessionToken, sanitizeString } from '@/lib/security';
 
 export async function POST(req: NextRequest) {
   try {
     const cookieStore = cookies();
     const sessionCookie = cookieStore.get('valcura_admin_session');
-    if (!sessionCookie || sessionCookie.value !== 'valcura_auth_session_token_verified_2026') {
+    const auth = verifyAdminSessionToken(sessionCookie?.value);
+    if (!auth.valid) {
       return NextResponse.json({ error: 'Unauthorized: Atelier session required' }, { status: 401 });
     }
 
     const body = await req.json();
     const { orderId, newStatus, note, isDelivered, trackingNumber, trackingPartner } = body;
 
-    if (!orderId) {
+    const cleanOrderId = sanitizeString(orderId);
+    if (!cleanOrderId) {
       return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
     }
 

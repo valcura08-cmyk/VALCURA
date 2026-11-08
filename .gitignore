@@ -51,3 +51,7 @@ Desktop.ini
 # User uploaded receipts
 public/uploads/receipts/*
 !public/uploads/receipts/.gitkeep
+
+# Scratch tests
+scratch/
+
