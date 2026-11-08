@@ -121,11 +121,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/our-story" className="hover:text-[#8C6D42] transition-colors">
-                  Our Inspiration
-                </Link>
-              </li>
-              <li>
                 <Link href="/fragrance-finder" className="hover:text-[#8C6D42] transition-colors">
                   Fragrance Finder
                 </Link>
