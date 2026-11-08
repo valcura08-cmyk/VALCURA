@@ -8,12 +8,12 @@ export default function FAQPage() {
 
   const faqs = [
     {
-      q: 'How does the VALCURA pre-order and reservation system work?',
-      a: 'We offer two transparent purchasing avenues: Option 1 (Pay in full today at ₹450 per bottle, saving ₹50 off the standard ₹500 price) and Option 2 (Reserve with a 70% payment today at ₹329 per bottle, with the remaining balance of ₹141 payable when the batch is bottled and ready for dispatch. Total reservation plan is ₹470).',
+      q: 'How does the VALCURA pre-order system work?',
+      a: 'Secure your handcrafted flacon of Cacao Citrine at an exclusive introductory pre-order price of ₹399. Your allocation is confirmed immediately upon booking with complimentary insured delivery across India and zero hidden fees.',
     },
     {
-      q: 'Will my card or account be automatically charged for the remaining ₹141 balance?',
-      a: 'No. VALCURA never stores card credentials or initiates automatic recurring charges. When your fragrance becomes available, we send you an official availability notification containing a secure, personalized payment link (/pay-balance/[orderId]) where you actively finalize the remaining balance.',
+      q: 'What is your cancellation and return policy?',
+      a: 'We offer 100% free cancellation within 24 hours of placing your order—simply email care@valcurafragrance.com with your details. Due to cosmetic hygiene standards, we cannot accept returns once the bottle has been opened or unsealed. If your bottle arrives damaged during transit, we offer 100% money back or an immediate replacement when contacted within 24 hours of delivery.',
     },
     {
       q: 'What fragrance notes make up Cacao Citrine?',
@@ -28,8 +28,8 @@ export default function FAQPage() {
       a: 'Yes. VALCURA provides complimentary insured delivery across India for all pre-orders. No hidden handling or shipping fees will be added at checkout.',
     },
     {
-      q: 'Can I cancel or refund my 70% reservation deposit?',
-      a: 'Yes. Reservation deposits are 100% refundable at any point prior to dispatch authorization. If your plans change before the balance payment request, simply contact our concierge team at care@valcurafragrance.com.',
+      q: 'How long does an approved refund take to reach my account?',
+      a: 'Once your 24-hour cancellation or verified transit claim is processed by our concierge, your 100% refund is credited back to your original payment method (UPI / Bank Account) within 3–5 business days.',
     },
   ];
 

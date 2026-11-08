@@ -41,11 +41,11 @@ export default function PaymentInfoPage() {
               Pre-Order Pricing Breakdown
             </h2>
             <div className="p-4 bg-[#FAF8F5] border border-[#E8E2D8] space-y-2 font-mono text-[11px] text-[#110D09]">
-              <p className="font-sans text-xs text-[#8C6D3F] font-semibold">Standard Price: ₹500 / bottle</p>
-              <p>• Option 1 (Pay in Full): ₹450 / bottle — Save ₹50 instantly</p>
-              <p>• Option 2 (Reservation Plan): ₹470 / bottle total</p>
-              <p className="pl-4 text-[#554D45]">→ Pay today to reserve (70%): ₹329 / bottle</p>
-              <p className="pl-4 text-[#554D45]">→ Pay when available (balance): ₹141 / bottle</p>
+              <p className="font-sans text-xs text-[#8C6D3F] font-semibold">Standard Retail Price: ₹500 / flacon</p>
+              <p>• Promotional Pre-Order Rate: ₹399 / flacon (Save ₹101 instantly)</p>
+              <p>• Direct UPI Payment to Merchant: Raghav Sindhwani (raghavsindhwanial@okicici)</p>
+              <p>• Free cancellation within 24 hours via email with 100% full refund</p>
+              <p>• 100% money back for transit damage reported within 24 hours</p>
             </div>
           </div>
 

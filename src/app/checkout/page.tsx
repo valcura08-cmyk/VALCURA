@@ -1464,6 +1464,10 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex items-start space-x-2">
                   <Check className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0 mt-0.5" />
+                  <span>Free cancellation within 24 hours &amp; 100% money back for transit damage.</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0 mt-0.5" />
                   <span>Instant digital receipt &amp; automated order tracking generated.</span>
                 </div>
               </div>

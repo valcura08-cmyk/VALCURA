@@ -33,12 +33,14 @@ export default function TermsPage() {
 
           <div className="space-y-3">
             <h2 className="text-base font-serif uppercase tracking-wide text-[#8C6D3F]">
-              2. Pre-Order & Reservation Terms
+              2. Pre-Order &amp; Reservation Terms
             </h2>
             <p>
-              Pre-orders for Cacao Citrine grant priority batch allocation. For customers opting for the
-              70% reservation plan (₹329/bottle), receipt of the remaining balance (₹141/bottle) is
-              required before physical dispatch occurs.
+              Pre-orders for Cacao Citrine grant priority batch allocation at the exclusive promotional
+              rate of ₹399 per flacon. Reservations can be cancelled free of charge within 24 hours of
+              booking by emailing care@valcurafragrance.com. Due to strict cosmetic hygiene regulations,
+              opened or unsealed bottles cannot be returned. Damaged flacons reported within 24 hours of
+              delivery are covered under our 100% money-back guarantee.
             </p>
           </div>
 
