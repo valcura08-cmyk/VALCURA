@@ -21,9 +21,6 @@ export default function ShopAllFragrancesPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="absolute inset-0 flex items-center justify-center text-center p-4">
           <div className="max-w-2xl mx-auto space-y-2.5 text-white">
-            <span className="text-[10px] tracking-widest uppercase text-[#D5CDC2] font-mono font-bold block">
-              Atelier Fragrance Catalogue
-            </span>
             <h1 className="text-3xl sm:text-5xl font-serif tracking-wide uppercase text-[#FAF7F2]">
               Explore By Scents
             </h1>

@@ -133,22 +133,6 @@ export default function CacaoCitrineProductPage() {
     }
   };
 
-  const handleAddToCart = () => {
-    addToCart(
-      {
-        productId: 'cacao-citrine',
-        name: 'Cacao Citrine',
-        slug: 'cacao-citrine',
-        image: images[0].src,
-        category: 'Unisex',
-        volume: '50 ML',
-        quantity: quantity,
-        paymentPlan: 'full',
-      },
-      'full'
-    );
-  };
-
   return (
     <div className="bg-[#FAF7F2] text-[#110D09] min-h-[calc(100vh-70px)] pb-16">
       {/* Compact Editorial Breadcrumb */}
@@ -305,48 +289,6 @@ export default function CacaoCitrineProductPage() {
                 </div>
                 <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 bg-[#110D09] text-white rounded-md font-bold">
                   In Stock
-                </span>
-              </div>
-
-              {/* Quantity Selector & Action Button */}
-              <div className="flex items-center gap-2.5">
-                <div className="inline-flex items-center border border-[#D5CDC2] bg-white rounded-xl overflow-hidden shrink-0 shadow-2xs">
-                  <button
-                    type="button"
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold"
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <span className="w-8 text-center font-mono text-sm text-[#110D09] font-semibold">
-                    {quantity}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold"
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleAddToCart}
-                  className="flex-1 h-11 bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] text-xs font-serif font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-[#C5A880]/30"
-                >
-                  <span>Acquire Bottle • ₹{totalFull}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              {/* Trust Reassurances */}
-              <div className="flex items-center justify-center pt-2 border-t border-[#E8DFD3] text-[10px] font-mono text-[#554D45]">
-                <span className="flex items-center space-x-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#8C6D42]" />
-                  <span>Tamper-Evident Atelier Packaging</span>
                 </span>
               </div>
             </div>
