@@ -352,7 +352,7 @@ export default function CacaoCitrineProductPage() {
             </div>
 
             {/* Quick Specs Pills */}
-            <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono text-[#554D45]">
+            <div className="grid grid-cols-3 gap-2.5 text-center text-[10px] font-mono text-[#554D45]">
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
                 <span className="text-[#8C6D42] font-bold block">20% EDP</span>
                 <span className="text-[9px] text-[#888075]">Extrait Ratio</span>
@@ -362,12 +362,8 @@ export default function CacaoCitrineProductPage() {
                 <span className="text-[9px] text-[#888075]">Projection Time</span>
               </div>
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
-                <span className="text-[#8C6D42] font-bold block">10-12 HRS</span>
+                <span className="text-[#8C6D42] font-bold block">4-5 HOURS</span>
                 <span className="text-[9px] text-[#888075]">Skin Longevity</span>
-              </div>
-              <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
-                <span className="text-[#8C6D42] font-bold block">100% VEGAN</span>
-                <span className="text-[9px] text-[#888075]">Phthalate-Free</span>
               </div>
             </div>
 
@@ -715,11 +711,11 @@ export default function CacaoCitrineProductPage() {
                   </h3>
                 </div>
                 <span className="text-[10px] font-mono text-[#8C6D42] uppercase tracking-wider bg-[#FAF6EE] px-2.5 py-1 rounded-md border border-[#E8DFD3] font-semibold">
-                  5 Key Specifications
+                  Key Specifications
                 </span>
               </div>
 
-              {/* Exact 5 One-Line Pointed Bullets About Fragrance */}
+              {/* Exact Pointed Bullets About Fragrance */}
               <ul className="space-y-3.5 text-xs sm:text-sm font-sans text-[#110D09] leading-relaxed pt-1">
                 <li className="flex items-center space-x-3">
                   <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
@@ -731,15 +727,11 @@ export default function CacaoCitrineProductPage() {
                 </li>
                 <li className="flex items-center space-x-3">
                   <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
-                  <span><strong>10 to 12+ Hours skin longevity</strong> settling into an intimate, warm chocolate-musk dry-down.</span>
+                  <span><strong>4 to 5 Hours skin longevity</strong> settling into an intimate, warm chocolate-musk dry-down.</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
                   <span><strong>Unisex composition</strong> harmonizing sparkling Italian citrus with velvety roasted hazelnut &amp; vanilla.</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
-                  <span><strong>100% Vegan &amp; cruelty-free</strong>, crafted on certified organic grain alcohol without phthalates.</span>
                 </li>
               </ul>
             </div>
