@@ -76,6 +76,7 @@ export async function GET() {
               : 'Ready for Fulfilment'
             : cloudOrd.orderStatus,
           paymentTransactionId: cloudOrd.paymentTransactionId || localOrd.paymentTransactionId || '',
+          receiptImageUrl: (localOrd as any)?.receiptImageUrl || (cloudOrd as any)?.receiptImageUrl || '',
           isDelivered: !!isDelivered,
           history: (cloudOrd.history?.length || 0) >= (localOrd.history?.length || 0) ? cloudOrd.history : localOrd.history,
           customer: {
