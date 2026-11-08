@@ -379,7 +379,7 @@ export default function CheckoutPage() {
       }
 
       // 4. Fallback to direct smart link
-      const instamojoBase = 'https://imjo.in/mfmtNv';
+      const instamojoBase = 'https://imjo.in/FgJ98W';
       const paymentUrl = new URL(instamojoBase);
       paymentUrl.searchParams.set('data_name', formData.fullName.trim());
       paymentUrl.searchParams.set('data_email', formData.email.trim());

@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { amount, orderId, customer } = body;
 
-    const apiKey = process.env.INSTAMOJO_API_KEY || 'd0bcac92d4daed6f5de8101e3ae755fa';
-    const authToken = process.env.INSTAMOJO_AUTH_TOKEN || '945623bf2700f978c1a8a686adf170b8';
+    const apiKey = process.env.INSTAMOJO_API_KEY || '8c5e5fa8a9272029ecbe16fbd192ef20';
+    const authToken = process.env.INSTAMOJO_AUTH_TOKEN || '7b465dc0d26eef6f948ab668a78377d4';
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://valcura.vercel.app';
     const redirectUrl = `${baseUrl}/api/payment/instamojo-callback?order_id=${encodeURIComponent(orderId)}`;
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     }
 
     // If API rejected due to KYC moderation permission, fallback to configured payment link
-    const fallbackLink = new URL('https://imjo.in/mfmtNv');
+    const fallbackLink = new URL('https://imjo.in/FgJ98W');
     fallbackLink.searchParams.set('data_name', customer?.fullName || '');
     fallbackLink.searchParams.set('data_email', customer?.email || '');
     fallbackLink.searchParams.set('data_phone', customer?.phone || '');
