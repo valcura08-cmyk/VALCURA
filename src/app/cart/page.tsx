@@ -35,12 +35,12 @@ export default function CartPage() {
               Your bag is currently empty
             </h2>
             <p className="text-xs sm:text-sm text-[#110D09]/60 font-light">
-              Explore our debut Cacao Collection and reserve your flacon before launch allocation is
+              Explore our debut Cacaoveil Collection and reserve your flacon before launch allocation is
               fulfilled.
             </p>
             <div>
-              <Link href="/collections/cacao" className="btn-luxury-primary">
-                Explore Cacao Collection
+              <Link href="/collections/cacaoveil" className="btn-luxury-primary">
+                Explore Cacaoveil
               </Link>
             </div>
           </div>

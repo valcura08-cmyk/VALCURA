@@ -51,17 +51,17 @@ export default function CollectionsOverviewPage() {
           </p>
         </div>
 
-        {/* The Cacao Collection - Small Compact Square Box (Decreased Length) */}
+        {/* Cacaoveil Collection - Small Compact Square Box */}
         <div className="flex justify-center">
           <Link
-            href="/collections/cacao"
+            href="/collections/cacaoveil"
             className="group w-full max-w-[220px] sm:max-w-[240px] bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#110D09] rounded-2xl transition-all duration-300 shadow-2xs hover:shadow-md hover:-translate-y-0.5 overflow-hidden flex flex-col"
           >
             {/* Compact Image */}
             <div className="relative aspect-[4/3] w-full bg-[#F4ECE1] overflow-hidden">
               <Image
                 src="/editorial/cacao-collection-citrus.jpg"
-                alt="The Cacao Collection by VALCURA"
+                alt="Cacaoveil by VALCURA"
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 priority
@@ -73,10 +73,10 @@ export default function CollectionsOverviewPage() {
               </div>
             </div>
 
-            {/* Compact Minimal Details - Decreased Length */}
+            {/* Compact Minimal Details */}
             <div className="p-3 flex flex-col text-center space-y-1 bg-[#FAF6EE]">
               <h3 className="text-xs sm:text-sm font-serif font-bold uppercase tracking-wide text-[#110D09] group-hover:text-[#8C6D42] transition-colors leading-tight">
-                The Cacao Collection
+                Cacaoveil
               </h3>
               <p className="text-[9px] font-mono text-[#8C6D42] uppercase tracking-wider">
                 50 ML Eau de Parfum

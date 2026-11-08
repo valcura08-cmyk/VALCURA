@@ -348,7 +348,7 @@ export default function FragranceFinderPage() {
                         View Fragrance & Pre-Order
                       </Link>
                       <Link
-                        href="/collections/cacao"
+                        href="/collections/cacaoveil"
                         className="btn-luxury-outline text-center flex-1"
                       >
                         Browse Full Collection
@@ -374,7 +374,7 @@ export default function FragranceFinderPage() {
                 </h3>
                 <p className="text-sm text-[#110D09]/70 font-light max-w-lg mx-auto leading-relaxed">
                   {result?.explanation ||
-                    'Your selections lean towards fragrance families currently in private atelier formulation (such as upcoming Silken Sambac and Roasted Zest). We invite you to explore our debut Cacao Collection.'}
+                    'Your selections lean towards fragrance families currently in private atelier formulation (such as upcoming Silken Sambac and Roasted Zest). We invite you to explore our debut Cacaoveil Collection.'}
                 </p>
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button
@@ -384,8 +384,8 @@ export default function FragranceFinderPage() {
                   >
                     Adjust Quiz Answers
                   </button>
-                  <Link href="/collections/cacao" className="btn-luxury-primary text-xs">
-                    Browse Cacao Collection
+                  <Link href="/collections/cacaoveil" className="btn-luxury-primary text-xs">
+                    Browse Cacaoveil
                   </Link>
                 </div>
               </div>

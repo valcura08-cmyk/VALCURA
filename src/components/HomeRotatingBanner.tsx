@@ -18,8 +18,8 @@ const slides: BannerSlide[] = [
   {
     id: 'cacaoaveil',
     image: '/brand/home-banner-cacaoaveil.jpg',
-    title: 'The Cacaoaveil Is Now Live',
-    link: '/collections/cacao',
+    title: 'Cacaoveil Is Now Live',
+    link: '/collections/cacaoveil',
     bgColor: '#3D2314',
     objectPosition: 'center center',
   },

@@ -537,7 +537,7 @@ export default function AdminDashboardPage() {
             <p className="text-2xl font-serif text-[#110D09] font-bold">
               {data.stats.totalBottlesReserved}
             </p>
-            <p className="text-[10px] text-[#8C6D42] font-mono">50 ML Cacao Trilogy</p>
+            <p className="text-[10px] text-[#8C6D42] font-mono">50 ML Cacaoveil Trilogy</p>
           </div>
 
           {/* KPI 3: Delivered Flacons (Ticked) */}

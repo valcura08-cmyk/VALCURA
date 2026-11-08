@@ -4,14 +4,19 @@ import Image from 'next/image';
 import { getDb } from '@/lib/db';
 
 export const metadata = {
-  title: 'The Cacao Collection | VALCURA Atelier',
+  title: 'Cacaoveil | VALCURA Atelier',
   description:
-    'Explore the 3 fragrances in our inaugural Cacao Collection: Cacao Citrine, Silken Sambac, and Roasted Zest.',
+    'Explore the 3 fragrances in our inaugural Cacaoveil Collection: Cacao Citrine, Silken Sambac, and Roasted Zest.',
 };
 
-export default function CacaoCollectionPage() {
+export default function CacaoveilCollectionPage() {
   const db = getDb();
-  const products = db.products.filter((p) => p.collection === 'Cacao Collection');
+  const products = db.products.filter(
+    (p) =>
+      p.collection === 'Cacaoveil' ||
+      p.collection === 'Cacao Collection' ||
+      p.collection?.toLowerCase().includes('cacao')
+  );
 
   return (
     <div className="bg-[#FAF7F2] text-[#110D09] min-h-screen pb-24">
@@ -20,7 +25,7 @@ export default function CacaoCollectionPage() {
         <div className="relative aspect-[21/9] sm:aspect-[16/6] min-h-[280px] sm:min-h-[360px] w-full">
           <Image
             src="/editorial/cacao-collection-citrus.jpg"
-            alt="The Cacao Collection by VALCURA"
+            alt="Cacaoveil by VALCURA"
             fill
             className="object-cover"
             priority
@@ -34,7 +39,7 @@ export default function CacaoCollectionPage() {
                 Collection 01 • Inaugural Trilogy
               </span>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold tracking-wide uppercase text-white drop-shadow-md">
-                The Cacao Collection
+                Cacaoveil
               </h1>
               <p className="text-xs sm:text-sm text-white/90 font-light max-w-xl mx-auto leading-relaxed drop-shadow-sm">
                 Where rich hazelnut comfort and roasted cacao depth meet luminous citrus vitality.
@@ -44,11 +49,11 @@ export default function CacaoCollectionPage() {
         </div>
       </section>
 
-      {/* ONLY THE FRAGRANCES — NOTHING ELSE */}
+      {/* ONLY THE FRAGRANCES */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16">
         <div className="flex items-center justify-between pb-6 mb-8 border-b border-[#E8DFD3] text-xs font-mono text-[#110D09]/60">
           <span>Showing {products.length} Fragrances</span>
-          <span className="font-semibold text-[#8C6D42]">The Cacao Trilogy • 50 ML</span>
+          <span className="font-semibold text-[#8C6D42]">The Cacaoveil Trilogy • 50 ML</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -95,24 +100,23 @@ export default function CacaoCollectionPage() {
 
                       <div className="pt-1.5 flex items-baseline justify-center space-x-2">
                         <span className="text-lg sm:text-xl font-serif text-[#110D09] font-bold">
-                          ₹{product.fullPrice || 499}
+                          ₹{product.fullPrice || 399}
                         </span>
                         <span className="text-[10px] text-[#110D09]/40 line-through font-mono">
-                          ₹{product.standardPrice || 599}
+                          ₹599
                         </span>
-                        <span className="text-[9px] text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 rounded font-mono font-bold">
-                          Save ₹100
+                        <span className="text-[9px] font-mono font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                          Pre-Order Privilege
                         </span>
                       </div>
                     </div>
 
-                    {/* Action Button */}
-                    <div className="pt-2 border-t border-[#E8DFD3]">
+                    <div className="pt-2 border-t border-[#E8DFD3]/80 space-y-2">
                       <Link
                         href={`/product/${product.slug}`}
-                        className="w-full btn-luxury-primary text-center block text-[11px] font-serif font-bold py-2 px-3 uppercase tracking-[0.15em] rounded-lg shadow-2xs"
+                        className="w-full py-2 bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all duration-200 block text-center shadow-xs"
                       >
-                        Explore Fragrance →
+                        Reserve Flacon (₹399)
                       </Link>
                     </div>
                   </div>
@@ -120,43 +124,52 @@ export default function CacaoCollectionPage() {
               );
             }
 
-            // COMING SOON PERFUMES (Silken Sambac & Roasted Zest)
+            // Blurred Teaser Flacons (Silken Sambac / Roasted Zest)
             return (
               <div
                 key={product.id}
-                className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs transition-all duration-300"
+                className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-2xl flex flex-col justify-between overflow-hidden shadow-xs hover:border-[#110D09] transition-all duration-300"
               >
-                {/* Compact Product Image */}
-                <div className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F4ECE1] overflow-hidden block">
+                <Link
+                  href={`/product/${product.slug}`}
+                  className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F4ECE1] overflow-hidden block group"
+                >
                   <Image
                     src={product.images[0]}
                     alt={product.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-                    className="object-cover opacity-90"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute top-2 left-2">
-                    <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#FAF7F2]/95 text-[#110D09] border border-[#D5CDC2] rounded-full font-bold">
+                    <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-amber-900 text-white font-bold rounded-full shadow-xs">
+                      Formulation in Progress
+                    </span>
+                  </div>
+                </Link>
+
+                <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
+                  <div className="space-y-0.5 text-center">
+                    <span className="text-[9px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
                       {product.category}
                     </span>
-                  </div>
-                </div>
-
-                {/* Just perfume name and Coming Soon - NO EXTRA CLUTTER */}
-                <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between items-center text-center space-y-2.5">
-                  <div className="space-y-1 pt-1">
-                    <span className="text-[9px] text-[#8C6D42] font-mono uppercase tracking-wider font-semibold block">
-                      {product.collection}
-                    </span>
-                    <h2 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] leading-tight">
-                      {product.name}
-                    </h2>
+                    <Link href={`/product/${product.slug}`}>
+                      <h2 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] hover:text-[#8C6D42] transition-colors leading-tight">
+                        {product.name}
+                      </h2>
+                    </Link>
+                    <p className="text-[11px] text-[#110D09]/60 font-light mt-1">
+                      {product.shortDescription}
+                    </p>
                   </div>
 
-                  <div className="w-full pt-2 border-t border-[#E8DFD3]">
-                    <div className="w-full py-2 px-3 bg-[#FAF7F2] border border-[#D5CDC2] text-center text-[10px] font-mono font-bold tracking-luxury uppercase text-[#110D09] rounded-lg">
-                      Coming Soon
-                    </div>
+                  <div className="pt-2 border-t border-[#E8DFD3]/80">
+                    <Link
+                      href={`/product/${product.slug}`}
+                      className="w-full py-2 bg-[#F3EFE8] hover:bg-[#110D09] hover:text-white text-[#110D09] text-[10px] sm:text-xs font-mono font-semibold uppercase tracking-wider rounded-xl transition-all duration-200 block text-center"
+                    >
+                      View Private Formulation →
+                    </Link>
                   </div>
                 </div>
               </div>

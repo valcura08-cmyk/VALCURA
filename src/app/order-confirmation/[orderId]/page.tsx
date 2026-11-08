@@ -175,7 +175,7 @@ export default function OrderConfirmationPage({ params }: Props) {
               Return to Homepage
             </Link>
             <Link
-              href="/collections/cacao"
+              href="/collections/cacaoveil"
               className="btn-luxury-primary text-center flex-1 text-xs"
             >
               Continue Exploring

@@ -21,7 +21,7 @@ export default function FAQPage() {
     },
     {
       q: 'When will Silken Sambac and Roasted Zest become available?',
-      a: 'Silken Sambac (For Her) and Roasted Zest (For Him) are currently in private atelier formulation. We show blurred teaser previews to provide a glimpse into the evolving Cacao Collection. As soon as formulation is finalized, pricing, verified notes, and pre-orders will be unlocked.',
+      a: 'Silken Sambac (For Her) and Roasted Zest (For Him) are currently in private atelier formulation. We show blurred teaser previews to provide a glimpse into the evolving Cacaoveil Collection. As soon as formulation is finalized, pricing, verified notes, and pre-orders will be unlocked.',
     },
     {
       q: 'Are shipping charges included in my pre-order?',

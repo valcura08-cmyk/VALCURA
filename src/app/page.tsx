@@ -8,7 +8,7 @@ import HomeRotatingBanner from '@/components/HomeRotatingBanner';
 export const metadata = {
   title: 'VALCURA | A Scent for Every Side of You',
   description:
-    'VALCURA is a modern fragrance house built around individuality, moods, and personal expression. Explore by moods, explore by scents, and discover the Cacao Collection.',
+    'VALCURA is a modern fragrance house built around individuality, moods, and personal expression. Explore by moods, explore by scents, and discover Cacaoveil.',
 };
 
 export default function HomePage() {
@@ -134,7 +134,7 @@ export default function HomePage() {
                   Explore All Collections
                 </h3>
                 <p className="text-[11px] sm:text-xs text-[#110D09]/70 font-light leading-relaxed line-clamp-2">
-                  Discover our curated themed trilogies and olfactory worlds, featuring the inaugural Cacao Collection.
+                  Discover our curated themed trilogies and olfactory worlds, featuring the inaugural Cacaoveil Collection.
                 </p>
               </div>
 

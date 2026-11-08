@@ -92,8 +92,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/collections/cacao" className="hover:text-[#8C6D42] transition-colors">
-                  The Cacao Collection
+                <Link href="/collections/cacaoveil" className="hover:text-[#8C6D42] transition-colors">
+                  Cacaoveil
                 </Link>
               </li>
               <li>

@@ -614,8 +614,8 @@ export default function CheckoutPage() {
             You currently have no fragrance flacons selected. Explore our creations to reserve your
             limited pre-order flacon.
           </p>
-          <Link href="/collections/cacao" className="btn-luxury-primary text-xs inline-block">
-            Explore Cacao Collection
+          <Link href="/collections/cacaoveil" className="btn-luxury-primary text-xs inline-block">
+            Explore Cacaoveil
           </Link>
         </div>
       </div>
