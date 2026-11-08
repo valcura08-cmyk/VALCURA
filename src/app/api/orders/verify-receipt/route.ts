@@ -46,20 +46,13 @@ export async function POST(req: NextRequest) {
     let cleanUtr = (utr || '').toString().trim().replace(/\D/g, '');
 
     if (cleanUtr.length !== 12) {
-      if (receiptImageBase64 && typeof receiptImageBase64 === 'string' && receiptImageBase64.length > 50) {
-        // Auto-assign authentic 12-digit reference for customer who uploaded verified screenshot proof
-        const nowStr = Date.now().toString();
-        const randPart = Math.floor(100000 + Math.random() * 900000).toString();
-        cleanUtr = `${nowStr.slice(-6)}${randPart}`;
-      } else {
-        return NextResponse.json(
-          {
-            success: false,
-            error: `Invalid UTR length. Indian UPI Reference Numbers must be exactly 12 numeric digits (e.g. 412893821948). You entered ${cleanUtr.length} digits.`,
-          },
-          { status: 400 }
-        );
-      }
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Invalid UTR length. Indian UPI Reference Numbers must be exactly 12 numeric digits (e.g. 667843814028). You entered ${cleanUtr.length} digits.`,
+        },
+        { status: 400 }
+      );
     }
 
     // Reject all identical digits (e.g. 000000000000, 111111111111)
