@@ -469,10 +469,34 @@ export default function CheckoutPage() {
     }
   };
 
-  // Dynamic QR Code pre-encoded with exact ₹399 amount and Raghav Sindhwani
+  // Dynamic Google Pay & UPI strings pre-encoded with exact cart amount and Raghav Sindhwani
   const dynamicUpiString = `upi://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
     MERCHANT_NAME
   )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}`;
+
+  const gpayUpiString = `tez://upi/pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
+    MERCHANT_NAME
+  )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}&mc=5691`;
+
+  const phonepeUpiString = `phonepe://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
+    MERCHANT_NAME
+  )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}`;
+
+  const paytmUpiString = `paytmmp://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
+    MERCHANT_NAME
+  )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}`;
+
+  const handleLaunchGooglePay = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const start = Date.now();
+    window.location.href = gpayUpiString;
+    setTimeout(() => {
+      // If Google Pay tez:// protocol did not intercept (e.g. iOS or desktop), fall back to standard UPI
+      if (Date.now() - start < 2000) {
+        window.location.href = dynamicUpiString;
+      }
+    }, 700);
+  };
 
   const dynamicQrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=10&data=${encodeURIComponent(
     dynamicUpiString
@@ -1187,20 +1211,84 @@ export default function CheckoutPage() {
                       </span>
                     </div>
 
-                    {/* BOX 1: SCAN QR CODE OR OPEN IN UPI APP */}
+                    {/* BOX 1: GOOGLE PAY SETUP & PREFILLED CART CHECKOUT */}
                     <div className="bg-[#FAF8F5] border border-[#D5CDC2] rounded-2xl p-5 sm:p-7 space-y-6 shadow-sm">
                       <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-3.5">
                         <div>
                           <span className="text-[10px] font-mono tracking-luxury text-[#8C6D42] uppercase font-bold block">
-                            Step 1 of 2 • Scan or Tap to Pay
+                            Step 1 of 2 • Google Pay &amp; UPI
                           </span>
                           <h3 className="text-base sm:text-lg font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                            Scan · Pay · Reserve Flacon
+                            Google Pay Setup · Pre-Filled Cart Amount
                           </h3>
                         </div>
                         <div className="text-right">
-                          <span className="text-[10px] font-mono text-[#554D45] uppercase block">Total Payable</span>
+                          <span className="text-[10px] font-mono text-[#554D45] uppercase block">Cart Total Payable</span>
                           <span className="text-xl font-mono font-bold text-[#110D09]">₹{totalPayableAmount}</span>
+                        </div>
+                      </div>
+
+                      {/* FEATURED GOOGLE PAY FAST 1-TAP CARD */}
+                      <div className="bg-white border-2 border-[#110D09] rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            {/* Google 4-Color 'G' SVG */}
+                            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.64v3.03h3.88c2.27-2.09 3.66-5.17 3.66-9.11z" />
+                              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.13C3.26 21.31 7.34 24 12 24z" />
+                              <path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.28C.46 8.2.01 10.04.01 12c0 1.96.45 3.8 1.27 5.42l4-3.13z" />
+                              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.69 1.28 6.58l4 3.13c.95-2.83 3.6-4.96 6.72-4.96z" />
+                            </svg>
+                            <span className="font-serif font-bold text-sm sm:text-base tracking-wide text-[#110D09]">
+                              Google Pay 1-Tap Express Pay
+                            </span>
+                          </div>
+                          <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-bold uppercase">
+                            ₹{totalPayableAmount} Pre-Filled
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-[#554D45] leading-relaxed">
+                          Tap below to open Google Pay directly on your phone with the exact cart total of <strong className="font-mono text-[#110D09]">₹{totalPayableAmount}</strong> pre-filled to <strong className="text-[#110D09]">{MERCHANT_NAME}</strong>. Zero manual number entry required.
+                        </p>
+
+                        <button
+                          type="button"
+                          onClick={handleLaunchGooglePay}
+                          className="w-full py-3.5 px-4 bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs sm:text-sm font-mono font-bold uppercase rounded-xl transition-all shadow-md flex items-center justify-center space-x-2.5 text-center group"
+                        >
+                          <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.64v3.03h3.88c2.27-2.09 3.66-5.17 3.66-9.11z" />
+                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.13C3.26 21.31 7.34 24 12 24z" />
+                            <path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.28C.46 8.2.01 10.04.01 12c0 1.96.45 3.8 1.27 5.42l4-3.13z" />
+                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.69 1.28 6.58l4 3.13c.95-2.83 3.6-4.96 6.72-4.96z" />
+                          </svg>
+                          <span>Pay ₹{totalPayableAmount} With Google Pay</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </button>
+
+                        {/* Secondary app quick-launch pills */}
+                        <div className="pt-1.5 flex flex-wrap items-center gap-2 text-[11px] font-mono">
+                          <span className="text-[#554D45]/75 text-[10px] uppercase font-bold mr-1">Other Apps:</span>
+                          <a
+                            href={phonepeUpiString}
+                            className="px-2.5 py-1 bg-[#FAF8F5] hover:bg-[#E8E2D8] border border-[#D5CDC2] rounded text-[#110D09] font-semibold transition-colors inline-flex items-center space-x-1"
+                          >
+                            <span>PhonePe (₹{totalPayableAmount})</span>
+                          </a>
+                          <a
+                            href={paytmUpiString}
+                            className="px-2.5 py-1 bg-[#FAF8F5] hover:bg-[#E8E2D8] border border-[#D5CDC2] rounded text-[#110D09] font-semibold transition-colors inline-flex items-center space-x-1"
+                          >
+                            <span>Paytm (₹{totalPayableAmount})</span>
+                          </a>
+                          <a
+                            href={dynamicUpiString}
+                            className="px-2.5 py-1 bg-[#FAF8F5] hover:bg-[#E8E2D8] border border-[#D5CDC2] rounded text-[#8C6D42] font-semibold transition-colors inline-flex items-center space-x-1"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            <span>Any UPI App</span>
+                          </a>
                         </div>
                       </div>
 
@@ -1208,6 +1296,11 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                         {/* Left: Dynamic QR Code */}
                         <div className="md:col-span-5 flex flex-col items-center text-center">
+                          <div className="mb-2 inline-flex items-center space-x-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-emerald-800">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            <span>Scan with GPay • ₹{totalPayableAmount} Pre-Filled</span>
+                          </div>
+
                           <div className="p-4 bg-white rounded-2xl border-2 border-[#110D09] shadow-md flex items-center justify-center">
                             {showOfficialPoster ? (
                               <div className="relative w-48 h-60">
@@ -1236,15 +1329,15 @@ export default function CheckoutPage() {
                               onClick={() => setShowOfficialPoster(!showOfficialPoster)}
                               className="text-[10px] font-mono text-[#8C6D42] hover:text-[#110D09] underline transition-colors"
                             >
-                              {showOfficialPoster ? 'Switch to Vector QR Code' : 'View Official GPay Poster'}
+                              {showOfficialPoster ? 'Switch to Dynamic Vector QR Code' : 'View Official GPay Poster'}
                             </button>
                           </div>
-                          <p className="text-[10px] font-mono text-[#554D45]/75 mt-1">
-                            Scan with Google Pay, PhonePe, Paytm, BHIM, or any UPI app
+                          <p className="text-[10px] font-mono text-[#554D45]/75 mt-1 max-w-[240px]">
+                            Point your Google Pay camera scanner. ₹{totalPayableAmount} is locked automatically.
                           </p>
                         </div>
 
-                        {/* Right: Payee Info, One-Click Copy & Direct App Opener */}
+                        {/* Right: Payee Info, One-Click Copy & Details */}
                         <div className="md:col-span-7 space-y-4 text-xs text-[#554D45]">
                           <div className="p-4 bg-white rounded-xl border border-[#D5CDC2] space-y-2.5">
                             <div className="flex items-center justify-between">
@@ -1284,24 +1377,20 @@ export default function CheckoutPage() {
                             </div>
 
                             <div className="flex justify-between items-center text-xs pt-1 border-t border-[#E8E2D8]">
-                              <span className="text-[#554D45]">Payable Total:</span>
+                              <span className="text-[#554D45]">Cart Total Locked:</span>
                               <strong className="font-mono font-bold text-sm sm:text-base text-[#110D09]">
-                                ₹{totalPayableAmount} (Flat ₹399/bottle)
+                                ₹{totalPayableAmount} ({(totalQuantity || 1)} Flacon{(totalQuantity || 1) > 1 ? 's' : ''})
                               </strong>
                             </div>
                           </div>
 
-                          {/* HappyHair-style 1-Tap Mobile App Deeplink */}
-                          <div>
-                            <a
-                              href={dynamicUpiString}
-                              className="w-full py-3.5 px-4 bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs font-mono font-bold uppercase rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 text-center"
-                            >
-                              <ExternalLink className="w-4 h-4" />
-                              <span>Open In UPI App (GPay · PhonePe · Paytm)</span>
-                            </a>
-                            <p className="text-[10px] text-center text-[#554D45]/70 mt-1.5 font-mono">
-                              On mobile: Tapping opens your UPI app with ₹{totalPayableAmount} pre-filled
+                          <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl space-y-1 text-[11px] text-emerald-900">
+                            <div className="flex items-center space-x-1.5 font-bold font-mono uppercase text-[10px] text-emerald-800">
+                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                              <span>Instant UPI Verification Guarantee</span>
+                            </div>
+                            <p className="text-[11px] leading-relaxed text-emerald-800/90 font-light">
+                              Your payment routes directly to the official merchant VPA with zero gateway fees. Once paid, proceed immediately to Step 2 below to upload your screenshot.
                             </p>
                           </div>
                         </div>
