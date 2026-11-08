@@ -346,6 +346,40 @@ export default function CheckoutPage() {
     });
   };
 
+  // Official Bank Gateway Trigger (Instamojo Official Payment Link with Prefilled Details)
+  const handlePayWithOfficialGateway = async () => {
+    setErrorMsg('');
+    setLoading(true);
+
+    try {
+      // 1. Initialize server order in pending state (saved to Supabase & local DB)
+      const orderId = await initializeServerOrder();
+
+      // 2. Persist order reference in localStorage & cookie for post-payment confirmation
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('valcura_pending_order_id', orderId);
+        document.cookie = `valcura_pending_order_id=${orderId}; path=/; max-age=86400; SameSite=Lax`;
+      }
+
+      // 3. Pre-fill customer details directly into Instamojo Smart Link
+      const instamojoBase = 'https://imjo.in/mfmtNv';
+      const paymentUrl = new URL(instamojoBase);
+      paymentUrl.searchParams.set('data_name', formData.fullName.trim());
+      paymentUrl.searchParams.set('data_email', formData.email.trim());
+      paymentUrl.searchParams.set('data_phone', formData.phone.trim());
+      paymentUrl.searchParams.set('data_amount', totalPayableAmount.toString());
+
+      // 4. Redirect customer to official gateway checkout
+      window.location.href = paymentUrl.toString();
+    } catch (err: any) {
+      console.error('Official payment gateway error:', err);
+      setErrorMsg(
+        err.message || 'Could not initiate payment. Please verify your details.'
+      );
+      setLoading(false);
+    }
+  };
+
   // Official Razorpay Gateway Trigger (UPI, Cards, NetBanking, Wallets)
   const handlePayWithRazorpay = async () => {
     setErrorMsg('');
@@ -1191,7 +1225,7 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     disabled={loading}
-                    onClick={() => handlePayWithRazorpay()}
+                    onClick={() => handlePayWithOfficialGateway()}
                     className="w-full py-4 text-xs sm:text-sm font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2 shadow-xl transition-all bg-[#110D09] hover:bg-[#8C6D42] text-white cursor-pointer"
                   >
                     {loading ? (
