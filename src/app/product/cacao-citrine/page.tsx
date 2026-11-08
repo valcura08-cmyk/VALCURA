@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -10,10 +10,13 @@ import {
   Truck,
   ArrowRight,
   Sparkles,
-  Droplets,
   Layers,
-  Clock,
-  Compass,
+  Heart,
+  MessageCircle,
+  Share2,
+  Bookmark,
+  Star,
+  Check,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
@@ -22,57 +25,12 @@ export default function CacaoCitrineProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<'evolution' | 'moods' | 'ritual'>('evolution');
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const scrollToImage = (index: number) => {
-    setActiveImageIndex(index);
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const cards = container.querySelectorAll<HTMLElement>('[data-gallery-card]');
-      if (cards[index]) {
-        cards[index].scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center',
-        });
-      }
-    }
-  };
-
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const cards = container.querySelectorAll<HTMLElement>('[data-gallery-card]');
-      const containerCenter = container.getBoundingClientRect().left + container.offsetWidth / 2;
-
-      let closestIndex = activeImageIndex;
-      let minDistance = Infinity;
-
-      cards.forEach((card, idx) => {
-        const cardRect = card.getBoundingClientRect();
-        const cardCenter = cardRect.left + cardRect.width / 2;
-        const distance = Math.abs(containerCenter - cardCenter);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestIndex = idx;
-        }
-      });
-
-      if (closestIndex !== activeImageIndex) {
-        setActiveImageIndex(closestIndex);
-      }
-    }
-  };
-
-  const handlePrev = () => {
-    const prevIdx = (activeImageIndex - 1 + images.length) % images.length;
-    scrollToImage(prevIdx);
-  };
-
-  const handleNext = () => {
-    const nextIdx = (activeImageIndex + 1) % images.length;
-    scrollToImage(nextIdx);
-  };
+  
+  // Instagram mood state
+  const [activeMoodIndex, setActiveMoodIndex] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [shareFeedback, setShareFeedback] = useState(false);
 
   const images = [
     {
@@ -97,12 +55,47 @@ export default function CacaoCitrineProductPage() {
     },
   ];
 
-  const moodLinks = [
-    { slug: 'coffee-date', title: 'The Coffee Date', tag: 'Morning Ritual' },
-    { slug: 'after-hours', title: 'After Hours', tag: 'Twilight Evening' },
-    { slug: 'little-indulgence', title: 'A Little Indulgence', tag: 'Afternoon Leisure' },
-    { slug: 'slow-moments', title: 'Slow Moments', tag: 'Quiet Weekend' },
-    { slug: 'light-up', title: 'Light Up', tag: 'Midnight Flame' },
+  const moodSlides = [
+    {
+      slug: 'coffee-date',
+      title: 'The Coffee Date',
+      image: '/moods/coffee-date.jpg',
+      tag: 'Morning Ritual • 10:00 AM',
+      handle: 'the.coffee.date',
+      desc: 'An unhurried café table, warm espresso aroma, and effortless conversation wrapped in sunlit citrus.',
+    },
+    {
+      slug: 'after-hours',
+      title: 'After Hours',
+      image: '/moods/after-hours.jpg',
+      tag: 'Twilight & Evening • 8:00 PM',
+      handle: 'after.hours.intimate',
+      desc: 'Low-lit dining, chocolate dessert, and magnetic roasted cacao deepening on warm evening skin.',
+    },
+    {
+      slug: 'little-indulgence',
+      title: 'A Little Indulgence',
+      image: '/moods/little-indulgence.jpg',
+      tag: 'Afternoon Leisure • 3:30 PM',
+      handle: 'little.indulgence.ritual',
+      desc: 'Hazelnut pastries and cocoa-dusted treats. A tactile reminder to savor the finer moments.',
+    },
+    {
+      slug: 'slow-moments',
+      title: 'Slow Moments',
+      image: '/moods/slow-moments.jpg',
+      tag: 'Quiet Solitude • 7:00 AM',
+      handle: 'slow.moments.peace',
+      desc: 'Linen sheets, morning sunlight pouring across hardwood, and soft skin carrying the intimate dry-down of cashmere musk.',
+    },
+    {
+      slug: 'light-up',
+      title: 'Light Up',
+      image: '/moods/light-up.jpg',
+      tag: 'Night Atmosphere • 11:30 PM',
+      handle: 'light.up.midnight',
+      desc: 'Match strikes, amber glow, and deep woods intertwining with creamy vanilla to ignite the night.',
+    },
   ];
 
   // Pricing constants per unit
@@ -112,6 +105,35 @@ export default function CacaoCitrineProductPage() {
   // Multi-quantity calculations
   const totalStandard = standardPrice * quantity;
   const totalFull = fullPrice * quantity;
+
+  const handlePrevImage = () => {
+    setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleNextImage = () => {
+    setActiveImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrevMood = () => {
+    setActiveMoodIndex((prev) => (prev - 1 + moodSlides.length) % moodSlides.length);
+  };
+
+  const handleNextMood = () => {
+    setActiveMoodIndex((prev) => (prev + 1) % moodSlides.length);
+  };
+
+  const handleShare = () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      navigator.share({
+        title: `VALCURA • ${moodSlides[activeMoodIndex].title}`,
+        url: window.location.href,
+      }).catch(() => {});
+    } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setShareFeedback(true);
+      setTimeout(() => setShareFeedback(false), 2000);
+    }
+  };
 
   const handleAddToCart = () => {
     addToCart(
@@ -130,7 +152,7 @@ export default function CacaoCitrineProductPage() {
   };
 
   return (
-    <div className="bg-[#FAF7F2] text-[#110D09] min-h-[calc(100vh-70px)] pb-12">
+    <div className="bg-[#FAF7F2] text-[#110D09] min-h-[calc(100vh-70px)] pb-16">
       {/* Compact Editorial Breadcrumb */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 text-[11px] text-[#554D45] font-light flex items-center justify-between border-b border-[#E8DFD3]/70">
         <div className="flex items-center space-x-2">
@@ -150,119 +172,80 @@ export default function CacaoCitrineProductPage() {
       </div>
 
       {/* Main Single-Open Product Experience */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 sm:pt-5">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-4 sm:pt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
           
           {/* ============================================================== */}
-          {/* LEFT: HORIZONTAL SWIPEABLE PHOTOGRAPHY ROW */}
+          {/* LEFT: CLASSIC HIGH-END GALLERY (PRIMARY IMAGE + THUMBNAILS BELOW) */}
           {/* ============================================================== */}
           <div className="lg:col-span-6 space-y-3">
-            {/* Header: Label + Quick Angle Stepper */}
-            <div className="flex items-center justify-between px-1">
-              <div className="flex items-center space-x-2">
-                <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold">
-                  Gallery Perspectives
-                </span>
-                <span className="text-[10px] font-mono text-[#554D45]/70">
-                  (Swipe Horizontally)
-                </span>
+            {/* Primary Bottle View */}
+            <div className="relative aspect-square max-h-[390px] sm:max-h-[440px] bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl overflow-hidden shadow-xs group">
+              <Image
+                src={images[activeImageIndex].src}
+                alt={images[activeImageIndex].alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 550px"
+                className="object-cover transition-transform duration-500 group-hover:scale-102"
+                priority
+              />
+
+              {/* Angle Badge */}
+              <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm border border-[#E8DFD3] px-2.5 py-0.5 text-[10px] tracking-widest uppercase text-[#110D09] font-mono font-bold rounded-full shadow-2xs">
+                0{activeImageIndex + 1} / 0{images.length}
               </div>
-              <div className="flex items-center space-x-1.5">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  className="w-8 h-8 rounded-full bg-white border border-[#E8DFD3] text-[#110D09] hover:bg-[#FAF8F5] hover:border-[#8C6D42] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
-                  aria-label="Previous Perspective"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <span className="font-mono text-xs font-bold text-[#110D09] px-1">
-                  0{activeImageIndex + 1} / 0{images.length}
+
+              {/* Navigation Arrows */}
+              <button
+                type="button"
+                onClick={handlePrevImage}
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
+                aria-label="Previous Perspective"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={handleNextImage}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
+                aria-label="Next Perspective"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+
+              {/* Minimal Caption Strip */}
+              <div className="absolute bottom-2.5 inset-x-3 bg-black/65 backdrop-blur-xs px-3 py-1.5 rounded-lg text-white text-[11px] font-sans flex items-center justify-between">
+                <span className="font-medium truncate">{images[activeImageIndex].caption}</span>
+                <span className="text-[9px] font-mono text-[#FAF7F2]/75 uppercase tracking-wider shrink-0 ml-2">
+                  Angle 0{activeImageIndex + 1}
                 </span>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="w-8 h-8 rounded-full bg-white border border-[#E8DFD3] text-[#110D09] hover:bg-[#FAF8F5] hover:border-[#8C6D42] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
-                  aria-label="Next Perspective"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
               </div>
             </div>
 
-            {/* Horizontal Swipeable Track */}
-            <div
-              ref={scrollContainerRef}
-              onScroll={handleScroll}
-              className="flex flex-row overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3.5 sm:gap-4 pb-2 px-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-            >
+            {/* Clean Horizontal Thumbnails Strip (Old Way Below Image) */}
+            <div className="grid grid-cols-4 gap-2.5 pt-0.5">
               {images.map((img, idx) => (
-                <div
+                <button
                   key={img.src}
-                  data-gallery-card
-                  onClick={() => scrollToImage(idx)}
-                  className={`relative w-[84%] sm:w-[82%] shrink-0 snap-center aspect-square max-h-[380px] sm:max-h-[420px] bg-[#FAF8F5] border rounded-2xl overflow-hidden shadow-xs group transition-all duration-300 cursor-pointer ${
+                  type="button"
+                  onClick={() => setActiveImageIndex(idx)}
+                  className={`group relative aspect-square bg-[#FAF8F5] border rounded-xl overflow-hidden transition-all duration-200 cursor-pointer ${
                     activeImageIndex === idx
-                      ? 'border-[#110D09] ring-2 ring-[#110D09]/90 shadow-md'
-                      : 'border-[#E8DFD3] opacity-80 hover:opacity-100 hover:border-[#8C6D42]'
+                      ? 'border-[#110D09] ring-2 ring-[#110D09] shadow-sm'
+                      : 'border-[#E8DFD3] opacity-75 hover:opacity-100 hover:border-[#8C6D42]'
                   }`}
+                  aria-label={`View perspective 0${idx + 1}`}
                 >
                   <Image
                     src={img.src}
                     alt={img.alt}
                     fill
-                    sizes="(max-width: 768px) 85vw, 500px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-104"
-                    priority={idx === 0}
+                    sizes="120px"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-
-                  {/* Angle Badge */}
-                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm border border-[#E8DFD3] px-2.5 py-0.5 text-[10px] tracking-widest uppercase text-[#110D09] font-mono font-bold rounded-full shadow-2xs">
+                  <span className="absolute bottom-1 right-1 bg-black/75 text-white font-mono text-[8px] px-1.5 py-0.5 rounded-xs">
                     0{idx + 1}
-                  </div>
-
-                  {/* Minimal Caption Strip */}
-                  <div className="absolute bottom-2.5 inset-x-3 bg-black/65 backdrop-blur-xs px-3 py-1.5 rounded-lg text-white text-[11px] font-sans flex items-center justify-between">
-                    <span className="font-medium truncate">{img.caption}</span>
-                    <span className="text-[9px] font-mono text-[#FAF7F2]/75 uppercase tracking-wider shrink-0 ml-2">
-                      Angle 0{idx + 1}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Synchronized Angle Selector Pills */}
-            <div className="grid grid-cols-4 gap-2 pt-1">
-              {images.map((img, idx) => (
-                <button
-                  key={img.src}
-                  type="button"
-                  onClick={() => scrollToImage(idx)}
-                  className={`group relative py-2 px-2.5 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                    activeImageIndex === idx
-                      ? 'bg-[#110D09] text-white border-[#110D09] shadow-xs'
-                      : 'bg-[#FAF8F5] text-[#554D45] border-[#E8DFD3] hover:border-[#8C6D42] hover:bg-white'
-                  }`}
-                  aria-label={`Jump to angle 0${idx + 1}`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`font-mono text-[10px] font-bold ${
-                        activeImageIndex === idx ? 'text-[#FAF7F2]' : 'text-[#8C6D42]'
-                      }`}
-                    >
-                      0{idx + 1}
-                    </span>
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        activeImageIndex === idx ? 'bg-[#C5A880]' : 'bg-[#E8DFD3]'
-                      }`}
-                    />
-                  </div>
-                  <p className="text-[10px] font-serif font-medium truncate pt-0.5 leading-tight">
-                    {img.caption.split(' ')[0]}
-                  </p>
+                  </span>
                 </button>
               ))}
             </div>
@@ -296,7 +279,7 @@ export default function CacaoCitrineProductPage() {
 
             {/* ========================================================== */}
             {/* BESPOKE OLFACTORY ARCHITECTURE (NO PICTURES, NO EQUAL SIGN) */}
-            {/* NOTE NAME SIT S DIRECTLY BELOW TOP NOTE / HEART NOTE / BASE NOTE */}
+            {/* NOTE NAME SITS DIRECTLY BELOW TOP NOTE / HEART NOTE / BASE NOTE */}
             {/* ========================================================== */}
             <div className="bg-[#FAF6EE] rounded-2xl border border-[#E8DFD3] p-4 sm:p-4.5 shadow-2xs space-y-3">
               <div className="flex items-center justify-between pb-1.5 border-b border-[#E8DFD3]/80">
@@ -426,138 +409,522 @@ export default function CacaoCitrineProductPage() {
               </div>
             </div>
 
-            {/* ========================================================== */}
-            {/* INTERACTIVE SEGMENTED ATELIER DOSSIER (NOT BORING ACCORDIONS) */}
-            {/* ========================================================== */}
-            <div className="bg-white border border-[#E8DFD3] rounded-2xl p-4 space-y-3 shadow-2xs">
-              {/* Segmented Switcher Header */}
-              <div className="grid grid-cols-3 p-1 bg-[#FAF7F2] rounded-xl border border-[#E8DFD3]/80 text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('evolution')}
-                  className={`py-1.5 px-1 rounded-lg transition-all text-center cursor-pointer ${
-                    activeTab === 'evolution'
-                      ? 'bg-[#110D09] text-white shadow-xs'
-                      : 'text-[#554D45] hover:text-[#110D09]'
-                  }`}
-                >
-                  Evolution
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('moods')}
-                  className={`py-1.5 px-1 rounded-lg transition-all text-center cursor-pointer ${
-                    activeTab === 'moods'
-                      ? 'bg-[#110D09] text-white shadow-xs'
-                      : 'text-[#554D45] hover:text-[#110D09]'
-                  }`}
-                >
-                  Atmospheres
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('ritual')}
-                  className={`py-1.5 px-1 rounded-lg transition-all text-center cursor-pointer ${
-                    activeTab === 'ritual'
-                      ? 'bg-[#110D09] text-white shadow-xs'
-                      : 'text-[#554D45] hover:text-[#110D09]'
-                  }`}
-                >
-                  Vessel &amp; Ritual
-                </button>
+            {/* Quick Specs Pills */}
+            <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono text-[#554D45]">
+              <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
+                <span className="text-[#8C6D42] font-bold block">20% EDP</span>
+                <span className="text-[9px] text-[#888075]">Extrait Grade</span>
               </div>
-
-              {/* Tab 1: Skin Evolution Timeline */}
-              {activeTab === 'evolution' && (
-                <div className="space-y-2 pt-1 animate-fadeIn text-xs">
-                  <div className="flex items-start space-x-3 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/60">
-                    <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-white border border-[#E8DFD3] rounded text-[#8C6D42] font-bold shrink-0">
-                      00–30 Mins
-                    </span>
-                    <p className="text-[#110D09]/80 leading-relaxed font-light">
-                      High-voltage Italian citrus sparkle; crystalline solar opening that immediately lifts the senses.
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/60">
-                    <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-white border border-[#E8DFD3] rounded text-[#8C6D42] font-bold shrink-0">
-                      30m–04 Hrs
-                    </span>
-                    <p className="text-[#110D09]/80 leading-relaxed font-light">
-                      Warms into velvety roasted hazelnut praline and smooth cocoa butter, creating a tactile second-skin indulgence.
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3 p-2 rounded-lg bg-[#FAF8F5] border border-[#E8DFD3]/60">
-                    <span className="font-mono text-[9px] uppercase px-2 py-0.5 bg-white border border-[#E8DFD3] rounded text-[#8C6D42] font-bold shrink-0">
-                      04–12+ Hrs
-                    </span>
-                    <p className="text-[#110D09]/80 leading-relaxed font-light">
-                      Intimate dry-down of dewy damascena rose, crisp mountain air, and magnetic cashmere musks with a 3-foot aura.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 2: Atmospheric Pairings */}
-              {activeTab === 'moods' && (
-                <div className="space-y-2 pt-1 animate-fadeIn text-xs">
-                  <p className="text-[#554D45] font-light">
-                    Engineered to harmonize seamlessly with personal occasions and times of day:
-                  </p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 pt-0.5">
-                    {moodLinks.map((m) => (
-                      <Link
-                        key={m.slug}
-                        href={`/moods/${m.slug}`}
-                        className="p-2 bg-[#FAF8F5] border border-[#E8DFD3] rounded-lg text-left hover:border-[#8C6D42] transition-colors group"
-                      >
-                        <span className="text-[9px] font-mono text-[#8C6D42] block uppercase tracking-wider">
-                          {m.tag}
-                        </span>
-                        <span className="text-xs font-serif font-bold text-[#110D09] group-hover:text-[#8C6D42] transition-colors block">
-                          {m.title} →
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Tab 3: Vessel Craft & Application Ritual */}
-              {activeTab === 'ritual' && (
-                <div className="space-y-2 pt-1 animate-fadeIn text-xs text-[#554D45]">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <div className="p-2.5 bg-[#FAF8F5] border border-[#E8DFD3]/70 rounded-lg space-y-1">
-                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
-                        Concentration &amp; Purity
-                      </span>
-                      <p className="font-light leading-relaxed">
-                        20% Extrait-grade Eau de Parfum oil ratio. 100% vegan, cruelty-free, and phthalate-free on clean botanical alcohol.
-                      </p>
-                    </div>
-                    <div className="p-2.5 bg-[#FAF8F5] border border-[#E8DFD3]/70 rounded-lg space-y-1">
-                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
-                        Flacon Architecture
-                      </span>
-                      <p className="font-light leading-relaxed">
-                        Weighted Italian crystal glass, precision micro-mist atomization pump, and magnetic obsidian closure.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-2.5 bg-[#FAF8F5] border border-[#E8DFD3]/70 rounded-lg space-y-1">
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
-                      Application Ritual
-                    </span>
-                    <p className="font-light leading-relaxed">
-                      Apply 2–3 mists to lateral neck, wrists, and collarbone. Allow to air-dry naturally; never rub wrists to protect the delicate citrus top note esters.
-                    </p>
-                  </div>
-                </div>
-              )}
+              <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
+                <span className="text-[#8C6D42] font-bold block">10-12 HRS</span>
+                <span className="text-[9px] text-[#888075]">Skin Longevity</span>
+              </div>
+              <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
+                <span className="text-[#8C6D42] font-bold block">100% VEGAN</span>
+                <span className="text-[9px] text-[#888075]">Phthalate-Free</span>
+              </div>
             </div>
 
           </div>
 
         </div>
+
+        {/* ============================================================== */}
+        {/* FULL-WIDTH DEDICATED ATELIER DOSSIER (OLD WAY BELOW PRODUCT) */}
+        {/* TABS: EVOLUTION | ATMOSPHERES (INSTAGRAM STYLE) | VESSEL & RITUAL */}
+        {/* ============================================================== */}
+        <section className="mt-10 sm:mt-12 pt-8 border-t border-[#E8DFD3] space-y-6">
+          {/* Section Header & Segmented Tab Switcher */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
+                Atelier Dossier
+              </span>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09] mt-0.5">
+                Skin Evolution, Atmospheres &amp; Ritual
+              </h2>
+            </div>
+
+            {/* Tab Navigation Buttons */}
+            <div className="inline-flex items-center p-1 bg-[#FAF6EE] rounded-xl border border-[#E8DFD3] text-xs font-mono font-bold">
+              <button
+                type="button"
+                onClick={() => setActiveTab('evolution')}
+                className={`px-3 sm:px-4 py-2 rounded-lg transition-all cursor-pointer ${
+                  activeTab === 'evolution'
+                    ? 'bg-[#110D09] text-white shadow-xs'
+                    : 'text-[#554D45] hover:text-[#110D09]'
+                }`}
+              >
+                01 Skin Evolution
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('moods')}
+                className={`px-3 sm:px-4 py-2 rounded-lg transition-all cursor-pointer ${
+                  activeTab === 'moods'
+                    ? 'bg-[#110D09] text-white shadow-xs'
+                    : 'text-[#554D45] hover:text-[#110D09]'
+                }`}
+              >
+                02 Atmospheres
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('ritual')}
+                className={`px-3 sm:px-4 py-2 rounded-lg transition-all cursor-pointer ${
+                  activeTab === 'ritual'
+                    ? 'bg-[#110D09] text-white shadow-xs'
+                    : 'text-[#554D45] hover:text-[#110D09]'
+                }`}
+              >
+                03 Vessel &amp; Ritual
+              </button>
+            </div>
+          </div>
+
+          {/* TAB 1: SKIN EVOLUTION TIMELINE */}
+          {activeTab === 'evolution' && (
+            <div className="bg-white border border-[#E8DFD3] rounded-3xl p-5 sm:p-7 shadow-xs space-y-5 animate-fadeIn">
+              <div className="max-w-xl space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
+                  Chronological Unfolding
+                </span>
+                <h3 className="text-lg sm:text-xl font-serif font-bold uppercase text-[#110D09]">
+                  How Cacao Citrine Awakens On Skin
+                </h3>
+                <p className="text-xs text-[#554D45] font-light">
+                  A three-phase metabolic dry-down engineered to transition from radiant daylight citrus to an intimate evening chocolate musk.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase px-2.5 py-0.5 bg-white border border-[#E8DFD3] rounded-full text-[#8C6D42] font-bold">
+                      Phase I • 00–30 Mins
+                    </span>
+                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">Opening</span>
+                  </div>
+                  <h4 className="text-base font-serif font-bold text-[#110D09]">Calabrian Citrus Sparkle</h4>
+                  <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
+                    High-voltage Italian citrus sparkle; crystalline solar opening that immediately lifts the senses and establishes daylight confidence.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase px-2.5 py-0.5 bg-white border border-[#E8DFD3] rounded-full text-[#8C6D42] font-bold">
+                      Phase II • 30m–04 Hrs
+                    </span>
+                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">Heart</span>
+                  </div>
+                  <h4 className="text-base font-serif font-bold text-[#110D09]">Roasted Hazelnut &amp; Cocoa</h4>
+                  <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
+                    Warms into velvety roasted hazelnut praline and smooth cocoa butter, creating a tactile, second-skin indulgence that turns heads.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase px-2.5 py-0.5 bg-white border border-[#E8DFD3] rounded-full text-[#8C6D42] font-bold">
+                      Phase III • 04–12+ Hrs
+                    </span>
+                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">Base</span>
+                  </div>
+                  <h4 className="text-base font-serif font-bold text-[#110D09]">Rose &amp; Cashmere Musk</h4>
+                  <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
+                    Intimate dry-down of dewy damascena rose, crisp mountain air, and magnetic cashmere musks leaving a 3-foot lingering aura.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: ATMOSPHERES (INSTAGRAM POST STYLE) */}
+          {activeTab === 'moods' && (
+            <div className="bg-[#FFFDF9] border border-[#E8DFD3] rounded-3xl p-5 sm:p-7 shadow-xs space-y-6 animate-fadeIn">
+              <div className="max-w-2xl space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
+                  Atmospheric Pairings • Connected Moods
+                </span>
+                <h3 className="text-lg sm:text-xl font-serif font-bold uppercase text-[#110D09]">
+                  Cinematic Mood Atmospheres Calibrated to Cacao Citrine
+                </h3>
+                <p className="text-xs text-[#554D45] font-light">
+                  Five curated lifestyle chapters that harmonize with every spray. Browse the live Instagram story post and switch moods below.
+                </p>
+              </div>
+
+              {/* Two-Column Experience Stage: Left Instagram Post, Right Mood Details */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#FAF6EE] p-4 sm:p-6 rounded-2xl border border-[#E8DFD3]">
+                
+                {/* LEFT COLUMN: AUTHENTIC INSTAGRAM POST CARD */}
+                <div className="lg:col-span-5 max-w-sm mx-auto w-full">
+                  <div className="bg-white border-2 border-[#110D09] rounded-2xl overflow-hidden shadow-lg">
+                    
+                    {/* Instagram Header with Verified Badge and Stepper */}
+                    <div className="p-3 border-b border-[#E8DFD3] flex items-center justify-between bg-[#FAF6EE]">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="relative w-7 h-7 rounded-full border border-[#8C6D42] overflow-hidden bg-[#110D09] p-0.5 shrink-0">
+                          <Image
+                            src="/brand/valcura-emblem-dark.png"
+                            alt="VALCURA Emblem"
+                            fill
+                            className="object-contain p-0.5 invert"
+                          />
+                        </div>
+                        <div>
+                          <div className="flex items-center space-x-1">
+                            <span className="text-xs font-mono font-bold text-[#110D09]">valcura.atelier</span>
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#8C6D42] text-white flex items-center justify-center text-[7px] font-bold">✓</span>
+                          </div>
+                          <span className="text-[9px] font-mono text-[#8C6D42] block">
+                            {moodSlides[activeMoodIndex].tag}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Top Stepper Controls */}
+                      <div className="flex items-center space-x-1.5">
+                        <span className="text-[10px] font-mono font-bold text-[#110D09]/70 mr-0.5">
+                          0{activeMoodIndex + 1} / 0{moodSlides.length}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={handlePrevMood}
+                          className="w-6 h-6 rounded-full bg-white border border-[#110D09]/40 hover:bg-[#110D09] hover:text-[#FAF7F2] text-[#110D09] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
+                          aria-label="Previous mood slide"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleNextMood}
+                          className="w-6 h-6 rounded-full bg-white border border-[#110D09]/40 hover:bg-[#110D09] hover:text-[#FAF7F2] text-[#110D09] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
+                          aria-label="Next mood slide"
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Instagram Square Post Image with Hover Arrows */}
+                    <div className="relative aspect-square w-full bg-[#110D09] overflow-hidden group">
+                      <Image
+                        key={moodSlides[activeMoodIndex].slug}
+                        src={moodSlides[activeMoodIndex].image}
+                        alt={moodSlides[activeMoodIndex].title}
+                        fill
+                        className="object-cover transition-opacity duration-500 animate-fadeIn"
+                        priority
+                      />
+
+                      {/* Direct Click Zones for Instagram Tap */}
+                      <button
+                        type="button"
+                        onClick={handlePrevMood}
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-xs cursor-pointer"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleNextMood}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-xs cursor-pointer"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+
+                      {/* Dots Indicator */}
+                      <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center space-x-1.5">
+                        {moodSlides.map((_, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => setActiveMoodIndex(idx)}
+                            className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                              activeMoodIndex === idx ? 'w-4 bg-white shadow-md' : 'w-1.5 bg-white/50 hover:bg-white/80'
+                            }`}
+                            aria-label={`Jump to slide 0${idx + 1}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Instagram Actions Bar (Heart, Comment, Share, Bookmark) */}
+                    <div className="p-3 bg-white flex items-center justify-between text-[#110D09] border-t border-[#E8DFD3]">
+                      <div className="flex items-center space-x-3.5">
+                        <button
+                          type="button"
+                          onClick={() => setIsLiked(!isLiked)}
+                          className={`transition-colors cursor-pointer ${isLiked ? 'text-rose-600' : 'hover:text-[#8C6D42]'}`}
+                          aria-label="Like post"
+                        >
+                          <Heart className={`w-4 h-4 ${isLiked ? 'fill-rose-600' : ''}`} />
+                        </button>
+                        <Link href={`/moods/${moodSlides[activeMoodIndex].slug}`} aria-label="Comment on mood">
+                          <MessageCircle className="w-4 h-4 hover:text-[#8C6D42] transition-colors" />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={handleShare}
+                          aria-label="Share post"
+                          className="cursor-pointer"
+                        >
+                          <Share2 className="w-4 h-4 hover:text-[#8C6D42] transition-colors" />
+                        </button>
+                        {shareFeedback && (
+                          <span className="text-[10px] font-mono text-emerald-600 font-bold animate-fadeIn">
+                            Copied!
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <button
+                          type="button"
+                          onClick={() => setIsSaved(!isSaved)}
+                          className={`transition-colors cursor-pointer ${isSaved ? 'text-[#8C6D42]' : 'hover:text-[#8C6D42]'}`}
+                          aria-label="Bookmark post"
+                        >
+                          <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-[#8C6D42]' : ''}`} />
+                        </button>
+                        <span className="text-[10px] font-mono text-[#8C6D42] font-semibold">
+                          @{moodSlides[activeMoodIndex].handle}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Instagram Post Likes & Caption */}
+                    <div className="px-3 pb-3 pt-1 bg-white space-y-1 text-xs text-[#110D09] border-t border-[#FAF6EE]">
+                      <div className="font-bold text-[11px] font-mono text-[#110D09]">
+                        {isLiked ? '1,429 likes' : '1,428 likes'}
+                      </div>
+                      <p className="leading-snug">
+                        <span className="font-bold mr-1.5 font-mono text-[11px]">valcura.atelier</span>
+                        <span className="font-serif italic font-medium">{moodSlides[activeMoodIndex].title}</span>
+                        {' — '}
+                        <span className="text-[#554D45] font-light">{moodSlides[activeMoodIndex].desc}</span>
+                      </p>
+                      <div className="pt-0.5 text-[10px] font-mono text-[#8C6D42] space-x-1.5">
+                        <span>#valcura</span>
+                        <span>#cacaocitrine</span>
+                        <span>#extraitdeparfum</span>
+                        <span>#olfactoryart</span>
+                      </div>
+                      <div className="text-[9px] font-mono text-[#888075] uppercase pt-0.5">
+                        2 hours ago • View all 84 comments
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* RIGHT COLUMN: CURRENT MOOD NARRATIVE & 5 SWITCHER THUMBNAILS */}
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
+                      Atmosphere 0{activeMoodIndex + 1} of 0{moodSlides.length}
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                      {moodSlides[activeMoodIndex].title}
+                    </h3>
+                    <p className="text-sm font-serif italic text-[#110D09]/85 leading-relaxed">
+                      &ldquo;{moodSlides[activeMoodIndex].desc}&rdquo;
+                    </p>
+                  </div>
+
+                  {/* 5 Clickable Connected Mood Thumbnails */}
+                  <div className="space-y-2 pt-1">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#554D45] font-bold block">
+                      Switch Connected Atmosphere:
+                    </span>
+                    <div className="grid grid-cols-5 gap-2">
+                      {moodSlides.map((m, idx) => (
+                        <button
+                          key={m.slug}
+                          type="button"
+                          onClick={() => setActiveMoodIndex(idx)}
+                          className={`relative aspect-square rounded-xl overflow-hidden border transition-all cursor-pointer group ${
+                            activeMoodIndex === idx
+                              ? 'border-[#110D09] ring-2 ring-[#8C6D42] shadow-md scale-105'
+                              : 'border-[#E8DFD3] opacity-65 hover:opacity-100'
+                          }`}
+                          aria-label={`Switch to ${m.title}`}
+                        >
+                          <Image
+                            src={m.image}
+                            alt={m.title}
+                            fill
+                            sizes="80px"
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                          <span className="absolute bottom-1 right-1 bg-black/75 text-white font-mono text-[7px] px-1 rounded-xs">
+                            0{idx + 1}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA To Full Mood Page */}
+                  <div className="pt-2">
+                    <Link
+                      href={`/moods/${moodSlides[activeMoodIndex].slug}`}
+                      className="inline-flex items-center space-x-2 bg-[#110D09] hover:bg-[#8C6D42] text-white py-3 px-5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider shadow-sm hover:shadow-md transition-all cursor-pointer"
+                    >
+                      <span>Explore {moodSlides[activeMoodIndex].title} Dossier</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: VESSEL & APPLICATION RITUAL */}
+          {activeTab === 'ritual' && (
+            <div className="bg-white border border-[#E8DFD3] rounded-3xl p-5 sm:p-7 shadow-xs space-y-5 animate-fadeIn">
+              <div className="max-w-xl space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
+                  Vessel Craft &amp; Application
+                </span>
+                <h3 className="text-lg sm:text-xl font-serif font-bold uppercase text-[#110D09]">
+                  Physical Architecture &amp; Sensory Ritual
+                </h3>
+                <p className="text-xs text-[#554D45] font-light">
+                  Crafted to preserve delicate volatile top notes and provide a ceremonial tactile experience.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-white border border-[#E8DFD3] flex items-center justify-center text-[#8C6D42]">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
+                    Purity &amp; Concentration
+                  </span>
+                  <h4 className="text-base font-serif font-bold text-[#110D09]">20% Extrait-Grade</h4>
+                  <p className="text-xs text-[#554D45] font-light leading-relaxed">
+                    Formulated with a 20% pure perfume oil concentration on certified organic grain alcohol. 100% vegan, cruelty-free, and phthalate-free.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-white border border-[#E8DFD3] flex items-center justify-center text-[#8C6D42]">
+                    <Layers className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
+                    Vessel Architecture
+                  </span>
+                  <h4 className="text-base font-serif font-bold text-[#110D09]">Italian Crystal Flacon</h4>
+                  <p className="text-xs text-[#554D45] font-light leading-relaxed">
+                    Heavy base Italian crystal flacon with etched monogram, precision micro-mist atomization pump, and weighted magnetic obsidian cap.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-white border border-[#E8DFD3] flex items-center justify-center text-[#8C6D42]">
+                    <Check className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
+                    Pulse-Point Mastery
+                  </span>
+                  <h4 className="text-base font-serif font-bold text-[#110D09]">Application Ritual</h4>
+                  <p className="text-xs text-[#554D45] font-light leading-relaxed">
+                    Apply 2–3 mists to lateral neck, wrists, and clavicle. Allow to air-dry naturally; never rub wrists to protect delicate citrus esters.
+                  </p>
+                </div>
+              </div>
+
+              {/* Provenance Seal */}
+              <div className="p-3.5 bg-[#FAF8F5] border border-[#E8DFD3] rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-[#554D45]">
+                <div className="flex items-center space-x-2">
+                  <ShieldCheck className="w-4 h-4 text-[#8C6D42]" />
+                  <span>Batch No. VC-CIT-001 • 28-Day Cold Maturation in Glass Carboys</span>
+                </div>
+                <span className="text-[#8C6D42] font-bold uppercase tracking-wider">
+                  IFRA Certified • Paraben &amp; Phthalate Free
+                </span>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* ============================================================== */}
+        {/* ATELIER CRAFTSMANSHIP & OLFACTORY EXCELLENCE PILLARS */}
+        {/* ============================================================== */}
+        <section className="mt-8 sm:mt-10 max-w-6xl mx-auto space-y-5">
+          <div className="text-center space-y-1 max-w-xl mx-auto">
+            <span className="text-[9px] font-mono tracking-[0.25em] text-[#8C6D42] uppercase font-bold block">
+              Atelier Olfactory Standards
+            </span>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
+              The Craftsmanship Behind The Scent
+            </h2>
+            <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
+              Every drop of Cacao Citrine is compounded using traditional high-perfumery methods and verified clean ingredients.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl p-4 sm:p-5 space-y-2 shadow-xs hover:border-[#110D09] transition-all">
+              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#8C6D42] block">
+                Pillar I • Concentration
+              </span>
+              <h3 className="text-base font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                20% Eau De Parfum
+              </h3>
+              <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
+                Meticulously dosed at 20% fragrance oil concentration for radiant daylight projection and an intimate 8–10 hour skin trail.
+              </p>
+            </div>
+
+            <div className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl p-4 sm:p-5 space-y-2 shadow-xs hover:border-[#110D09] transition-all">
+              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#8C6D42] block">
+                Pillar II • Botanicals
+              </span>
+              <h3 className="text-base font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                Calabrian Bergamot &amp; Cacao
+              </h3>
+              <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
+                Cold-pressed bergamot rinds paired with artisanally roasted cocoa absolutes, avoiding cloying synthetic sweeteners.
+              </p>
+            </div>
+
+            <div className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl p-4 sm:p-5 space-y-2 shadow-xs hover:border-[#110D09] transition-all">
+              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#8C6D42] block">
+                Pillar III • Clean Formulation
+              </span>
+              <h3 className="text-base font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                Organic Plant Alcohol Base
+              </h3>
+              <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
+                Certified vegan, cruelty-free, and phthalate-free. Formulated on a skin-kind botanical alcohol carrier with zero chemical sting.
+              </p>
+            </div>
+          </div>
+
+          {/* Testimonial Quote Banner */}
+          <div className="bg-[#FAF6EE] border-2 border-[#110D09] rounded-xl sm:rounded-2xl p-5 sm:p-6 text-center space-y-2 shadow-xs">
+            <div className="flex justify-center space-x-1 text-[#8C6D42]">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3.5 h-3.5 fill-[#8C6D42]" />
+              ))}
+            </div>
+            <p className="text-sm sm:text-base font-serif italic text-[#110D09] max-w-2xl mx-auto leading-relaxed">
+              &ldquo;Cacao Citrine strikes that impossible balance: bright, sparkling citrus in the first hour that gently settles into warm hazelnut chocolate. It feels like golden morning sunlight on a bespoke cashmere coat.&rdquo;
+            </p>
+            <div className="pt-1 text-[10px] font-mono text-[#8C6D42] uppercase tracking-widest font-bold">
+              — Atelier Fragrance Collector • Verified Purchase
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

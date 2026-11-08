@@ -156,6 +156,52 @@
   ],
   "orders": [
     {
+      "id": "VAL-ORD-411599",
+      "createdAt": "2026-11-08T10:49:48.133+00:00",
+      "customer": {
+        "fullName": "Manoj Kumar sindhwani",
+        "email": "manojkumarsindhwani123@gmail.com",
+        "phone": "9772902476",
+        "address": "Scheme 2, Alwar , (Landmark: Patel ), New Delhi, Delhi (NCT) - 301001",
+        "city": "New Delhi",
+        "state": "",
+        "pincode": "301001"
+      },
+      "plan": "preorder_full",
+      "items": [
+        {
+          "category": "Unisex | 50 ML",
+          "quantity": 1,
+          "paidToday": 399,
+          "productId": "cacao-citrine",
+          "unitTotal": 399,
+          "paymentPlan": "preorder_full",
+          "productName": "Cacao Citrine",
+          "unitBalance": 0,
+          "unitDeposit": 399,
+          "totalItemValue": 399,
+          "remainingBalance": 0
+        }
+      ],
+      "totalQuantity": 1,
+      "amountPaidToday": 399,
+      "remainingBalance": 0,
+      "totalOrderValue": 399,
+      "paymentStatus": "Payment Pending",
+      "orderStatus": "Payment Pending",
+      "paymentMethod": "UPI / Cards (Indian Gateway)",
+      "paymentTransactionId": "",
+      "availabilityNotified": false,
+      "history": [
+        {
+          "note": "Pre-order created. Total payable today: ₹399, remaining balance: ₹0.",
+          "status": "Payment Pending",
+          "timestamp": "2026-11-08T10:49:48.134Z"
+        }
+      ],
+      "isDelivered": false
+    },
+    {
       "id": "VAL-ORD-629814",
       "createdAt": "2026-11-08T10:36:23.512+00:00",
       "customer": {
