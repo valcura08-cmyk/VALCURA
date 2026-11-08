@@ -1083,6 +1083,21 @@ export default function AdminDashboardPage() {
                                 )}
                               </div>
                             </div>
+
+                            {order.receiptImageUrl && (
+                              <div className="text-[11px] font-mono text-[#110D09]/80 flex items-center justify-between pt-1 border-t border-[#E8E2D8]/60 mt-1">
+                                <span className="text-[#110D09]/50">Receipt Proof:</span>
+                                <a
+                                  href={order.receiptImageUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center space-x-1 text-[11px] text-[#8C6D42] hover:text-[#110D09] underline font-semibold"
+                                >
+                                  <span>View Screenshot</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              </div>
+                            )}
                           </div>
                         </div>
 
@@ -1921,9 +1936,20 @@ export default function AdminDashboardPage() {
                     >
                       <div>
                         <span className="font-bold text-sm text-[#110D09] block">{o.id}</span>
-                        <span className="text-[#110D09]/60 text-[11px]">
+                        <span className="text-[#110D09]/60 text-[11px] block">
                           {o.items?.[0]?.productName || 'Cacao Citrine'} • ₹{o.amountPaidToday} Paid • UTR: {o.paymentTransactionId || 'Pending'}
                         </span>
+                        {o.receiptImageUrl && (
+                          <a
+                            href={o.receiptImageUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center space-x-1 text-[11px] text-[#8C6D42] hover:text-[#110D09] underline font-medium mt-0.5"
+                          >
+                            <span>Receipt Proof</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        )}
                       </div>
 
                       <div className="flex items-center space-x-3">

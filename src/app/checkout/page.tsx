@@ -27,6 +27,7 @@ import {
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { ALL_INDIAN_STATES, getCitiesForState } from '@/data/indiaLocations';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -75,6 +76,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
+  const [showOfficialPoster, setShowOfficialPoster] = useState(false);
 
   // Screenshot Upload & AI Extraction State
   const [receiptImage, setReceiptImage] = useState<string | null>(null);
@@ -328,7 +330,7 @@ export default function CheckoutPage() {
     return createData.orderId;
   };
 
-  // Payment Screenshot Upload & AI Auto-Extraction + Verification
+  // Payment Screenshot Upload & Friendly Auto-Extraction (Non-blocking)
   const processReceiptImage = async (file: File) => {
     if (!file) return;
     setErrorMsg('');
@@ -336,19 +338,15 @@ export default function CheckoutPage() {
     setScanSuccess(false);
     setScanDetails(null);
 
-    // 1. Strict File Type Validation
+    // File Type Validation
     if (!file.type.startsWith('image/')) {
-      setErrorMsg('Invalid file format. Please upload a valid payment screenshot (PNG, JPG, JPEG, or WEBP).');
+      setErrorMsg('Please select a valid image file (PNG, JPG, JPEG, or WEBP).');
       return;
     }
 
-    // 2. Strict File Size Validation: Minimum 15 KB, Maximum 15 MB
-    if (file.size < 15 * 1024) {
-      setErrorMsg('Uploaded file is too small (minimum 15 KB). Please upload a complete, clear screenshot from your UPI app.');
-      return;
-    }
+    // File Size Validation: Max 15 MB
     if (file.size > 15 * 1024 * 1024) {
-      setErrorMsg('Uploaded screenshot exceeds 15 MB limit. Please upload a standard mobile screenshot.');
+      setErrorMsg('Uploaded screenshot exceeds 15 MB. Please select a standard screenshot.');
       return;
     }
 
@@ -362,12 +360,9 @@ export default function CheckoutPage() {
       setReceiptImage(dataUrl);
       setIsUploading(false);
 
-      // Trigger AI OCR Extraction & Payment Analysis (with 18s safety window)
+      // Background OCR Auto-Fill for customer convenience
       setIsAnalyzingReceipt(true);
-      setScanStatus('AI analyzing payment screenshot, recipient, cart amount & 12-digit UTR ID...');
-
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 18000);
+      setScanStatus('Checking screenshot for 12-digit UTR number...');
 
       try {
         const scanRes = await fetch('/api/orders/scan-receipt', {
@@ -377,50 +372,36 @@ export default function CheckoutPage() {
             receiptImageBase64: dataUrl,
             expectedAmount: totalPayableAmount,
           }),
-          signal: controller.signal,
         });
 
-        clearTimeout(timeoutId);
         const scanData = await scanRes.json();
-
-        if (scanRes.status === 404 || !scanData.success) {
-          // 404 Error: Invalid Payment Screenshot
-          setScanError(
-            scanData.error ||
-              `Payment Receipt Invalid (404 Error): Could not verify authentic ₹${totalPayableAmount} payment to Raghav Sindhwani with a valid 12-digit UTR ID. Please upload a clear screenshot showing the full transaction receipt.`
-          );
-          setScanSuccess(false);
-          setUpiUtr('');
-        } else if (scanData.success) {
-          // Authentic Payment Receipt Verified (Account, Amount & 12-Digit UTR match!)
+        if (scanData.success && scanData.utr) {
+          setUpiUtr(scanData.utr);
           setScanSuccess(true);
-          setScanError('');
-          if (scanData.utr) {
-            setUpiUtr(scanData.utr); // Automatically fill 12-digit UTR from receipt image!
-          }
           setScanDetails({
             payee: scanData.payee || MERCHANT_NAME,
             amount: scanData.amount || totalPayableAmount,
-            app: scanData.app || 'UPI Payment',
-            confidence: scanData.confidence || 98,
-            message: scanData.message,
-            utrExtracted: !!scanData.utr,
-            timestamp: scanData.timestamp,
+            app: scanData.app || 'UPI App',
+            utrExtracted: true,
+            message: `12-digit UTR auto-detected: ${scanData.utr}`,
+          });
+        } else {
+          setScanDetails({
+            payee: MERCHANT_NAME,
+            amount: totalPayableAmount,
+            app: 'UPI App',
+            utrExtracted: false,
+            message: 'Screenshot attached. Please enter your 12-digit UTR below.',
           });
         }
-      } catch (err: any) {
-        clearTimeout(timeoutId);
-        setScanSuccess(false);
-        setUpiUtr('');
-        if (err.name === 'AbortError' || err.message?.includes('timeout') || err.message?.includes('abort')) {
-          setScanError(
-            `Payment Receipt Analysis Timed Out: Please ensure your screenshot is clear, shows the 12-digit UTR ID, recipient Raghav Sindhwani, and paid amount ₹${totalPayableAmount}, then re-upload.`
-          );
-        } else {
-          setScanError(
-            `Payment Receipt Invalid (404 Error): AI scanner unable to analyze screenshot. Please ensure it clearly displays the 12-digit UTR ID and paid amount.`
-          );
-        }
+      } catch {
+        setScanDetails({
+          payee: MERCHANT_NAME,
+          amount: totalPayableAmount,
+          app: 'UPI App',
+          utrExtracted: false,
+          message: 'Screenshot attached. Please enter your 12-digit UTR below.',
+        });
       } finally {
         setIsAnalyzingReceipt(false);
         setScanStatus('');
@@ -433,27 +414,21 @@ export default function CheckoutPage() {
     reader.readAsDataURL(file);
   };
 
-  // Direct Confirmation with Strict Screenshot & 12-Digit UTR Validation
+  // Direct Confirmation: Validates 12-digit UTR and completes booking (Matches HappyHair flow)
   const handleDirectConfirmPayment = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setErrorMsg('');
 
-    // 1. Screenshot Check: MANDATORY
-    if (!receiptImage) {
-      setErrorMsg('Payment screenshot is required. Please scan the QR code and upload your completed payment screenshot.');
-      return;
-    }
-
-    // 2. 12-Digit Indian UPI UTR Check: MANDATORY
+    // 12-Digit Indian UPI UTR Check: MANDATORY
     const cleanUtr = upiUtr.trim().replace(/\D/g, '');
-    if (!cleanUtr || cleanUtr.length !== 12) {
-      setErrorMsg('Please enter your valid 12-digit UPI Transaction ID / UTR from your payment receipt (e.g. 412893821948).');
+    if (cleanUtr.length !== 12) {
+      setErrorMsg('Please enter your 12-digit UPI Transaction ID / UTR from your payment app (e.g. 412893821948).');
       return;
     }
 
     // Reject all identical digits
     if (/^(\d)\1{11}$/.test(cleanUtr)) {
-      setErrorMsg('Invalid UTR. All identical digits (e.g. 000000000000) are not valid UPI reference numbers.');
+      setErrorMsg('Invalid UTR. Repeating identical digits (e.g. 000000000000) are not valid UPI reference numbers.');
       return;
     }
 
@@ -480,13 +455,13 @@ export default function CheckoutPage() {
           orderId,
           utr: cleanUtr,
           amount: totalPayableAmount,
-          receiptImageBase64: receiptImage,
+          receiptImageBase64: receiptImage || null,
         }),
       });
 
       const verifyData = await verifyRes.json();
       if (!verifyRes.ok || !verifyData.success) {
-        throw new Error(verifyData.error || 'Payment verification failed. Please check your screenshot and UTR.');
+        throw new Error(verifyData.error || 'Payment verification failed. Please check your 12-digit UTR.');
       }
 
       if (verifyData.order) {
@@ -497,7 +472,7 @@ export default function CheckoutPage() {
       router.push(`/order-confirmation/${orderId}`);
     } catch (err: any) {
       console.error('Confirm payment error:', err);
-      setErrorMsg(err.message || 'Payment confirmation error. Please verify your screenshot and 12-digit UTR.');
+      setErrorMsg(err.message || 'Payment confirmation error. Please verify your 12-digit UTR.');
       setLoading(false);
     }
   };
@@ -1203,388 +1178,317 @@ export default function CheckoutPage() {
                     </span>
                   </div>
 
-                  {/* BOX 1: SCAN QR CODE & PAY */}
-                  <div className="bg-[#FAF8F5] border border-[#D5CDC2] p-5 sm:p-6 space-y-4 shadow-sm">
-                    <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-3">
-                      <div className="flex items-center space-x-2.5">
-                        <span className="w-6 h-6 rounded-full bg-[#110D09] text-white text-xs font-mono flex items-center justify-center font-bold">
-                          1
+                  {/* ========================================================= */}
+                  {/* UPI PAYMENT & CONFIRMATION FLOW (HappyHair Standard) */}
+                  {/* ========================================================= */}
+                  <div className="space-y-6">
+                    {/* Security Banner */}
+                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-950">
+                      <div className="flex items-center space-x-2">
+                        <Sparkles className="w-4 h-4 text-emerald-700 flex-shrink-0" />
+                        <span className="font-serif font-bold uppercase tracking-wider">
+                          Direct Merchant UPI Settlement • 100% Secure
                         </span>
-                        <h3 className="text-sm sm:text-base font-serif font-bold uppercase tracking-wider text-[#110D09]">
-                          Scan Official Merchant QR Code
-                        </h3>
                       </div>
-                      <span className="text-[10px] font-mono text-[#8C6D42] bg-white px-2.5 py-1 border border-[#D5CDC2] font-semibold uppercase">
-                        Step 1 of 2
+                      <span className="font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-emerald-300 font-bold uppercase text-emerald-800">
+                        Zero Gateway Fee
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                      {/* Left: Raghav Sindhwani Official Payment Scanner Image */}
-                      <div className="md:col-span-5 flex flex-col items-center text-center">
-                        <div className="relative w-64 max-w-full bg-white p-3 border-2 border-[#110D09] shadow-md rounded-lg">
-                          <Image
-                            src="/brand/raghav-gpay-qr.jpg"
-                            alt="Raghav Sindhwani Official Payment Scanner"
-                            width={260}
-                            height={340}
-                            className="w-full h-auto object-contain rounded-md"
-                            priority
-                          />
-                        </div>
-                        <div className="mt-2.5 px-3 py-1 bg-[#110D09] text-white font-mono text-xs font-bold uppercase tracking-wider rounded-sm shadow-sm">
-                          Pay Exact Amount: ₹{totalPayableAmount}
-                        </div>
-                      </div>
-
-                      {/* Right: Payment Instructions & Details */}
-                      <div className="md:col-span-7 space-y-3.5 text-xs text-[#554D45]">
-                        <div className="p-3.5 bg-white border border-[#D5CDC2] space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] uppercase font-mono text-[#8C6D42] font-bold">
-                              Official Merchant VPA / UPI ID
-                            </span>
-                            <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">
-                              Active &amp; Verified
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between bg-[#FAF8F5] border border-[#D5CDC2] px-3 py-2">
-                            <span className="font-mono font-bold text-xs sm:text-sm text-[#110D09] select-all">
-                              {MERCHANT_UPI_ID}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={handleCopyUpi}
-                              className="inline-flex items-center space-x-1 text-[11px] font-mono font-bold text-[#8C6D42] hover:text-[#110D09] uppercase ml-2 transition-colors"
-                            >
-                              {copiedUpi ? (
-                                <>
-                                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                  <span className="text-emerald-700">Copied!</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Copy className="w-3.5 h-3.5" />
-                                  <span>Copy ID</span>
-                                </>
-                              )}
-                            </button>
-                          </div>
-                          <div className="flex justify-between items-center text-[11px] text-[#110D09]/80 font-light pt-1">
-                            <span>Account Holder:</span>
-                            <strong className="text-[#110D09] font-medium font-serif">{MERCHANT_NAME}</strong>
-                          </div>
-                          <div className="flex justify-between items-center text-[11px] text-[#110D09]/80 font-light">
-                            <span>Total Payable:</span>
-                            <strong className="text-[#110D09] font-mono font-bold">₹{totalPayableAmount} (Flat ₹399/bottle)</strong>
-                          </div>
-                        </div>
-
-                        {/* Step By Step Guide */}
-                        <div className="p-3.5 bg-white border border-[#D5CDC2] space-y-1.5 text-[11px] text-[#110D09]/80 font-light">
-                          <p className="font-mono font-bold text-[10px] uppercase text-[#8C6D42]">
-                            How To Pay:
-                          </p>
-                          <ol className="list-decimal pl-4 space-y-1.5">
-                            <li>Open any UPI app on your mobile (Google Pay, PhonePe, Paytm, or Banking App).</li>
-                            <li>Scan the QR code shown on the left (or transfer to <code className="bg-[#FAF8F5] px-1 font-mono text-[#110D09]">{MERCHANT_UPI_ID}</code>).</li>
-                            <li>Transfer the exact amount of <strong>₹{totalPayableAmount}</strong> to <strong>{MERCHANT_NAME}</strong>.</li>
-                            <li>Take a screenshot of the completed transaction receipt showing the 12-digit UTR / UPI reference number.</li>
-                          </ol>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* BOX 2: UPLOAD VALID PAYMENT SCREENSHOT & ENTER 12-DIGIT UTR */}
-                  <div className="bg-white border-2 border-[#110D09] p-5 sm:p-7 space-y-5 shadow-lg">
-                    <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-3">
-                      <div className="flex items-center space-x-2.5">
-                        <span className="w-6 h-6 rounded-full bg-[#8C6D42] text-white text-xs font-mono flex items-center justify-center font-bold">
-                          2
-                        </span>
+                    {/* BOX 1: SCAN QR CODE OR OPEN IN UPI APP */}
+                    <div className="bg-[#FAF8F5] border border-[#D5CDC2] rounded-2xl p-5 sm:p-7 space-y-6 shadow-sm">
+                      <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-3.5">
                         <div>
-                          <h3 className="text-sm sm:text-base font-serif font-bold uppercase tracking-wider text-[#110D09] flex items-center space-x-1.5">
-                            <Sparkles className="w-4 h-4 text-[#8C6D42]" />
-                            <span>Upload Screenshot with UTR ID</span>
+                          <span className="text-[10px] font-mono tracking-luxury text-[#8C6D42] uppercase font-bold block">
+                            Step 1 of 2 • Scan or Tap to Pay
+                          </span>
+                          <h3 className="text-base sm:text-lg font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                            Scan · Pay · Reserve Flacon
                           </h3>
                         </div>
-                      </div>
-                      <span className="text-[10px] font-mono uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 font-bold">
-                        Mandatory AI Verification
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-[#554D45] font-light leading-relaxed">
-                      Upload your valid payment screenshot with visible UTR ID below. Our AI strictly verifies that the screenshot shows (1) Recipient Raghav Sindhwani, (2) Exact cart total (₹{totalPayableAmount}), (3) Authentic 12-digit UPI UTR ID, and (4) Successful payment timestamp. Duplicate, fake, or re-used UTRs will be rejected.
-                    </p>
-
-                    {/* Hidden file input */}
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/png,image/jpeg,image/jpg,image/webp"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) processReceiptImage(file);
-                      }}
-                    />
-
-                    {/* Drag & Drop Upload Box */}
-                    {!receiptImage ? (
-                      <div
-                        onClick={() => fileInputRef.current?.click()}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={(e) => {
-                          e.preventDefault();
-                          const file = e.dataTransfer.files?.[0];
-                          if (file) processReceiptImage(file);
-                        }}
-                        className="border-2 border-dashed border-[#8C6D42]/60 hover:border-[#110D09] bg-[#FAF8F5] hover:bg-[#F3EFE8] transition-all p-8 sm:p-10 text-center cursor-pointer rounded-sm group space-y-3"
-                      >
-                        <div className="w-12 h-12 mx-auto rounded-full bg-white border border-[#D5CDC2] flex items-center justify-center text-[#8C6D42] group-hover:scale-105 transition-transform shadow-xs">
-                          <UploadCloud className="w-6 h-6" />
+                        <div className="text-right">
+                          <span className="text-[10px] font-mono text-[#554D45] uppercase block">Total Payable</span>
+                          <span className="text-xl font-mono font-bold text-[#110D09]">₹{totalPayableAmount}</span>
                         </div>
-                        <div>
-                          <p className="text-xs sm:text-sm font-serif font-bold text-[#110D09] tracking-wide">
-                            Upload Screenshot with UTR ID
-                          </p>
-                          <p className="text-[11px] text-[#110D09]/60 font-mono mt-1">
-                            Requires authentic screenshot from Google Pay, PhonePe, Paytm, or BHIM showing the 12-digit UTR ID &amp; paid amount (₹{totalPayableAmount})
-                          </p>
-                        </div>
-                        <span className="inline-block text-[10px] uppercase font-mono tracking-widest text-[#8C6D42] bg-white px-3 py-1 border border-[#D5CDC2] font-semibold">
-                          Select Screenshot with UTR ID
-                        </span>
                       </div>
-                    ) : (
-                      /* Uploaded Screenshot Preview Box */
-                      <div className="border border-[#D5CDC2] bg-[#FAF8F5] p-4 sm:p-5 space-y-4">
-                        <div className="flex flex-col sm:flex-row gap-5 items-start">
-                          {/* Receipt Thumbnail */}
-                          <div className="relative w-36 h-48 bg-black/5 border border-[#110D09] flex-shrink-0 overflow-hidden shadow-sm mx-auto sm:mx-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={receiptImage}
-                              alt="Uploaded Payment Receipt"
-                              className="w-full h-full object-cover"
-                            />
+
+                      {/* QR Code & Merchant Details Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        {/* Left: Dynamic QR Code */}
+                        <div className="md:col-span-5 flex flex-col items-center text-center">
+                          <div className="p-4 bg-white rounded-2xl border-2 border-[#110D09] shadow-md flex items-center justify-center">
+                            {showOfficialPoster ? (
+                              <div className="relative w-48 h-60">
+                                <Image
+                                  src="/brand/raghav-gpay-qr.jpg"
+                                  alt="Raghav Sindhwani Official Payment Scanner"
+                                  fill
+                                  className="object-contain rounded-lg"
+                                />
+                              </div>
+                            ) : (
+                              <QRCodeSVG
+                                value={dynamicUpiString}
+                                size={175}
+                                level="M"
+                                bgColor="#FFFFFF"
+                                fgColor="#110D09"
+                                includeMargin={false}
+                              />
+                            )}
                           </div>
 
-                          {/* Image details */}
-                          <div className="flex-1 space-y-3 w-full">
+                          <div className="mt-3 flex items-center space-x-2">
+                            <button
+                              type="button"
+                              onClick={() => setShowOfficialPoster(!showOfficialPoster)}
+                              className="text-[10px] font-mono text-[#8C6D42] hover:text-[#110D09] underline transition-colors"
+                            >
+                              {showOfficialPoster ? 'Switch to Vector QR Code' : 'View Official GPay Poster'}
+                            </button>
+                          </div>
+                          <p className="text-[10px] font-mono text-[#554D45]/75 mt-1">
+                            Scan with Google Pay, PhonePe, Paytm, BHIM, or any UPI app
+                          </p>
+                        </div>
+
+                        {/* Right: Payee Info, One-Click Copy & Direct App Opener */}
+                        <div className="md:col-span-7 space-y-4 text-xs text-[#554D45]">
+                          <div className="p-4 bg-white rounded-xl border border-[#D5CDC2] space-y-2.5">
                             <div className="flex items-center justify-between">
-                              <span className="text-xs font-mono text-[#110D09] font-bold truncate max-w-[220px]">
-                                📄 {receiptFileName || 'payment_receipt.jpg'}
+                              <span className="text-[10px] uppercase font-mono text-[#8C6D42] font-bold">
+                                Official Merchant UPI ID
                               </span>
+                              <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold">
+                                Active &amp; Verified
+                              </span>
+                            </div>
+
+                            <div className="text-sm font-serif font-bold text-[#110D09]">
+                              {MERCHANT_NAME}
+                            </div>
+
+                            <div className="flex items-center justify-between bg-[#FAF8F5] border border-[#D5CDC2] rounded-lg px-3 py-2">
+                              <code className="font-mono text-xs sm:text-sm font-bold text-[#110D09] select-all">
+                                {MERCHANT_UPI_ID}
+                              </code>
                               <button
                                 type="button"
-                                onClick={() => fileInputRef.current?.click()}
-                                className="text-[10px] font-mono uppercase text-[#8C6D42] hover:text-[#110D09] flex items-center space-x-1 underline"
+                                onClick={handleCopyUpi}
+                                className="inline-flex items-center space-x-1 px-2.5 py-1 text-[11px] font-mono font-bold text-[#8C6D42] hover:text-[#110D09] bg-white border border-[#D5CDC2] rounded transition-all ml-2"
                               >
-                                <RefreshCw className="w-3 h-3" />
-                                <span>Change Screenshot</span>
+                                {copiedUpi ? (
+                                  <>
+                                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                    <span className="text-emerald-700">Copied!</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Copy className="w-3.5 h-3.5" />
+                                    <span>Copy ID</span>
+                                  </>
+                                )}
                               </button>
                             </div>
 
-                            <div className="p-3.5 bg-white border border-emerald-300 space-y-2 text-xs">
-                              <div className="flex items-center space-x-2 text-emerald-800 font-serif font-bold text-xs uppercase tracking-wide">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                                <span>Valid Payment Screenshot Attached</span>
-                              </div>
-                              <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#554D45] pt-1 border-t border-[#E8E2D8]">
-                                <div>
-                                  <span className="block text-[9px] uppercase text-[#888075]">File Size:</span>
-                                  <span className="font-semibold text-[#110D09]">{(receiptFileSize / 1024).toFixed(1)} KB</span>
-                                </div>
-                                <div>
-                                  <span className="block text-[9px] uppercase text-[#888075]">Target Payee:</span>
-                                  <span className="font-semibold text-[#110D09]">{MERCHANT_NAME}</span>
-                                </div>
-                              </div>
+                            <div className="flex justify-between items-center text-xs pt-1 border-t border-[#E8E2D8]">
+                              <span className="text-[#554D45]">Payable Total:</span>
+                              <strong className="font-mono font-bold text-sm sm:text-base text-[#110D09]">
+                                ₹{totalPayableAmount} (Flat ₹399/bottle)
+                              </strong>
                             </div>
+                          </div>
+
+                          {/* HappyHair-style 1-Tap Mobile App Deeplink */}
+                          <div>
+                            <a
+                              href={dynamicUpiString}
+                              className="w-full py-3.5 px-4 bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs font-mono font-bold uppercase rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 text-center"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                              <span>Open In UPI App (GPay · PhonePe · Paytm)</span>
+                            </a>
+                            <p className="text-[10px] text-center text-[#554D45]/70 mt-1.5 font-mono">
+                              On mobile: Tapping opens your UPI app with ₹{totalPayableAmount} pre-filled
+                            </p>
                           </div>
                         </div>
                       </div>
-                    )}
-
-                      {/* AI SCANNER RADAR / 404 ERROR / GREEN SIGNAL BADGE */}
-                      {isAnalyzingReceipt && (
-                        <div className="p-4 bg-[#110D09] text-white rounded border border-[#C5A059]/50 space-y-3 shadow-md animate-pulse">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                              <Loader2 className="w-4 h-4 text-[#C5A059] animate-spin" />
-                              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#FAF8F5]">
-                                AI OCR Scanning Payment Screenshot...
-                              </span>
-                            </div>
-                            <span className="text-[10px] font-mono text-[#C5A059] uppercase px-2 py-0.5 bg-white/10 rounded">
-                              Analyzing Pixels
-                            </span>
-                          </div>
-                          <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                            <div className="bg-gradient-to-r from-[#8C6D42] via-[#C5A059] to-emerald-400 h-full w-3/4 animate-[pulse_1s_ease-in-out_infinite]" />
-                          </div>
-                          <p className="text-[11px] font-mono text-[#FAF8F5]/80 leading-relaxed">
-                            Verifying ₹{totalPayableAmount} payment to {MERCHANT_NAME} ({MERCHANT_UPI_ID}) and auto-extracting 12-digit UPI UTR number...
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 404 ERROR STATE: Invalid Payment Screenshot */}
-                      {!isAnalyzingReceipt && scanError && (
-                        <div className="p-4 bg-red-50 border-2 border-red-500 rounded text-xs space-y-2.5 shadow-sm">
-                          <div className="flex items-start space-x-2.5">
-                            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                            <div className="space-y-1.5 flex-1">
-                              <span className="font-mono font-bold text-red-800 uppercase tracking-wide block text-xs">
-                                ❌ 404 Error: Invalid Payment Screenshot
-                              </span>
-                              <p className="text-red-700 leading-relaxed text-[11px]">
-                                {scanError}
-                              </p>
-                              <div className="pt-1 flex items-center space-x-2">
-                                <button
-                                  type="button"
-                                  onClick={() => fileInputRef.current?.click()}
-                                  className="text-[10px] font-mono font-bold uppercase text-red-900 bg-red-100 hover:bg-red-200 px-3 py-1.5 rounded border border-red-300 transition-colors inline-flex items-center space-x-1"
-                                >
-                                  <RefreshCw className="w-3 h-3" />
-                                  <span>Re-upload Authentic Screenshot</span>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* GREEN SIGNAL: 100% Authentic Verified Payment */}
-                      {!isAnalyzingReceipt && scanSuccess && (
-                        <div className="p-4 bg-emerald-50 border-2 border-emerald-500 rounded text-xs space-y-3 shadow-md">
-                          <div className="flex items-center justify-between border-b border-emerald-200 pb-2.5">
-                            <div className="flex items-center space-x-2 text-emerald-800 font-bold uppercase tracking-wider font-mono">
-                              <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                              </span>
-                              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                              <span>🟢 100% Authentic Payment Verified</span>
-                            </div>
-                            <span className="text-[10px] font-mono text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded font-bold uppercase border border-emerald-300">
-                              {scanDetails?.app || 'UPI App'}
-                            </span>
-                          </div>
-
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] font-mono text-emerald-950">
-                            <div className="p-2.5 bg-white rounded border border-emerald-200">
-                              <span className="block text-[9px] uppercase text-emerald-700 font-bold">Verified Account:</span>
-                              <strong className="text-xs font-bold text-emerald-900 block truncate">{scanDetails?.payee || MERCHANT_NAME}</strong>
-                              <span className="text-[10px] text-emerald-700 font-mono">{MERCHANT_UPI_ID}</span>
-                            </div>
-                            <div className="p-2.5 bg-white rounded border border-emerald-200">
-                              <span className="block text-[9px] uppercase text-emerald-700 font-bold">Payment Amount:</span>
-                              <strong className="text-sm font-bold text-emerald-900">₹{scanDetails?.amount || totalPayableAmount}</strong>
-                              <span className="text-[10px] text-emerald-700 block font-sans">✓ Matches Cart Checkout Total</span>
-                            </div>
-                          </div>
-
-                          <div className="p-2.5 bg-emerald-100/60 rounded border border-emerald-300/80 text-[11px] text-emerald-900 font-medium flex items-center justify-between">
-                            <span>
-                              {upiUtr.trim().length === 12
-                                ? `✓ 12-Digit UTR: ${upiUtr}`
-                                : '✓ Account & Amount Verified. Please confirm 12-Digit UTR below:'}
-                            </span>
-                            <span className="text-[10px] font-mono text-emerald-800 font-bold uppercase bg-white px-2 py-0.5 rounded border border-emerald-200">
-                              {upiUtr.trim().length === 12 ? 'Ready to Book' : 'Enter UTR'}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-
-                    {/* 12-Digit UTR Number Input Field */}
-                    <div className="pt-2 border-t border-[#E8E2D8] space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-xs text-[#110D09] font-bold font-mono uppercase tracking-wider block">
-                          12-Digit UPI Transaction ID / UTR Number <span className="text-red-500">*</span>
-                        </label>
-                        <span
-                          className={`text-[10px] font-mono font-semibold ${
-                            scanSuccess && upiUtr.trim().length === 12
-                              ? 'text-emerald-800 font-bold'
-                              : upiUtr.trim().length === 12
-                              ? 'text-emerald-700'
-                              : 'text-amber-700'
-                          }`}
-                        >
-                          {scanSuccess && upiUtr.trim().length === 12
-                            ? '🟢 Auto-Extracted & Verified (12/12 digits)'
-                            : upiUtr.trim().length === 12
-                            ? '✓ 12 / 12 digits (Valid format)'
-                            : `${upiUtr.trim().length}/12 digits required`}
-                        </span>
-                      </div>
-                      <input
-                        type="text"
-                        required
-                        maxLength={12}
-                        placeholder="e.g. 412893821948"
-                        value={upiUtr}
-                        onChange={(e) => {
-                          setUpiUtr(e.target.value.replace(/\D/g, '').slice(0, 12));
-                          setScanError('');
-                        }}
-                        className={`w-full border px-4 py-3 text-sm font-mono text-[#110D09] focus:outline-none transition-colors ${
-                          scanSuccess
-                            ? 'border-emerald-500 bg-emerald-50/30 ring-1 ring-emerald-500'
-                            : upiUtr.trim().length === 12
-                            ? 'border-emerald-600 bg-emerald-50/20'
-                            : 'border-[#110D09] bg-[#FAF8F5] focus:bg-white'
-                        }`}
-                      />
-                      <p className="text-[10px] text-[#110D09]/65 font-light leading-relaxed">
-                        ✓ Indian UPI Reference Number (UTR) auto-extracted from your receipt. Fake, simulated, duplicate, or sequential numbers are strictly rejected by the server.
-                      </p>
                     </div>
 
-                    {/* Submit Verification Button */}
-                    <button
-                      type="button"
-                      disabled={loading || isAnalyzingReceipt || !receiptImage || upiUtr.trim().length !== 12 || !!scanError}
-                      onClick={() => handleDirectConfirmPayment()}
-                      className={`w-full py-4 text-xs font-semibold tracking-luxury uppercase flex items-center justify-center space-x-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all ${
-                        scanSuccess
-                          ? 'bg-emerald-700 hover:bg-emerald-800 text-white ring-2 ring-emerald-400 ring-offset-2'
-                          : 'btn-luxury-primary'
-                      }`}
-                    >
-                      {loading ? (
-                        <div className="flex items-center space-x-2">
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Finalizing Reservation &amp; Syncing Dashboard...</span>
-                        </div>
-                      ) : (
-                        <>
-                          <ShieldCheck className="w-4 h-4" />
-                          <span>
-                            {scanSuccess
-                              ? `✓ Complete Flacon Reservation • Verified Payment (₹${totalPayableAmount})`
-                              : `Verify Receipt & Confirm Booking (₹${totalPayableAmount})`}
+                    {/* BOX 2: ENTER 12-DIGIT UTR & CONFIRM ORDER */}
+                    <div className="bg-white border-2 border-[#110D09] rounded-2xl p-5 sm:p-7 space-y-5 shadow-lg">
+                      <div className="border-b border-[#E8E2D8] pb-3 flex items-center justify-between">
+                        <div>
+                          <span className="text-[10px] font-mono tracking-luxury text-[#8C6D42] uppercase font-bold block">
+                            Step 2 of 2 • Confirmation
                           </span>
-                          <ArrowRight className="w-4 h-4" />
-                        </>
+                          <h3 className="text-base sm:text-lg font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                            Enter 12-Digit Transaction Reference (UTR)
+                          </h3>
+                        </div>
+                        <span className="text-[10px] font-mono uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded font-bold">
+                          Required
+                        </span>
+                      </div>
+
+                      {/* 12-Digit UTR Input */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <label htmlFor="upiUtr" className="text-xs font-mono font-bold uppercase tracking-wider text-[#110D09]">
+                            12-Digit UPI Transaction ID / UTR Number <span className="text-red-500">*</span>
+                          </label>
+                          <span
+                            className={`text-[11px] font-mono font-bold ${
+                              upiUtr.trim().length === 12 ? 'text-emerald-700' : 'text-[#8C6D42]'
+                            }`}
+                          >
+                            {upiUtr.trim().length === 12
+                              ? '✓ 12/12 digits entered (Valid)'
+                              : `${upiUtr.trim().length}/12 digits required`}
+                          </span>
+                        </div>
+
+                        <input
+                          id="upiUtr"
+                          type="text"
+                          required
+                          maxLength={12}
+                          placeholder="e.g. 412893821948"
+                          value={upiUtr}
+                          onChange={(e) => {
+                            setUpiUtr(e.target.value.replace(/\D/g, '').slice(0, 12));
+                            setErrorMsg('');
+                          }}
+                          className={`w-full border-2 rounded-xl px-4 py-3.5 text-base font-mono text-[#110D09] tracking-wider focus:outline-none transition-all ${
+                            upiUtr.trim().length === 12
+                              ? 'border-emerald-500 bg-emerald-50/20 ring-2 ring-emerald-500/20'
+                              : 'border-[#110D09] bg-[#FAF8F5] focus:bg-white focus:border-[#8C6D42]'
+                          }`}
+                        />
+                        <p className="text-[11px] text-[#554D45] font-light leading-relaxed">
+                          Found in your UPI app under transaction details as <strong>&ldquo;UPI Transaction ID&rdquo;</strong>, <strong>&ldquo;UTR&rdquo;</strong>, or <strong>&ldquo;Google Transaction ID&rdquo;</strong>.
+                        </p>
+                      </div>
+
+                      {/* Payment Screenshot Upload (Optional Proof) */}
+                      <div className="pt-2 border-t border-[#E8E2D8] space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-mono font-bold uppercase tracking-wide text-[#110D09]">
+                            Attach Payment Screenshot (Optional proof)
+                          </span>
+                          {receiptImage && (
+                            <span className="text-[10px] font-mono text-emerald-700 font-bold uppercase">
+                              ✓ Screenshot Attached
+                            </span>
+                          )}
+                        </div>
+
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/png,image/jpeg,image/jpg,image/webp"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) processReceiptImage(file);
+                          }}
+                        />
+
+                        {!receiptImage ? (
+                          <div
+                            onClick={() => fileInputRef.current?.click()}
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              const file = e.dataTransfer.files?.[0];
+                              if (file) processReceiptImage(file);
+                            }}
+                            className="border-2 border-dashed border-[#D5CDC2] hover:border-[#110D09] bg-[#FAF8F5] hover:bg-[#F3EFE8] p-4 sm:p-5 rounded-xl text-center cursor-pointer transition-all space-y-1.5"
+                          >
+                            <UploadCloud className="w-6 h-6 mx-auto text-[#8C6D42]" />
+                            <p className="text-xs font-serif font-bold text-[#110D09]">
+                              Click or drag screenshot here to attach receipt proof
+                            </p>
+                            <p className="text-[10px] font-mono text-[#554D45]/70">
+                              JPG, PNG, or WEBP (If 12-digit UTR is visible, it will auto-fill above)
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="p-3 bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl flex items-center justify-between gap-3">
+                            <div className="flex items-center space-x-3 truncate">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={receiptImage}
+                                alt="Screenshot Preview"
+                                className="w-12 h-14 object-cover rounded border border-[#110D09] shrink-0"
+                              />
+                              <div className="truncate">
+                                <p className="text-xs font-mono font-bold text-[#110D09] truncate">
+                                  {receiptFileName || 'payment_receipt.jpg'}
+                                </p>
+                                <p className="text-[10px] font-mono text-emerald-700">
+                                  {isAnalyzingReceipt
+                                    ? 'Analyzing image...'
+                                    : scanSuccess
+                                    ? '🟢 12-Digit UTR Auto-Detected & Applied!'
+                                    : '✓ Screenshot saved as proof'}
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setReceiptImage(null);
+                                setReceiptFileName('');
+                                setScanSuccess(false);
+                              }}
+                              className="text-[10px] font-mono text-red-600 hover:text-red-800 uppercase px-2.5 py-1 rounded bg-white border border-red-200 shrink-0 transition-colors"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Error message banner if any */}
+                      {errorMsg && (
+                        <div className="p-3.5 bg-red-50 border border-red-400 rounded-xl text-xs text-red-800 font-mono flex items-start space-x-2">
+                          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                          <span>{errorMsg}</span>
+                        </div>
                       )}
-                    </button>
-                    {!receiptImage && (
-                      <p className="text-[10px] text-amber-800 text-center font-mono">
-                        ⚠️ Please upload your payment screenshot above to enable auto-extraction and confirmation
-                      </p>
-                    )}
-                    {receiptImage && !scanSuccess && !scanError && !isAnalyzingReceipt && upiUtr.trim().length !== 12 && (
-                      <p className="text-[10px] text-amber-800 text-center font-mono">
-                        ⚠️ Please wait for AI scan or enter your 12-digit UTR ({upiUtr.trim().length}/12 entered)
-                      </p>
-                    )}
+
+                      {/* Final Submission Button: Exact HappyHair Flow */}
+                      <button
+                        type="button"
+                        disabled={loading || upiUtr.trim().length !== 12}
+                        onClick={() => handleDirectConfirmPayment()}
+                        className={`w-full py-4 text-xs font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2 shadow-lg transition-all ${
+                          upiUtr.trim().length === 12
+                            ? 'bg-emerald-700 hover:bg-emerald-800 text-white cursor-pointer ring-2 ring-emerald-500/50'
+                            : 'bg-[#110D09] text-white opacity-40 cursor-not-allowed'
+                        }`}
+                      >
+                        {loading ? (
+                          <div className="flex items-center space-x-2">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>Confirming Payment &amp; Allocating Flacon...</span>
+                          </div>
+                        ) : (
+                          <>
+                            <ShieldCheck className="w-4 h-4" />
+                            <span>I&apos;ve Paid ₹{totalPayableAmount} via UPI — Confirm Order</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </>
+                        )}
+                      </button>
+                      {upiUtr.trim().length !== 12 && (
+                        <p className="text-[11px] text-center font-mono text-[#8C6D42]">
+                          Enter the 12-digit UTR number from your payment app to confirm your order ({upiUtr.trim().length}/12)
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

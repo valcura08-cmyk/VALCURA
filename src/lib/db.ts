@@ -108,6 +108,7 @@ export interface Order {
   deliveredAt?: string | null;
   trackingNumber?: string;
   trackingPartner?: string;
+  receiptImageUrl?: string;
   history: OrderHistoryEntry[];
 }
 
