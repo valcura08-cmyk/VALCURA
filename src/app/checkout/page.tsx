@@ -346,7 +346,7 @@ export default function CheckoutPage() {
     });
   };
 
-  // Official Bank Gateway Trigger (Instamojo Official Payment Link with Prefilled Details)
+  // Official Bank Gateway Trigger (Instamojo Official Payment API & Smart Link)
   const handlePayWithOfficialGateway = async () => {
     setErrorMsg('');
     setLoading(true);
@@ -361,7 +361,24 @@ export default function CheckoutPage() {
         document.cookie = `valcura_pending_order_id=${orderId}; path=/; max-age=86400; SameSite=Lax`;
       }
 
-      // 3. Pre-fill customer details directly into Instamojo Smart Link
+      // 3. Request official Instamojo payment URL from server API
+      const res = await fetch('/api/payment/instamojo/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: totalPayableAmount,
+          orderId,
+          customer: formData,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.paymentUrl) {
+        window.location.href = data.paymentUrl;
+        return;
+      }
+
+      // 4. Fallback to direct smart link
       const instamojoBase = 'https://imjo.in/mfmtNv';
       const paymentUrl = new URL(instamojoBase);
       paymentUrl.searchParams.set('data_name', formData.fullName.trim());
@@ -369,7 +386,6 @@ export default function CheckoutPage() {
       paymentUrl.searchParams.set('data_phone', formData.phone.trim());
       paymentUrl.searchParams.set('data_amount', totalPayableAmount.toString());
 
-      // 4. Redirect customer to official gateway checkout
       window.location.href = paymentUrl.toString();
     } catch (err: any) {
       console.error('Official payment gateway error:', err);
