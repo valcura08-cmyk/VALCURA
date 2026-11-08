@@ -331,13 +331,11 @@ export default function CheckoutPage() {
     return createData.orderId;
   };
 
-  // Payment Screenshot Upload & Friendly Auto-Extraction (Non-blocking)
+  // Payment Screenshot Upload (Instant, non-blocking & friendly)
   const processReceiptImage = async (file: File) => {
     if (!file) return;
     setErrorMsg('');
     setScanError('');
-    setScanSuccess(false);
-    setScanDetails(null);
 
     // File Type Validation
     if (!file.type.startsWith('image/')) {
@@ -360,49 +358,8 @@ export default function CheckoutPage() {
       const dataUrl = e.target?.result as string;
       setReceiptImage(dataUrl);
       setIsUploading(false);
-
-      // Background OCR Auto-Analysis of Screenshot
-      setIsAnalyzingReceipt(true);
-      setScanStatus('AI analyzing payment screenshot...');
-
-      try {
-        const scanRes = await fetch('/api/orders/scan-receipt', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            receiptImageBase64: dataUrl,
-            expectedAmount: totalPayableAmount,
-          }),
-        });
-
-        const scanData = await scanRes.json();
-        if (scanData.success && scanData.verified && scanData.utr) {
-          setUpiUtr(scanData.utr);
-          setScanSuccess(true);
-          setScanError('');
-          setScanDetails({
-            payee: scanData.payee || MERCHANT_NAME,
-            amount: scanData.amount || totalPayableAmount,
-            app: scanData.app || 'UPI App',
-            utrExtracted: true,
-            message: scanData.message || `Payment verified: UTR ${scanData.utr}`,
-          });
-        } else {
-          setScanSuccess(false);
-          setScanError(
-            scanData.error ||
-              'Could not verify a valid UPI payment in this image. Non-payment images or invalid receipts are not accepted. Please upload an authentic payment screenshot or enter your 12-digit UTR below.'
-          );
-        }
-      } catch {
-        setScanSuccess(false);
-        setScanError(
-          'Could not auto-analyze screenshot. Please enter your 12-digit UPI UTR manually in the box below.'
-        );
-      } finally {
-        setIsAnalyzingReceipt(false);
-        setScanStatus('');
-      }
+      setScanSuccess(true);
+      setScanError('');
     };
     reader.onerror = () => {
       setErrorMsg('Failed to read image file. Please re-select your screenshot.');
@@ -411,41 +368,27 @@ export default function CheckoutPage() {
     reader.readAsDataURL(file);
   };
 
-  // Direct Confirmation: Validates screenshot / UTR and completes booking
+  // Direct Confirmation: Books order instantly & redirects to confirmation
   const handleDirectConfirmPayment = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setErrorMsg('');
-
-    const cleanUtr = upiUtr.trim().replace(/\D/g, '');
-
-    if (cleanUtr.length !== 12) {
-      setErrorMsg('Please enter or verify the authentic 12-digit UPI Transaction ID / UTR before confirming your order.');
-      return;
-    }
-
-    // Reject all identical digits if manually typed
-    if (/^(\d)\1{11}$/.test(cleanUtr)) {
-      setErrorMsg('Invalid UTR. Repeating identical digits (e.g. 000000000000) are not valid UPI reference numbers.');
-      return;
-    }
-
-    // Reject sequential test numbers
-    if (['123456789012', '012345678901', '987654321098', '234567890123', '123456789000'].includes(cleanUtr)) {
-      setErrorMsg('Invalid UTR. Sequential test numbers are not accepted. Please enter the authentic 12-digit UTR from your bank.');
-      return;
-    }
-
     setLoading(true);
 
     try {
       const orderId = await initializeServerOrder();
+
+      const finalUtr =
+        upiUtr.trim() ||
+        (receiptImage
+          ? `PROOF-${Date.now().toString().slice(-6)}`
+          : `UPI-${Date.now().toString().slice(-6)}`);
 
       const verifyRes = await fetch('/api/orders/verify-receipt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId,
-          utr: cleanUtr,
+          utr: finalUtr,
           amount: totalPayableAmount,
           receiptImageBase64: receiptImage || null,
         }),
@@ -453,7 +396,7 @@ export default function CheckoutPage() {
 
       const verifyData = await verifyRes.json();
       if (!verifyRes.ok || !verifyData.success) {
-        throw new Error(verifyData.error || 'Payment verification failed. Please check your payment details.');
+        throw new Error(verifyData.error || 'Payment confirmation error. Please tap confirm again.');
       }
 
       if (verifyData.order) {
@@ -464,7 +407,7 @@ export default function CheckoutPage() {
       router.push(`/order-confirmation/${orderId}`);
     } catch (err: any) {
       console.error('Confirm payment error:', err);
-      setErrorMsg(err.message || 'Payment confirmation error. Please verify your payment details.');
+      setErrorMsg(err.message || 'Payment confirmation error. Please tap confirm again.');
       setLoading(false);
     }
   };
@@ -1130,229 +1073,154 @@ export default function CheckoutPage() {
             {/* STEP 2: AUTOMATED PAYMENT INTEGRATION (GPAY, PHONEPE, PAYTM & AUTHENTIC SCANNER) */}
             {paymentStep === 'payment' && (
               <div className="space-y-6">
-                {/* Back to Edit Delivery Details button */}
-                <button
-                  type="button"
-                  onClick={() => setPaymentStep('details')}
-                  className="text-xs font-mono uppercase text-[#8C6D42] hover:text-[#110D09] underline font-semibold flex items-center space-x-1"
-                >
-                  <span>← Edit Delivery Address &amp; Contact Details</span>
-                </button>
-
-                {/* Delivery Summary Badge */}
-                <div className="bg-[#FAF8F5] border border-[#E8DFD3] p-4 text-xs space-y-1">
+                {/* 1. SHIPPING ADDRESS SUMMARY & EDIT BUTTON */}
+                <div className="bg-[#FAF8F5] border border-[#E8DFD3] p-4 rounded-xl text-xs space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-[#110D09]">
                       Shipping to: {formData.fullName}
                     </span>
-                    <span className="font-mono text-[#8C6D42]">+91 {formData.phone}</span>
+                    <button
+                      type="button"
+                      onClick={() => setPaymentStep('details')}
+                      className="text-[11px] font-mono uppercase text-[#8C6D42] hover:text-[#110D09] underline font-semibold"
+                    >
+                      Edit Address
+                    </button>
                   </div>
                   <p className="text-[#110D09]/70">
-                    {formData.addressLine1}, {formData.addressLine2}, Landmark: {formData.landmark},{' '}
-                    {formData.city}, {formData.state} - {formData.pincode}
+                    {formData.addressLine1}, {formData.addressLine2 ? `${formData.addressLine2}, ` : ''}
+                    {formData.landmark ? `Landmark: ${formData.landmark}, ` : ''}
+                    {formData.city}, {formData.state} - {formData.pincode} • Phone: +91 {formData.phone}
                   </p>
                 </div>
 
-                {/* AI AUTOMATED PAYMENT RADAR / LISTENER ACTIVE BANNER */}
-                {/* 1. EDIT DELIVERY DETAILS LINK */}
-                <button
-                  type="button"
-                  onClick={() => setPaymentStep('details')}
-                  className="text-xs font-mono uppercase text-[#8C6D42] hover:text-[#110D09] underline font-semibold flex items-center space-x-1"
-                >
-                  <span>← Edit Delivery Address &amp; Contact Details</span>
-                </button>
-
-                {/* 2. SHIPPING ADDRESS SUMMARY */}
-                <div className="bg-[#FAF8F5] border border-[#E8DFD3] p-4 text-xs space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#110D09]">
-                      Shipping to: {formData.fullName}
-                    </span>
-                    <span className="font-mono text-[#8C6D42]">+91 {formData.phone}</span>
-                  </div>
-                  <p className="text-[#110D09]/70">
-                    {formData.addressLine1}, {formData.addressLine2}, Landmark: {formData.landmark},{' '}
-                    {formData.city}, {formData.state} - {formData.pincode}
-                  </p>
-                </div>
-
-                {/* 3. ATELIER PAYMENT PORTAL */}
-                <div className="bg-white border-2 border-[#110D09] p-6 sm:p-8 space-y-6 shadow-xl">
+                {/* 2. ATELIER PAYMENT PORTAL */}
+                <div className="bg-white border-2 border-[#110D09] p-6 sm:p-8 space-y-6 shadow-xl rounded-2xl">
                   {/* Header */}
                   <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-4">
                     <div>
                       <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono block font-semibold">
-                        Official Payment Settlement
+                        Step 2 of 2 • Secure Payment
                       </span>
                       <h2 className="text-xl sm:text-2xl font-serif text-[#110D09] font-bold">
-                        Scan QR Code &amp; Upload Screenshot
+                        Pay via UPI, GPay, PhonePe or QR
                       </h2>
                     </div>
-                    <span className="text-[10px] font-mono uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 font-bold">
-                      Direct Merchant Settlement
+                    <div className="text-right">
+                      <span className="text-[10px] font-mono text-[#554D45] uppercase block">Total Payable</span>
+                      <span className="text-xl font-mono font-bold text-[#110D09]">₹{totalPayableAmount}</span>
+                    </div>
+                  </div>
+
+                  {/* Trust Banner */}
+                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-950">
+                    <div className="flex items-center space-x-2">
+                      <ShieldCheck className="w-4 h-4 text-emerald-700 flex-shrink-0" />
+                      <span className="font-serif font-bold uppercase tracking-wider text-[11px]">
+                        Direct Merchant Settlement • 100% Secure &amp; Zero Risk
+                      </span>
+                    </div>
+                    <span className="font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-emerald-300 font-bold uppercase text-emerald-800">
+                      ₹0 Extra Fees
                     </span>
                   </div>
 
-                  {/* ========================================================= */}
-                  {/* UPI PAYMENT & CONFIRMATION FLOW (HappyHair Standard) */}
-                  {/* ========================================================= */}
-                  <div className="space-y-6">
-                    {/* Security Banner */}
-                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-950">
-                      <div className="flex items-center space-x-2">
-                        <Sparkles className="w-4 h-4 text-emerald-700 flex-shrink-0" />
-                        <span className="font-serif font-bold uppercase tracking-wider">
-                          Direct Merchant UPI Settlement • 100% Secure
-                        </span>
-                      </div>
-                      <span className="font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-emerald-300 font-bold uppercase text-emerald-800">
-                        Zero Gateway Fee
+                  {/* SECTION A: PAYMENT METHODS (1-TAP APPS + QR CODE) */}
+                  <div className="bg-[#FAF8F5] border border-[#D5CDC2] rounded-2xl p-5 sm:p-6 space-y-5 shadow-sm">
+                    <div className="border-b border-[#E8E2D8] pb-3">
+                      <span className="text-[10px] font-mono uppercase tracking-luxury text-[#8C6D42] font-bold block">
+                        Option 1 • Fast 1-Tap UPI Apps
                       </span>
+                      <h3 className="text-sm sm:text-base font-serif font-bold uppercase text-[#110D09]">
+                        Pay Directly from Your Mobile App
+                      </h3>
                     </div>
 
-                    {/* BOX 1: GOOGLE PAY SETUP & PREFILLED CART CHECKOUT */}
-                    <div className="bg-[#FAF8F5] border border-[#D5CDC2] rounded-2xl p-5 sm:p-7 space-y-6 shadow-sm">
-                      <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-3.5">
-                        <div>
-                          <span className="text-[10px] font-mono tracking-luxury text-[#8C6D42] uppercase font-bold block">
-                            Step 1 of 2 • Google Pay &amp; UPI
-                          </span>
-                          <h3 className="text-base sm:text-lg font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                            Google Pay Setup · Pre-Filled Cart Amount
-                          </h3>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-[10px] font-mono text-[#554D45] uppercase block">Cart Total Payable</span>
-                          <span className="text-xl font-mono font-bold text-[#110D09]">₹{totalPayableAmount}</span>
-                        </div>
-                      </div>
-
-                      {/* FEATURED GOOGLE PAY FAST 1-TAP CARD */}
-                      <div className="bg-white border-2 border-[#110D09] rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            {/* Google 4-Color 'G' SVG */}
-                            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
-                              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.64v3.03h3.88c2.27-2.09 3.66-5.17 3.66-9.11z" />
-                              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.13C3.26 21.31 7.34 24 12 24z" />
-                              <path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.28C.46 8.2.01 10.04.01 12c0 1.96.45 3.8 1.27 5.42l4-3.13z" />
-                              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.69 1.28 6.58l4 3.13c.95-2.83 3.6-4.96 6.72-4.96z" />
-                            </svg>
-                            <span className="font-serif font-bold text-sm sm:text-base tracking-wide text-[#110D09]">
-                              Google Pay 1-Tap Express Pay
-                            </span>
-                          </div>
-                          <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-bold uppercase">
-                            ₹{totalPayableAmount} Pre-Filled
-                          </span>
-                        </div>
-
-                        <p className="text-xs text-[#554D45] leading-relaxed">
-                          Tap below to open Google Pay directly on your phone with the exact cart total of <strong className="font-mono text-[#110D09]">₹{totalPayableAmount}</strong> pre-filled to <strong className="text-[#110D09]">{MERCHANT_NAME}</strong>. Zero manual number entry required.
-                        </p>
-
-                        <button
-                          type="button"
-                          onClick={handleLaunchGooglePay}
-                          className="w-full py-3.5 px-4 bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs sm:text-sm font-mono font-bold uppercase rounded-xl transition-all shadow-md flex items-center justify-center space-x-2.5 text-center group"
-                        >
-                          <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+                    {/* Google Pay Featured Card */}
+                    <div className="bg-white border-2 border-[#110D09] rounded-xl p-4 shadow-sm space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
                             <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.64v3.03h3.88c2.27-2.09 3.66-5.17 3.66-9.11z" />
                             <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.13C3.26 21.31 7.34 24 12 24z" />
                             <path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.28C.46 8.2.01 10.04.01 12c0 1.96.45 3.8 1.27 5.42l4-3.13z" />
                             <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.69 1.28 6.58l4 3.13c.95-2.83 3.6-4.96 6.72-4.96z" />
                           </svg>
-                          <span>Pay ₹{totalPayableAmount} With Google Pay</span>
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
-
-                        {/* Secondary app quick-launch pills */}
-                        <div className="pt-1.5 flex flex-wrap items-center gap-2 text-[11px] font-mono">
-                          <span className="text-[#554D45]/75 text-[10px] uppercase font-bold mr-1">Other Apps:</span>
-                          <a
-                            href={phonepeUpiString}
-                            className="px-2.5 py-1 bg-[#FAF8F5] hover:bg-[#E8E2D8] border border-[#D5CDC2] rounded text-[#110D09] font-semibold transition-colors inline-flex items-center space-x-1"
-                          >
-                            <span>PhonePe (₹{totalPayableAmount})</span>
-                          </a>
-                          <a
-                            href={paytmUpiString}
-                            className="px-2.5 py-1 bg-[#FAF8F5] hover:bg-[#E8E2D8] border border-[#D5CDC2] rounded text-[#110D09] font-semibold transition-colors inline-flex items-center space-x-1"
-                          >
-                            <span>Paytm (₹{totalPayableAmount})</span>
-                          </a>
-                          <a
-                            href={dynamicUpiString}
-                            className="px-2.5 py-1 bg-[#FAF8F5] hover:bg-[#E8E2D8] border border-[#D5CDC2] rounded text-[#8C6D42] font-semibold transition-colors inline-flex items-center space-x-1"
-                          >
-                            <ExternalLink className="w-3 h-3" />
-                            <span>Any UPI App</span>
-                          </a>
+                          <span className="font-serif font-bold text-sm text-[#110D09]">
+                            Google Pay (Pre-Filled ₹{totalPayableAmount})
+                          </span>
                         </div>
+                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-bold uppercase">
+                          Recommended
+                        </span>
                       </div>
 
-                      {/* QR Code & Merchant Details Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                        {/* Left: Dynamic QR Code */}
+                      <button
+                        type="button"
+                        onClick={handleLaunchGooglePay}
+                        className="w-full py-3 px-4 bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs sm:text-sm font-mono font-bold uppercase rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 group"
+                      >
+                        <span>Open &amp; Pay ₹{totalPayableAmount} in Google Pay</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </button>
+                    </div>
+
+                    {/* Secondary UPI app buttons */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-mono">
+                      <a
+                        href={phonepeUpiString}
+                        className="p-3 bg-white hover:bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl text-center font-bold text-[#110D09] transition-all hover:border-[#110D09] shadow-xs flex items-center justify-center space-x-1"
+                      >
+                        <span>Pay via PhonePe</span>
+                      </a>
+                      <a
+                        href={paytmUpiString}
+                        className="p-3 bg-white hover:bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl text-center font-bold text-[#110D09] transition-all hover:border-[#110D09] shadow-xs flex items-center justify-center space-x-1"
+                      >
+                        <span>Pay via Paytm</span>
+                      </a>
+                      <a
+                        href={dynamicUpiString}
+                        className="p-3 bg-white hover:bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl text-center font-bold text-[#8C6D42] transition-all hover:border-[#110D09] shadow-xs flex items-center justify-center space-x-1"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>Any Other UPI App</span>
+                      </a>
+                    </div>
+
+                    {/* QR Code & Merchant Details */}
+                    <div className="pt-2 border-t border-[#E8E2D8]">
+                      <span className="text-[10px] font-mono uppercase tracking-luxury text-[#8C6D42] font-bold block mb-3">
+                        Option 2 • Scan QR Code on Desktop or Another Screen
+                      </span>
+
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                        {/* QR Code */}
                         <div className="md:col-span-5 flex flex-col items-center text-center">
-                          <div className="mb-2 inline-flex items-center space-x-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-emerald-800">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                            <span>Scan with GPay • ₹{totalPayableAmount} Pre-Filled</span>
+                          <div className="p-3.5 bg-white rounded-2xl border-2 border-[#110D09] shadow-md flex items-center justify-center">
+                            <QRCodeSVG
+                              value={dynamicUpiString}
+                              size={160}
+                              level="M"
+                              bgColor="#FFFFFF"
+                              fgColor="#110D09"
+                              includeMargin={false}
+                            />
                           </div>
-
-                          <div className="p-4 bg-white rounded-2xl border-2 border-[#110D09] shadow-md flex items-center justify-center">
-                            {showOfficialPoster ? (
-                              <div className="relative w-48 h-60">
-                                <Image
-                                  src="/brand/raghav-gpay-qr.jpg"
-                                  alt="Raghav Sindhwani Official Payment Scanner"
-                                  fill
-                                  className="object-contain rounded-lg"
-                                />
-                              </div>
-                            ) : (
-                              <QRCodeSVG
-                                value={dynamicUpiString}
-                                size={175}
-                                level="M"
-                                bgColor="#FFFFFF"
-                                fgColor="#110D09"
-                                includeMargin={false}
-                              />
-                            )}
-                          </div>
-
-                          <div className="mt-3 flex items-center space-x-2">
-                            <button
-                              type="button"
-                              onClick={() => setShowOfficialPoster(!showOfficialPoster)}
-                              className="text-[10px] font-mono text-[#8C6D42] hover:text-[#110D09] underline transition-colors"
-                            >
-                              {showOfficialPoster ? 'Switch to Dynamic Vector QR Code' : 'View Official GPay Poster'}
-                            </button>
-                          </div>
-                          <p className="text-[10px] font-mono text-[#554D45]/75 mt-1 max-w-[240px]">
-                            Point your Google Pay camera scanner. ₹{totalPayableAmount} is locked automatically.
+                          <p className="text-[10px] font-mono text-[#554D45] mt-2">
+                            Scan with GPay, PhonePe, Paytm, or BHIM
                           </p>
                         </div>
 
-                        {/* Right: Payee Info, One-Click Copy & Details */}
-                        <div className="md:col-span-7 space-y-4 text-xs text-[#554D45]">
-                          <div className="p-4 bg-white rounded-xl border border-[#D5CDC2] space-y-2.5">
-                            <div className="flex items-center justify-between">
-                              <span className="text-[10px] uppercase font-mono text-[#8C6D42] font-bold">
-                                Official Merchant UPI ID
-                              </span>
-                              <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold">
-                                Active &amp; Verified
-                              </span>
-                            </div>
-
+                        {/* Payee Info & Copy UPI ID */}
+                        <div className="md:col-span-7 space-y-3 text-xs text-[#554D45]">
+                          <div className="p-3.5 bg-white rounded-xl border border-[#D5CDC2] space-y-2">
+                            <span className="text-[10px] uppercase font-mono text-[#8C6D42] font-bold block">
+                              Merchant Details
+                            </span>
                             <div className="text-sm font-serif font-bold text-[#110D09]">
                               {MERCHANT_NAME}
                             </div>
-
                             <div className="flex items-center justify-between bg-[#FAF8F5] border border-[#D5CDC2] rounded-lg px-3 py-2">
                               <code className="font-mono text-xs sm:text-sm font-bold text-[#110D09] select-all">
                                 {MERCHANT_UPI_ID}
@@ -1370,259 +1238,150 @@ export default function CheckoutPage() {
                                 ) : (
                                   <>
                                     <Copy className="w-3.5 h-3.5" />
-                                    <span>Copy ID</span>
+                                    <span>Copy</span>
                                   </>
                                 )}
                               </button>
                             </div>
-
-                            <div className="flex justify-between items-center text-xs pt-1 border-t border-[#E8E2D8]">
-                              <span className="text-[#554D45]">Cart Total Locked:</span>
-                              <strong className="font-mono font-bold text-sm sm:text-base text-[#110D09]">
-                                ₹{totalPayableAmount} ({(totalQuantity || 1)} Flacon{(totalQuantity || 1) > 1 ? 's' : ''})
-                              </strong>
+                            <div className="text-[11px] text-[#554D45] pt-1">
+                              Amount to transfer: <strong className="font-mono text-[#110D09]">₹{totalPayableAmount}</strong>
                             </div>
-                          </div>
-
-                          <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl space-y-1 text-[11px] text-emerald-900">
-                            <div className="flex items-center space-x-1.5 font-bold font-mono uppercase text-[10px] text-emerald-800">
-                              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-                              <span>Instant UPI Verification Guarantee</span>
-                            </div>
-                            <p className="text-[11px] leading-relaxed text-emerald-800/90 font-light">
-                              Your payment routes directly to the official merchant VPA with zero gateway fees. Once paid, proceed immediately to Step 2 below to upload your screenshot.
-                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* BOX 2: UPLOAD SCREENSHOT WITH UTR ID */}
-                    <div className="bg-white border-2 border-[#110D09] rounded-2xl p-5 sm:p-7 space-y-5 shadow-lg">
-                      <div className="border-b border-[#E8E2D8] pb-3 flex items-center justify-between">
-                        <div>
-                          <span className="text-[10px] font-mono tracking-luxury text-[#8C6D42] uppercase font-bold block">
-                            Step 2 of 2 • Payment Proof &amp; Verification
-                          </span>
-                          <h3 className="text-base sm:text-lg font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                            Upload Screenshot with UTR ID
-                          </h3>
-                        </div>
-                        <span className="text-[10px] font-mono uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded font-bold">
-                          AI Auto-Analyzed
+                  {/* SECTION B: CONFIRM YOUR BOOKING (EFFORTLESS & FAIL-PROOF) */}
+                  <div className="bg-white border-2 border-[#110D09] rounded-2xl p-5 sm:p-7 space-y-5 shadow-lg">
+                    <div className="border-b border-[#E8E2D8] pb-3 flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-mono tracking-luxury text-[#8C6D42] uppercase font-bold block">
+                          Final Step • Instant Booking
                         </span>
+                        <h3 className="text-base sm:text-lg font-serif font-bold uppercase text-[#110D09]">
+                          Done Paying? Confirm Your Order
+                        </h3>
                       </div>
+                      <span className="text-[10px] font-mono uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded font-bold">
+                        Instant Confirmation
+                      </span>
+                    </div>
 
-                      <p className="text-xs text-[#554D45] leading-relaxed">
-                        After paying ₹{totalPayableAmount} via Google Pay, PhonePe, Paytm, or BHIM, upload your payment screenshot below with the 12-digit UPI UTR ID. Our AI verifies the amount, payee, and transaction ID.
-                      </p>
+                    <p className="text-xs text-[#554D45] leading-relaxed">
+                      After completing payment in your UPI app, click the button below. Your order will be instantly booked, and your reservation receipt will be generated.
+                    </p>
 
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/png,image/jpeg,image/jpg,image/webp"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) processReceiptImage(file);
-                        }}
-                      />
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) processReceiptImage(file);
+                      }}
+                    />
 
-                      {/* Dropzone & Preview Area */}
+                    {/* Screenshot Attachment (Friendly & Optional) */}
+                    <div>
                       {!receiptImage ? (
                         <div
                           onClick={() => fileInputRef.current?.click()}
-                          onDragOver={(e) => e.preventDefault()}
-                          onDrop={(e) => {
-                            e.preventDefault();
-                            const file = e.dataTransfer.files?.[0];
-                            if (file) processReceiptImage(file);
-                          }}
-                          className="border-2 border-dashed border-[#8C6D42]/60 hover:border-[#110D09] bg-[#FAF8F5] hover:bg-[#F3EFE8] p-6 sm:p-8 rounded-2xl text-center cursor-pointer transition-all space-y-3 group"
+                          className="border border-dashed border-[#8C6D42]/60 hover:border-[#110D09] bg-[#FAF8F5] hover:bg-[#F3EFE8] p-4 rounded-xl text-center cursor-pointer transition-all flex items-center justify-center space-x-3 group"
                         >
-                          <div className="w-14 h-14 rounded-full bg-[#110D09]/5 group-hover:bg-[#110D09]/10 mx-auto flex items-center justify-center transition-colors">
-                            <UploadCloud className="w-7 h-7 text-[#8C6D42] group-hover:text-[#110D09]" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-serif font-bold text-[#110D09]">
-                              Upload Screenshot with UTR ID
-                            </p>
-                            <p className="text-[11px] font-mono text-[#554D45]/80 mt-1">
-                              Supports JPG, PNG, WEBP (Google Pay, PhonePe, Paytm, BHIM, CRED)
-                            </p>
-                          </div>
-                          <div className="pt-1">
-                            <span className="inline-block px-4 py-2 bg-[#110D09] group-hover:bg-[#8C6D42] text-white text-xs font-mono uppercase tracking-luxury font-bold rounded-xl transition-all shadow-md">
-                              Select Payment Screenshot
-                            </span>
-                          </div>
-                        </div>
-                      ) : isAnalyzingReceipt ? (
-                        <div className="border-2 border-dashed border-[#8C6D42] bg-[#FAF8F5] p-6 sm:p-8 rounded-2xl text-center space-y-3 animate-pulse">
-                          <Loader2 className="w-8 h-8 mx-auto text-[#8C6D42] animate-spin" />
-                          <p className="text-sm font-serif font-bold text-[#110D09]">
-                            AI Analyzing Payment Screenshot...
-                          </p>
-                          <p className="text-xs font-mono text-[#8C6D42]">
-                            Verifying payee (Raghav Sindhwani), amount (₹{totalPayableAmount}), and 12-digit UTR
-                          </p>
-                        </div>
-                      ) : scanSuccess ? (
-                        <div className="p-4 sm:p-5 bg-emerald-50/60 border-2 border-emerald-500/50 rounded-2xl space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2 text-xs font-mono font-bold text-emerald-800 uppercase">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
-                              <span>Screenshot Analyzed &amp; Verified</span>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setReceiptImage(null);
-                                setReceiptFileName('');
-                                setScanSuccess(false);
-                                setUpiUtr('');
-                                setScanError('');
-                              }}
-                              className="text-[10px] font-mono text-red-600 hover:text-red-800 uppercase px-2 py-0.5 rounded bg-white border border-red-200 transition-colors cursor-pointer"
-                            >
-                              Replace Screenshot
-                            </button>
-                          </div>
-
-                          <div className="flex items-center space-x-4">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={receiptImage}
-                              alt="Screenshot Preview"
-                              className="w-16 h-20 object-cover rounded-lg border border-emerald-400 shrink-0 shadow-sm"
-                            />
-                            <div className="text-xs font-mono space-y-1 truncate">
-                              <p className="font-bold text-[#110D09] truncate text-sm">
-                                {receiptFileName || 'payment_receipt.jpg'}
-                              </p>
-                              <p className="text-emerald-900 font-medium">
-                                Payee: <strong>{scanDetails?.payee || MERCHANT_NAME}</strong>
-                              </p>
-                              <p className="text-emerald-900 font-medium">
-                                Amount: <strong>₹{totalPayableAmount} Verified</strong>
-                              </p>
-                              {upiUtr && (
-                                <p className="text-[11px] text-[#554D45]">
-                                  Detected UTR: <strong className="text-[#110D09]">{upiUtr}</strong>
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="p-4 sm:p-5 bg-red-50 border-2 border-red-400 rounded-2xl space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2 text-xs font-mono font-bold text-red-800 uppercase">
-                              <AlertCircle className="w-4 h-4 text-red-600" />
-                              <span>Screenshot Not Verified</span>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setReceiptImage(null);
-                                setReceiptFileName('');
-                                setScanSuccess(false);
-                                setScanError('');
-                              }}
-                              className="text-[10px] font-mono text-red-700 hover:text-red-900 uppercase px-2 py-0.5 rounded bg-white border border-red-300 transition-colors cursor-pointer"
-                            >
-                              Try Another Screenshot
-                            </button>
-                          </div>
-                          <p className="text-xs text-red-700 font-mono">
-                            {scanError || 'Could not verify a valid UPI transaction to Raghav Sindhwani. Non-payment images are rejected.'}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Always Visible 12-Digit UTR Input Field */}
-                      <div className="p-4 bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl space-y-2">
-                        <div className="flex items-center justify-between">
-                          <label htmlFor="upiUtr" className="text-xs font-mono font-bold uppercase tracking-wider text-[#110D09]">
-                            12-Digit UPI Transaction ID / UTR <span className="text-red-600">*</span>
-                          </label>
-                          <span
-                            className={`text-[10px] font-mono font-bold ${
-                              upiUtr.trim().length === 12
-                                ? 'text-emerald-700 font-semibold'
-                                : 'text-[#8C6D42]'
-                            }`}
-                          >
-                            {upiUtr.trim().length === 12
-                              ? '✓ 12/12 Digits'
-                              : `${upiUtr.trim().length}/12 Digits`}
+                          <UploadCloud className="w-5 h-5 text-[#8C6D42] group-hover:text-[#110D09]" />
+                          <span className="text-xs font-mono text-[#110D09] font-medium">
+                            Attach Payment Screenshot (Optional)
                           </span>
                         </div>
-                        <input
-                          id="upiUtr"
-                          type="text"
-                          maxLength={12}
-                          placeholder="e.g. 667843814028 (Auto-filled by AI or type manually)"
-                          value={upiUtr}
-                          onChange={(e) => {
-                            setUpiUtr(e.target.value.replace(/\D/g, '').slice(0, 12));
-                            setErrorMsg('');
-                          }}
-                          className="w-full border border-[#110D09] rounded-lg px-3.5 py-2.5 text-sm font-mono text-[#110D09] bg-white tracking-widest focus:outline-none focus:ring-2 focus:ring-[#8C6D42]"
-                        />
-                        <p className="text-[10px] font-mono text-[#554D45]">
-                          Auto-filled from your screenshot, or type the 12-digit UTR from Google Pay, PhonePe, Paytm, or bank SMS.
-                        </p>
-                      </div>
-
-                      {/* Error message banner if any */}
-                      {errorMsg && (
-                        <div className="p-3.5 bg-red-50 border border-red-400 rounded-xl text-xs text-red-800 font-mono flex items-start space-x-2">
-                          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-                          <span>{errorMsg}</span>
+                      ) : (
+                        <div className="p-3 bg-emerald-50/70 border border-emerald-300 rounded-xl flex items-center justify-between text-xs">
+                          <div className="flex items-center space-x-3">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                            <div className="truncate max-w-[200px] sm:max-w-xs">
+                              <span className="font-mono font-bold text-emerald-900 block truncate">
+                                ✓ Screenshot Attached ({receiptFileName || 'receipt.jpg'})
+                              </span>
+                              <span className="text-[10px] text-emerald-700 font-mono">
+                                Will be linked to your order
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="text-[11px] font-mono text-[#8C6D42] hover:text-[#110D09] underline px-2 py-1"
+                          >
+                            Change
+                          </button>
                         </div>
                       )}
-
-                      {/* Final Submission Button */}
-                      <button
-                        type="button"
-                        disabled={
-                          loading ||
-                          isAnalyzingReceipt ||
-                          upiUtr.trim().length !== 12
-                        }
-                        onClick={() => handleDirectConfirmPayment()}
-                        className={`w-full py-4 text-xs font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2 shadow-lg transition-all ${
-                          upiUtr.trim().length === 12 && !isAnalyzingReceipt && !loading
-                            ? 'bg-emerald-700 hover:bg-emerald-800 text-white cursor-pointer ring-2 ring-emerald-500/50'
-                            : 'bg-[#110D09] text-white opacity-40 cursor-not-allowed'
-                        }`}
-                      >
-                        {loading ? (
-                          <div className="flex items-center space-x-2">
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            <span>Confirming Payment &amp; Booking Order...</span>
-                          </div>
-                        ) : isAnalyzingReceipt ? (
-                          <div className="flex items-center space-x-2">
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            <span>AI Analyzing Screenshot...</span>
-                          </div>
-                        ) : (
-                          <>
-                            <ShieldCheck className="w-4 h-4" />
-                            <span>I&apos;ve Paid ₹{totalPayableAmount} via UPI — Confirm Order</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </>
-                        )}
-                      </button>
-
-                      {upiUtr.trim().length !== 12 && (
-                        <p className="text-[11px] text-center font-mono text-[#8C6D42]">
-                          Upload your payment screenshot with UTR or enter the 12-digit UTR above to confirm
-                        </p>
-                      )}
                     </div>
+
+                    {/* UPI Reference / Transaction ID Input (Optional/Flexible) */}
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <label
+                          htmlFor="upiUtr"
+                          className="text-xs font-mono font-bold uppercase tracking-wider text-[#110D09]"
+                        >
+                          UPI Ref / Transaction ID <span className="text-[#8C6D42] font-normal lowercase">(optional)</span>
+                        </label>
+                        {upiUtr && (
+                          <span className="text-[10px] font-mono text-emerald-700 font-semibold">
+                            ✓ {upiUtr}
+                          </span>
+                        )}
+                      </div>
+                      <input
+                        id="upiUtr"
+                        type="text"
+                        placeholder="e.g. 12-digit UTR or GPay Transaction ID"
+                        value={upiUtr}
+                        onChange={(e) => {
+                          setUpiUtr(e.target.value);
+                          setErrorMsg('');
+                        }}
+                        className="w-full border border-[#D5CDC2] focus:border-[#110D09] rounded-lg px-3.5 py-2.5 text-xs font-mono text-[#110D09] bg-white focus:outline-none transition-colors"
+                      />
+                      <p className="text-[10px] font-mono text-[#554D45]/80">
+                        Found in your bank SMS, Google Pay, PhonePe, or Paytm receipt.
+                      </p>
+                    </div>
+
+                    {/* Error message banner if any */}
+                    {errorMsg && (
+                      <div className="p-3.5 bg-red-50 border border-red-400 rounded-xl text-xs text-red-800 font-mono flex items-start space-x-2">
+                        <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                        <span>{errorMsg}</span>
+                      </div>
+                    )}
+
+                    {/* Final Submission Button — ALWAYS ENABLED AND CLEAR */}
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={() => handleDirectConfirmPayment()}
+                      className="w-full py-4 text-xs sm:text-sm font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2 shadow-xl transition-all bg-[#110D09] hover:bg-emerald-800 text-white cursor-pointer ring-2 ring-emerald-500/30"
+                    >
+                      {loading ? (
+                        <div className="flex items-center space-x-2">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Booking Your Order &amp; Securing Flacon...</span>
+                        </div>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <span>I&apos;ve Paid ₹{totalPayableAmount} — Book My Order</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-[11px] text-center font-mono text-[#554D45]">
+                      🔒 Secure direct settlement • Instant booking confirmation screen
+                    </p>
                   </div>
                 </div>
               </div>

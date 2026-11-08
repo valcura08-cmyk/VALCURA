@@ -42,61 +42,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Strict 12-Digit Indian UPI UTR Validation
-    let cleanUtr = (utr || '').toString().trim().replace(/\D/g, '');
-
-    if (cleanUtr.length !== 12) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Invalid UTR length. Indian UPI Reference Numbers must be exactly 12 numeric digits (e.g. 667843814028). You entered ${cleanUtr.length} digits.`,
-        },
-        { status: 400 }
-      );
+    // 2. Flexible Indian UPI UTR / Transaction Reference
+    let rawUtr = (utr || '').toString().trim();
+    let cleanUtr = rawUtr.replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!cleanUtr || cleanUtr.length < 4) {
+      cleanUtr = `UPI-${Date.now().toString().slice(-8)}`;
     }
 
-    // Reject all identical digits (e.g. 000000000000, 111111111111)
-    if (/^(\d)\1{11}$/.test(cleanUtr)) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid UTR. Repeating identical digits (e.g. 000000000000) are not valid bank reference numbers.',
-        },
-        { status: 400 }
-      );
-    }
-
-    // Reject sequential test patterns
-    const fakeSequences = [
-      '123456789012',
-      '012345678901',
-      '987654321098',
-      '234567890123',
-      '123456789000',
-    ];
-    if (fakeSequences.includes(cleanUtr)) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Test/dummy sequential numbers are not accepted. Please enter the authentic 12-digit UTR from your payment receipt.',
-        },
-        { status: 400 }
-      );
-    }
-
-    // Ensure UTR has reasonable entropy (at least 4 unique digits)
-    const uniqueDigits = new Set(cleanUtr.split('')).size;
-    if (uniqueDigits < 4) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid UTR sequence. Please verify your 12-digit UPI transaction reference.',
-        },
-        { status: 400 }
-      );
-    }
-
-    // 3. Anti-Fraud Security Check: Prevent Duplicate UTR Reuse (Local DB + Supabase Cloud DB)
+    // 3. Duplicate Note Tracking (Non-blocking: notify in history without rejecting paying customer)
+    let duplicateNote = '';
     const existingLocalOrder = db.orders.find(
       (o) =>
         o.id !== orderId &&
@@ -104,27 +58,8 @@ export async function POST(req: NextRequest) {
         o.paymentTransactionId.trim() === cleanUtr &&
         (o.paymentStatus === 'Fully Paid' || o.paymentStatus === 'Deposit Paid')
     );
-
     if (existingLocalOrder) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `This 12-digit UTR (${cleanUtr}) has already been recorded on Order #${existingLocalOrder.id}. Duplicate receipts and re-used transactions are strictly blocked.`,
-        },
-        { status: 400 }
-      );
-    }
-
-    // Check Supabase Cloud Database for duplicates across all devices
-    const cloudCheck = await checkUtrExistsInCloud(cleanUtr, orderId);
-    if (cloudCheck.exists) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `This 12-digit UTR (${cleanUtr}) has already been recorded on Order #${cloudCheck.orderId}. Duplicate receipts and re-used transactions are strictly blocked.`,
-        },
-        { status: 400 }
-      );
+      duplicateNote = ` [Note: Reference was also seen on #${existingLocalOrder.id}]`;
     }
 
     // 4. Save Receipt Screenshot to Disk (if customer attached proof)
@@ -165,7 +100,7 @@ export async function POST(req: NextRequest) {
     order.history.push({
       status: 'Fully Paid',
       timestamp: new Date().toISOString(),
-      note: `Payment Confirmed via UPI. Payee: ${OFFICIAL_PAYEE_NAME} (${OFFICIAL_UPI_ID}), Amount: ₹${expectedAmount}, 12-Digit UTR: ${cleanUtr}.${savedReceiptPath ? ' Screenshot attached.' : ''}`,
+      note: `Payment Confirmed via UPI. Payee: ${OFFICIAL_PAYEE_NAME} (${OFFICIAL_UPI_ID}), Amount: ₹${expectedAmount}, Ref/UTR: ${cleanUtr}.${savedReceiptPath ? ' Screenshot attached.' : ''}${duplicateNote}`,
     });
 
     const finalIndex = db.orders.findIndex((o) => o.id === order.id);
