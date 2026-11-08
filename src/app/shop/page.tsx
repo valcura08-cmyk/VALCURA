@@ -83,13 +83,13 @@ export default function ShopAllFragrancesPage() {
 
                       <div className="pt-1.5 flex items-baseline justify-center space-x-2">
                         <span className="text-lg sm:text-xl font-serif text-[#110D09] font-bold">
-                          ₹{product.fullPrice || 499}
+                          ₹{product.fullPrice || 399}
                         </span>
                         <span className="text-[10px] text-[#110D09]/40 line-through font-mono">
                           ₹{product.standardPrice || 599}
                         </span>
                         <span className="text-[9px] text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 font-mono font-bold rounded">
-                          Save ₹100
+                          Save ₹200
                         </span>
                       </div>
                     </div>

@@ -298,7 +298,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
               const isAvailable = product.isAvailable;
               const prodQty = quantities[product.id] || 1;
               const isAdded = !!addedStates[product.id];
-              const price = product.fullPrice || 499;
+              const price = product.fullPrice || 399;
               const mrp = product.standardPrice || 599;
 
               if (isAvailable) {
@@ -361,7 +361,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                             ₹{mrp}
                           </span>
                           <span className="text-[9px] font-mono font-bold uppercase text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 rounded">
-                            Save ₹100
+                            Save ₹{mrp - price}
                           </span>
                         </div>
 
@@ -780,13 +780,13 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                         </h5>
                         <div className="flex items-baseline space-x-3">
                           <span className="text-2xl font-serif font-bold text-[#110D09]">
-                            ₹{quizResultProduct.fullPrice || 499}
+                            ₹{quizResultProduct.fullPrice || 399}
                           </span>
                           <span className="text-xs font-mono text-[#110D09]/40 line-through">
                             ₹{quizResultProduct.standardPrice || 599}
                           </span>
                           <span className="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200 rounded-md font-mono font-bold">
-                            Save ₹100
+                            Save ₹200
                           </span>
                         </div>
 
@@ -809,7 +809,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                               ) : (
                                 <>
                                   <ShoppingBag className="w-3.5 h-3.5" />
-                                  <span>Add Recommended Scent • ₹{quizResultProduct.fullPrice || 499}</span>
+                                  <span>Add Recommended Scent • ₹{quizResultProduct.fullPrice || 399}</span>
                                 </>
                               )}
                             </button>

@@ -57,7 +57,7 @@ export default function ExploreByScents({ products }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 max-w-4xl mx-auto items-stretch">
           {products.map((product) => {
             const isCacaoCitrine = product.id === 'cacao-citrine';
-            const price = 499;
+            const price = 399;
             const mrp = 599;
 
             if (isCacaoCitrine) {
@@ -108,7 +108,7 @@ export default function ExploreByScents({ products }: Props) {
                           ₹{mrp}
                         </span>
                         <span className="text-[9px] font-mono font-bold uppercase text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 rounded">
-                          Save ₹100
+                          Save ₹{mrp - price}
                         </span>
                       </div>
 

@@ -98,7 +98,7 @@ export default function CacaoCitrineProductPage() {
 
   // Pricing constants per unit
   const standardPrice = 599;
-  const fullPrice = 499;
+  const fullPrice = 399;
 
   // Multi-quantity calculations
   const totalStandard = standardPrice * quantity;

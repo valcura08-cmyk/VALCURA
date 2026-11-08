@@ -120,7 +120,7 @@ export default function MoodsClientView({ moods }: Props) {
             <span>Interactive Bespoke Experience</span>
           </div>
           <p className="text-xs sm:text-sm text-[#110D09]/80 font-light leading-relaxed">
-            Each mood page features a curated signature perfume ready for instant purchase or pre-order at ₹499, alongside the &ldquo;Help to Find Best One&rdquo; fragrance quiz for tailored recommendations.
+            Each mood page features a curated signature perfume ready for instant purchase or pre-order at ₹399, alongside the &ldquo;Help to Find Best One&rdquo; fragrance quiz for tailored recommendations.
           </p>
         </div>
       </section>

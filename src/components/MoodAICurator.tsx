@@ -293,10 +293,10 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
 
               {recommendedProduct.isAvailable && (
                 <div className="flex items-baseline space-x-3 pt-1">
-                  <span className="text-2xl font-serif font-bold text-[#110D09]">₹{recommendedProduct.fullPrice || 499}</span>
+                  <span className="text-2xl font-serif font-bold text-[#110D09]">₹{recommendedProduct.fullPrice || 399}</span>
                   <span className="text-xs font-mono text-[#110D09]/40 line-through">₹{recommendedProduct.standardPrice || 599}</span>
                   <span className="text-[10px] font-mono font-bold uppercase text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
-                    Save ₹100
+                    Save ₹200
                   </span>
                 </div>
               )}

@@ -57,7 +57,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const STANDARD_PRICE = 599;
-const FULL_PRICE = 499;
+const FULL_PRICE = 399;
 const PREORDER_FULL_PRICE = 399;
 const RESERVE_TOTAL = 449;
 const DEPOSIT_TODAY = 314;
