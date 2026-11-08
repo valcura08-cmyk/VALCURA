@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -22,6 +22,57 @@ export default function CacaoCitrineProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<'evolution' | 'moods' | 'ritual'>('evolution');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollToImage = (index: number) => {
+    setActiveImageIndex(index);
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const cards = container.querySelectorAll<HTMLElement>('[data-gallery-card]');
+      if (cards[index]) {
+        cards[index].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        });
+      }
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const cards = container.querySelectorAll<HTMLElement>('[data-gallery-card]');
+      const containerCenter = container.getBoundingClientRect().left + container.offsetWidth / 2;
+
+      let closestIndex = activeImageIndex;
+      let minDistance = Infinity;
+
+      cards.forEach((card, idx) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(containerCenter - cardCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = idx;
+        }
+      });
+
+      if (closestIndex !== activeImageIndex) {
+        setActiveImageIndex(closestIndex);
+      }
+    }
+  };
+
+  const handlePrev = () => {
+    const prevIdx = (activeImageIndex - 1 + images.length) % images.length;
+    scrollToImage(prevIdx);
+  };
+
+  const handleNext = () => {
+    const nextIdx = (activeImageIndex + 1) % images.length;
+    scrollToImage(nextIdx);
+  };
 
   const images = [
     {
@@ -103,76 +154,115 @@ export default function CacaoCitrineProductPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
           
           {/* ============================================================== */}
-          {/* LEFT: COMPACT PHOTOGRAPHY GALLERY */}
+          {/* LEFT: HORIZONTAL SWIPEABLE PHOTOGRAPHY ROW */}
           {/* ============================================================== */}
           <div className="lg:col-span-6 space-y-3">
-            {/* Primary Bottle View */}
-            <div className="relative aspect-square max-h-[380px] sm:max-h-[420px] w-full bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl overflow-hidden shadow-xs group">
-              <Image
-                src={images[activeImageIndex].src}
-                alt={images[activeImageIndex].alt}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 520px"
-                className="object-cover transition-transform duration-500 group-hover:scale-103"
-                priority
-              />
-
-              {/* Angle Counter */}
-              <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm border border-[#E8DFD3] px-2.5 py-0.5 text-[10px] tracking-widest uppercase text-[#110D09] font-mono font-bold rounded-full shadow-2xs">
-                0{activeImageIndex + 1} / 0{images.length}
+            {/* Header: Label + Quick Angle Stepper */}
+            <div className="flex items-center justify-between px-1">
+              <div className="flex items-center space-x-2">
+                <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold">
+                  Gallery Perspectives
+                </span>
+                <span className="text-[10px] font-mono text-[#554D45]/70">
+                  (Swipe Horizontally)
+                </span>
               </div>
-
-              {/* Navigation Arrows */}
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveImageIndex((activeImageIndex - 1 + images.length) % images.length)
-                }
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
-                aria-label="Previous Perspective"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveImageIndex((activeImageIndex + 1) % images.length)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-[#E8DFD3] text-[#110D09] hover:bg-white flex items-center justify-center transition-all opacity-85 hover:opacity-100 shadow-sm cursor-pointer"
-                aria-label="Next Perspective"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-
-              {/* Minimal Caption Strip */}
-              <div className="absolute bottom-2.5 inset-x-3 bg-black/60 backdrop-blur-xs px-3 py-1.5 rounded-lg text-white text-[11px] font-sans flex items-center justify-between">
-                <span>{images[activeImageIndex].caption}</span>
-                <span className="text-[9px] font-mono text-[#FAF7F2]/75 uppercase tracking-wider">Tap angles below</span>
+              <div className="flex items-center space-x-1.5">
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className="w-8 h-8 rounded-full bg-white border border-[#E8DFD3] text-[#110D09] hover:bg-[#FAF8F5] hover:border-[#8C6D42] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
+                  aria-label="Previous Perspective"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <span className="font-mono text-xs font-bold text-[#110D09] px-1">
+                  0{activeImageIndex + 1} / 0{images.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="w-8 h-8 rounded-full bg-white border border-[#E8DFD3] text-[#110D09] hover:bg-[#FAF8F5] hover:border-[#8C6D42] flex items-center justify-center transition-all shadow-2xs cursor-pointer"
+                  aria-label="Next Perspective"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
-            {/* Clean Horizontal Thumbnails Strip */}
-            <div className="grid grid-cols-4 gap-2">
+            {/* Horizontal Swipeable Track */}
+            <div
+              ref={scrollContainerRef}
+              onScroll={handleScroll}
+              className="flex flex-row overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3.5 sm:gap-4 pb-2 px-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            >
+              {images.map((img, idx) => (
+                <div
+                  key={img.src}
+                  data-gallery-card
+                  onClick={() => scrollToImage(idx)}
+                  className={`relative w-[84%] sm:w-[82%] shrink-0 snap-center aspect-square max-h-[380px] sm:max-h-[420px] bg-[#FAF8F5] border rounded-2xl overflow-hidden shadow-xs group transition-all duration-300 cursor-pointer ${
+                    activeImageIndex === idx
+                      ? 'border-[#110D09] ring-2 ring-[#110D09]/90 shadow-md'
+                      : 'border-[#E8DFD3] opacity-80 hover:opacity-100 hover:border-[#8C6D42]'
+                  }`}
+                >
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    sizes="(max-width: 768px) 85vw, 500px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-104"
+                    priority={idx === 0}
+                  />
+
+                  {/* Angle Badge */}
+                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm border border-[#E8DFD3] px-2.5 py-0.5 text-[10px] tracking-widest uppercase text-[#110D09] font-mono font-bold rounded-full shadow-2xs">
+                    0{idx + 1}
+                  </div>
+
+                  {/* Minimal Caption Strip */}
+                  <div className="absolute bottom-2.5 inset-x-3 bg-black/65 backdrop-blur-xs px-3 py-1.5 rounded-lg text-white text-[11px] font-sans flex items-center justify-between">
+                    <span className="font-medium truncate">{img.caption}</span>
+                    <span className="text-[9px] font-mono text-[#FAF7F2]/75 uppercase tracking-wider shrink-0 ml-2">
+                      Angle 0{idx + 1}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Synchronized Angle Selector Pills */}
+            <div className="grid grid-cols-4 gap-2 pt-1">
               {images.map((img, idx) => (
                 <button
                   key={img.src}
                   type="button"
-                  onClick={() => setActiveImageIndex(idx)}
-                  className={`group relative aspect-square bg-[#FAF8F5] border rounded-xl overflow-hidden transition-all duration-200 cursor-pointer ${
+                  onClick={() => scrollToImage(idx)}
+                  className={`group relative py-2 px-2.5 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
                     activeImageIndex === idx
-                      ? 'border-[#110D09] ring-2 ring-[#110D09] shadow-xs'
-                      : 'border-[#E8DFD3] opacity-65 hover:opacity-100 hover:border-[#8C6D42]'
+                      ? 'bg-[#110D09] text-white border-[#110D09] shadow-xs'
+                      : 'bg-[#FAF8F5] text-[#554D45] border-[#E8DFD3] hover:border-[#8C6D42] hover:bg-white'
                   }`}
-                  aria-label={`View perspective 0${idx + 1}`}
+                  aria-label={`Jump to angle 0${idx + 1}`}
                 >
-                  <Image
-                    src={img.src}
-                    alt={`Angle 0${idx + 1}`}
-                    fill
-                    sizes="100px"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span className="absolute bottom-1 right-1 bg-black/75 text-white font-mono text-[8px] px-1 py-0.2 rounded-xs">
-                    0{idx + 1}
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={`font-mono text-[10px] font-bold ${
+                        activeImageIndex === idx ? 'text-[#FAF7F2]' : 'text-[#8C6D42]'
+                      }`}
+                    >
+                      0{idx + 1}
+                    </span>
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        activeImageIndex === idx ? 'bg-[#C5A880]' : 'bg-[#E8DFD3]'
+                      }`}
+                    />
+                  </div>
+                  <p className="text-[10px] font-serif font-medium truncate pt-0.5 leading-tight">
+                    {img.caption.split(' ')[0]}
+                  </p>
                 </button>
               ))}
             </div>
