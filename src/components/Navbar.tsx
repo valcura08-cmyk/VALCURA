@@ -39,7 +39,6 @@ export default function Navbar() {
     { label: 'Explore By Moods', href: '/moods' },
     { label: 'Explore By Scents', href: '/shop' },
     { label: 'Our Collections', href: '/collections' },
-    { label: 'Fragrance Finder', href: '/fragrance-finder' },
     { label: 'Our Story', href: '/our-story' },
   ];
 
@@ -316,7 +315,6 @@ export default function Navbar() {
                   { name: 'After Hours (Mood 02)', href: '/moods/after-hours' },
                   { name: 'Slow Moments (Mood 04)', href: '/moods/slow-moments' },
                   { name: 'Cacaoveil Collection', href: '/collections/cacaoveil' },
-                  { name: 'Fragrance Finder Quiz', href: '/fragrance-finder' },
                   { name: 'Pre-Order Privilege (₹399)', href: '/product/cacao-citrine' },
                   { name: 'Atelier Philosophy', href: '/our-story' },
                 ].map((tag) => (
