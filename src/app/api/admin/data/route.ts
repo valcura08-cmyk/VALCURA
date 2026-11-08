@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { getDb, Order } from '@/lib/db';
 import { getCustomersFromCloud, getOrdersFromCloud } from '@/lib/cloudDb';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+const SESSION_COOKIE_NAME = 'valcura_admin_session';
+const SESSION_SECRET_TOKEN = 'valcura_auth_session_token_verified_2026';
 
 // Helper to generate a consistent, deterministic client account ID
 function generateAccountId(email: string, phone: string = ''): string {
@@ -19,6 +23,13 @@ function generateAccountId(email: string, phone: string = ''): string {
 
 export async function GET() {
   try {
+    // Atelier Session Guard
+    const cookieStore = cookies();
+    const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME);
+    if (!sessionCookie || sessionCookie.value !== SESSION_SECRET_TOKEN) {
+      return NextResponse.json({ error: 'Unauthorized: Atelier session required' }, { status: 401 });
+    }
+
     const db = getDb();
 
     // 1. Fetch Cloud Orders from Supabase and merge with local store

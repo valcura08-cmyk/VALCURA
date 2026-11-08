@@ -31,6 +31,11 @@ import {
   ArrowRight,
   X,
   Send,
+  Lock,
+  LogOut,
+  Eye,
+  EyeOff,
+  Key,
 } from 'lucide-react';
 import { Order, Product } from '@/lib/db';
 
@@ -134,9 +139,70 @@ export default function AdminDashboardPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [savingProduct, setSavingProduct] = useState(false);
 
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [authChecking, setAuthChecking] = useState(true);
+  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
-    fetchAdminData();
+    checkAuth();
   }, []);
+
+  const checkAuth = async () => {
+    try {
+      const res = await fetch('/api/admin/auth');
+      const json = await res.json();
+      if (json.authenticated) {
+        setIsAuthenticated(true);
+        fetchAdminData();
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch {
+      setIsAuthenticated(false);
+    } finally {
+      setAuthChecking(false);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginLoading(true);
+    setLoginError(null);
+
+    try {
+      const res = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginForm),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setIsAuthenticated(true);
+        fetchAdminData();
+      } else {
+        setLoginError(data.error || 'Invalid credentials. Please verify username and password.');
+      }
+    } catch {
+      setLoginError('Network error connecting to Atelier auth server.');
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/auth', { method: 'DELETE' });
+    } catch (e) {
+      console.error(e);
+    }
+    setIsAuthenticated(false);
+    setData(null);
+  };
 
   const fetchAdminData = async () => {
     try {
@@ -371,6 +437,161 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // 1. Auth Checking State
+  if (authChecking) {
+    return (
+      <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-10 h-10 border-2 border-[#8C6D42] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-xs uppercase tracking-widest text-[#8C6D42] font-mono font-semibold">
+          Verifying Atelier Security Credentials...
+        </p>
+        <p className="text-[11px] text-[#110D09]/40 mt-1 font-serif italic">
+          Valcura Haute Parfumerie &bull; Executive Portal
+        </p>
+      </div>
+    );
+  }
+
+  // 2. Login Gate if Not Authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#110D09] text-[#FAF8F5] flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+        {/* Subtle Luxury Gradient Background Elements */}
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-[#8C6D42]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="w-full max-w-md relative z-10">
+          {/* Brand Header */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#1A140E] border border-[#8C6D42]/40 text-[#C5A059] mb-4 shadow-xl">
+              <Lock className="w-6 h-6 text-[#C5A059]" />
+            </div>
+            <div className="text-[11px] tracking-luxury uppercase text-[#8C6D42] font-mono font-semibold">
+              Maison Valcura
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-serif tracking-widest uppercase text-[#FAF8F5] mt-1">
+              Atelier Command Center
+            </h1>
+            <p className="text-xs text-[#FAF8F5]/60 mt-1.5 font-sans">
+              Executive dashboard for orders, delivery tracking &amp; client relations
+            </p>
+          </div>
+
+          {/* Login Card */}
+          <div className="bg-[#1A140E]/95 border border-[#8C6D42]/30 rounded-lg p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
+            <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#8C6D42]/20">
+              <div className="flex items-center space-x-2 text-xs font-mono text-[#C5A059] tracking-wider uppercase">
+                <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
+                <span>Restricted Access Gate</span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#8C6D42]/20 text-[#C5A059] border border-[#8C6D42]/30">
+                256-Bit SSL
+              </span>
+            </div>
+
+            {loginError && (
+              <div className="mb-6 p-3.5 bg-red-950/60 border border-red-500/40 rounded text-red-200 text-xs font-mono flex items-start space-x-2.5">
+                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{loginError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-[#FAF8F5]/70 mb-1.5">
+                  Email or Username
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-[#FAF8F5]/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    required
+                    autoComplete="username"
+                    value={loginForm.username}
+                    onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
+                    placeholder="valcura08@gmail.com"
+                    className="w-full bg-[#110D09] border border-[#8C6D42]/40 rounded px-3 py-2.5 pl-9 text-xs text-[#FAF8F5] placeholder-[#FAF8F5]/25 focus:outline-none focus:border-[#C5A059] transition-colors font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-[#FAF8F5]/70 mb-1.5">
+                  Master Password
+                </label>
+                <div className="relative">
+                  <Key className="w-4 h-4 text-[#FAF8F5]/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    autoComplete="current-password"
+                    value={loginForm.password}
+                    onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                    placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+                    className="w-full bg-[#110D09] border border-[#8C6D42]/40 rounded px-3 py-2.5 pl-9 pr-10 text-xs text-[#FAF8F5] placeholder-[#FAF8F5]/25 focus:outline-none focus:border-[#C5A059] transition-colors font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FAF8F5]/40 hover:text-[#FAF8F5] transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={loginLoading}
+                  className="w-full bg-[#8C6D42] hover:bg-[#A3804F] text-[#FAF8F5] py-3 px-4 rounded text-xs uppercase tracking-luxury font-mono font-medium transition-all shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50"
+                >
+                  {loginLoading ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-[#FAF8F5] border-t-transparent rounded-full animate-spin" />
+                      <span>Authenticating Atelier Token...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Unlock Atelier Dashboard</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+
+            {/* Quick credentials hint for the owner */}
+            <div className="mt-6 pt-5 border-t border-[#8C6D42]/20 text-[11px] font-mono text-[#FAF8F5]/60 space-y-1.5">
+              <div className="text-[10px] uppercase tracking-wider text-[#C5A059] font-semibold">
+                Owner Access Credentials:
+              </div>
+              <div className="flex justify-between items-center bg-[#110D09]/60 p-2 rounded border border-[#8C6D42]/20">
+                <span>Username: <strong className="text-[#FAF8F5]">valcura08@gmail.com</strong></span>
+                <span className="text-[10px] text-[#C5A059]/70">(or admin)</span>
+              </div>
+              <div className="flex justify-between items-center bg-[#110D09]/60 p-2 rounded border border-[#8C6D42]/20">
+                <span>Password: <strong className="text-[#FAF8F5]">valcura_atelier_2026</strong></span>
+                <span className="text-[10px] text-[#C5A059]/70">(or Valcura@2026)</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Back to Storefront */}
+          <div className="text-center mt-6">
+            <Link
+              href="/"
+              className="inline-flex items-center space-x-1.5 text-xs text-[#FAF8F5]/60 hover:text-[#C5A059] font-mono transition-colors"
+            >
+              <span>&larr; Return to Valcura Storefront</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Loading Data State
   if (loading || !data) {
     return (
       <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen py-24 text-center">
@@ -487,6 +708,14 @@ export default function AdminDashboardPage() {
               <span>View Storefront</span>
               <ExternalLink className="w-3 h-3 text-[#8C6D42]" />
             </Link>
+            <button
+              onClick={handleLogout}
+              className="text-xs tracking-luxury uppercase bg-[#110D09] text-[#FAF8F5] px-4 py-2 hover:bg-[#8C6D42] transition-colors font-mono flex items-center space-x-1.5 shadow-sm"
+              title="Sign out of Atelier Command Center"
+            >
+              <LogOut className="w-3.5 h-3.5 text-[#C5A059]" />
+              <span>Sign Out</span>
+            </button>
           </div>
         </div>
       </section>
