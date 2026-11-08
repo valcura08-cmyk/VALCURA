@@ -58,6 +58,7 @@ export interface OrderItem {
 }
 
 export interface Customer {
+  accountId?: string;
   fullName: string;
   email: string;
   phone: string;
@@ -95,6 +96,7 @@ export interface Order {
     | 'Ready for Fulfilment'
     | 'Shipped'
     | 'Completed'
+    | 'Delivered'
     | 'Cancelled';
   paymentMethod: string;
   paymentTransactionId: string;
@@ -102,6 +104,10 @@ export interface Order {
   availabilityNotifiedAt?: string;
   balancePaidAt?: string;
   balanceTransactionId?: string;
+  isDelivered?: boolean;
+  deliveredAt?: string | null;
+  trackingNumber?: string;
+  trackingPartner?: string;
   history: OrderHistoryEntry[];
 }
 

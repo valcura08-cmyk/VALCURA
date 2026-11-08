@@ -7,7 +7,14 @@ export default function ContactUsPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    category: 'General Inquiry',
+    subject: '',
+    message: '',
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +30,7 @@ export default function ContactUsPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setSubmitted(true);
-        setForm({ name: '', email: '', subject: '', message: '' });
+        setForm({ name: '', email: '', phone: '', category: 'General Inquiry', subject: '', message: '' });
       } else {
         setErrorMsg(data.error || 'Failed to submit message. Please try again.');
       }
@@ -140,25 +147,54 @@ export default function ContactUsPage() {
                     Send A Message
                   </h3>
                   <div className="space-y-4 text-xs">
-                    <div>
-                      <label className="block text-[#554D45] font-light mb-1">Your Name *</label>
-                      <input
-                        type="text"
-                        required
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
-                      />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[#554D45] font-light mb-1">Your Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={form.name}
+                          onChange={(e) => setForm({ ...form, name: e.target.value })}
+                          className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[#554D45] font-light mb-1">Mobile Number (with WhatsApp)</label>
+                        <input
+                          type="tel"
+                          placeholder="+91 98765 43210"
+                          value={form.phone}
+                          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                          className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-[#554D45] font-light mb-1">Email Address *</label>
-                      <input
-                        type="email"
-                        required
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
-                      />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[#554D45] font-light mb-1">Email Address *</label>
+                        <input
+                          type="email"
+                          required
+                          value={form.email}
+                          onChange={(e) => setForm({ ...form, email: e.target.value })}
+                          className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[#554D45] font-light mb-1">Inquiry Purpose</label>
+                        <select
+                          value={form.category}
+                          onChange={(e) => setForm({ ...form, category: e.target.value })}
+                          className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
+                        >
+                          <option value="General Inquiry">General Atelier Inquiry</option>
+                          <option value="Pre-Order Status">Pre-Order & Delivery Status</option>
+                          <option value="24-Hour Cancellation">24-Hour Free Cancellation Request</option>
+                          <option value="Damaged Bottle Guarantee">Damaged Bottle (100% Money Back Claim)</option>
+                          <option value="Address Update">Delivery Address / Landmark Update</option>
+                          <option value="Fragrance Consultation">Bespoke Fragrance Consultation</option>
+                        </select>
+                      </div>
                     </div>
                     <div>
                       <label className="block text-[#554D45] font-light mb-1">Subject</label>
