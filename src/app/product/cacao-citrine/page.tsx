@@ -22,7 +22,7 @@ export default function CacaoCitrineProductPage() {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<'evolution' | 'moods' | 'ritual'>('evolution');
+  const [activeTab, setActiveTab] = useState<'notes' | 'experience' | 'details' | 'all'>('notes');
   
   // Instagram mood state
   const [activeMoodIndex, setActiveMoodIndex] = useState(0);
@@ -283,65 +283,6 @@ export default function CacaoCitrineProductPage() {
             </div>
 
             {/* ========================================================== */}
-            {/* BESPOKE OLFACTORY ARCHITECTURE (NO PICTURES, NO EQUAL SIGN) */}
-            {/* NOTE NAME SITS DIRECTLY BELOW TOP NOTE / HEART NOTE / BASE NOTE */}
-            {/* ========================================================== */}
-            <div className="bg-[#FAF6EE] rounded-2xl border border-[#E8DFD3] p-4 sm:p-4.5 shadow-2xs space-y-3">
-              <div className="flex items-center justify-between pb-1.5 border-b border-[#E8DFD3]/80">
-                <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold">
-                  Olfactory Architecture
-                </span>
-                <span className="text-[9px] font-mono text-[#554D45]/70 uppercase tracking-widest">
-                  Three Pure Tiers
-                </span>
-              </div>
-
-              {/* 3 Tier Grid: Values positioned cleanly directly below each note header */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-0 sm:divide-x sm:divide-[#E8DFD3]">
-                
-                {/* 1. TOP NOTE */}
-                <div className="sm:pr-3.5 space-y-0.5">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-semibold block">
-                    Top Note
-                  </span>
-                  <h3 className="text-sm sm:text-base font-serif font-bold text-[#110D09] tracking-wide leading-tight">
-                    Citrus
-                  </h3>
-                  <span className="text-[10px] text-[#554D45] font-light block pt-0.5">
-                    Sun-drenched Calabrian Bergamot
-                  </span>
-                </div>
-
-                {/* 2. HEART NOTE */}
-                <div className="sm:px-3.5 space-y-0.5">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-semibold block">
-                    Heart Note
-                  </span>
-                  <h3 className="text-sm sm:text-base font-serif font-bold text-[#110D09] tracking-wide leading-tight">
-                    Creamy Hazelnut &amp; Vanilla
-                  </h3>
-                  <span className="text-[10px] text-[#554D45] font-light block pt-0.5">
-                    Velvety Roasted Praline Core
-                  </span>
-                </div>
-
-                {/* 3. BASE NOTE */}
-                <div className="sm:pl-3.5 space-y-0.5">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-semibold block">
-                    Base Note
-                  </span>
-                  <h3 className="text-sm sm:text-base font-serif font-bold text-[#110D09] tracking-wide leading-tight">
-                    Rose + Fresh
-                  </h3>
-                  <span className="text-[10px] text-[#554D45] font-light block pt-0.5">
-                    Clean Air &amp; Sheer Cashmere Musks
-                  </span>
-                </div>
-
-              </div>
-            </div>
-
-            {/* ========================================================== */}
             {/* BOUTIQUE ACQUISITION BAR */}
             {/* ========================================================== */}
             <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl p-4 space-y-3.5 shadow-2xs">
@@ -435,139 +376,119 @@ export default function CacaoCitrineProductPage() {
         </div>
 
         {/* ============================================================== */}
-        {/* FULL-WIDTH DEDICATED ATELIER DOSSIER (OLD WAY BELOW PRODUCT) */}
-        {/* TABS: EVOLUTION | ATMOSPHERES (INSTAGRAM STYLE) | VESSEL & RITUAL */}
+        {/* 3 CORE PILLARS BELOW THE IMAGE: NOTES, EXPERIENCE & DETAILS */}
         {/* ============================================================== */}
         <section className="mt-10 sm:mt-12 pt-8 border-t border-[#E8DFD3] space-y-6">
-          {/* Section Header & Segmented Tab Switcher */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
-                Atelier Dossier
-              </span>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09] mt-0.5">
-                Skin Evolution, Atmospheres &amp; Ritual
-              </h2>
-            </div>
-
-            {/* Tab Navigation Buttons */}
+          {/* Clean 3-Tab Switcher */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#E8DFD3]">
             <div className="inline-flex items-center p-1 bg-[#FAF6EE] rounded-xl border border-[#E8DFD3] text-xs font-mono font-bold">
               <button
                 type="button"
-                onClick={() => setActiveTab('evolution')}
-                className={`px-3 sm:px-4 py-2 rounded-lg transition-all cursor-pointer ${
-                  activeTab === 'evolution'
+                onClick={() => setActiveTab('notes')}
+                className={`px-3.5 sm:px-5 py-2 rounded-lg transition-all cursor-pointer ${
+                  activeTab === 'notes'
                     ? 'bg-[#110D09] text-white shadow-xs'
                     : 'text-[#554D45] hover:text-[#110D09]'
                 }`}
               >
-                01 Skin Evolution
+                01 The Notes
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab('moods')}
-                className={`px-3 sm:px-4 py-2 rounded-lg transition-all cursor-pointer ${
-                  activeTab === 'moods'
+                onClick={() => setActiveTab('experience')}
+                className={`px-3.5 sm:px-5 py-2 rounded-lg transition-all cursor-pointer ${
+                  activeTab === 'experience'
                     ? 'bg-[#110D09] text-white shadow-xs'
                     : 'text-[#554D45] hover:text-[#110D09]'
                 }`}
               >
-                02 Atmospheres
+                02 Experience
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab('ritual')}
-                className={`px-3 sm:px-4 py-2 rounded-lg transition-all cursor-pointer ${
-                  activeTab === 'ritual'
+                onClick={() => setActiveTab('details')}
+                className={`px-3.5 sm:px-5 py-2 rounded-lg transition-all cursor-pointer ${
+                  activeTab === 'details'
                     ? 'bg-[#110D09] text-white shadow-xs'
                     : 'text-[#554D45] hover:text-[#110D09]'
                 }`}
               >
-                03 Vessel &amp; Ritual
+                03 Details
               </button>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab(activeTab === 'all' ? 'notes' : 'all')}
+              className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] hover:text-[#110D09] underline hidden sm:inline cursor-pointer"
+            >
+              {activeTab === 'all' ? 'Show Selected Tab' : 'View All 3 Sections'}
+            </button>
           </div>
 
-          {/* TAB 1: SKIN EVOLUTION TIMELINE */}
-          {activeTab === 'evolution' && (
-            <div className="bg-white border border-[#E8DFD3] rounded-3xl p-5 sm:p-7 shadow-xs space-y-5 animate-fadeIn">
-              <div className="max-w-xl space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
-                  Chronological Unfolding
+          {/* 1. THE NOTES: ONLY 3 LINES IN ORDER, NOTHING ELSE */}
+          {(activeTab === 'notes' || activeTab === 'all') && (
+            <div className="bg-white border border-[#E8DFD3] rounded-3xl p-6 sm:p-8 shadow-xs space-y-4 animate-fadeIn">
+              <div className="border-b border-[#E8DFD3] pb-3 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
+                    Olfactory Structure
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                    The Notes
+                  </h3>
+                </div>
+                <span className="text-[10px] font-mono text-[#8C6D42] uppercase tracking-wider bg-[#FAF6EE] px-2.5 py-1 rounded-md border border-[#E8DFD3] font-semibold">
+                  3 Notes In Order
                 </span>
-                <h3 className="text-lg sm:text-xl font-serif font-bold uppercase text-[#110D09]">
-                  How Cacao Citrine Awakens On Skin
-                </h3>
-                <p className="text-xs text-[#554D45] font-light">
-                  A three-phase metabolic dry-down engineered to transition from radiant daylight citrus to an intimate evening chocolate musk.
-                </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] uppercase px-2.5 py-0.5 bg-white border border-[#E8DFD3] rounded-full text-[#8C6D42] font-bold">
-                      Phase I • 00–30 Mins
-                    </span>
-                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">Opening</span>
-                  </div>
-                  <h4 className="text-base font-serif font-bold text-[#110D09]">Calabrian Citrus Sparkle</h4>
-                  <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
-                    High-voltage Italian citrus sparkle; crystalline solar opening that immediately lifts the senses and establishes daylight confidence.
-                  </p>
+              {/* Exact 3 Lines in Order: Top Note, Heart Note, Base Note */}
+              <div className="py-2 space-y-3 font-serif text-base sm:text-lg">
+                <div className="flex items-baseline space-x-3 py-2 border-b border-[#FAF6EE]">
+                  <span className="font-mono text-xs uppercase tracking-widest text-[#8C6D42] font-bold w-32 shrink-0">
+                    Top Note:
+                  </span>
+                  <span className="font-bold text-[#110D09]">Citrus</span>
                 </div>
-
-                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] uppercase px-2.5 py-0.5 bg-white border border-[#E8DFD3] rounded-full text-[#8C6D42] font-bold">
-                      Phase II • 30m–04 Hrs
-                    </span>
-                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">4 Hours Projection</span>
-                  </div>
-                  <h4 className="text-base font-serif font-bold text-[#110D09]">Roasted Hazelnut &amp; Cocoa</h4>
-                  <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
-                    Radiant 4-hour projection with an arm&apos;s-length sillage trail. Warms into velvety roasted hazelnut praline and smooth cocoa butter, creating a tactile, second-skin indulgence that turns heads.
-                  </p>
+                <div className="flex items-baseline space-x-3 py-2 border-b border-[#FAF6EE]">
+                  <span className="font-mono text-xs uppercase tracking-widest text-[#8C6D42] font-bold w-32 shrink-0">
+                    Heart Note:
+                  </span>
+                  <span className="font-bold text-[#110D09]">Creamy Hazelnut &amp; Vanilla</span>
                 </div>
-
-                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] uppercase px-2.5 py-0.5 bg-white border border-[#E8DFD3] rounded-full text-[#8C6D42] font-bold">
-                      Phase III • 04–12+ Hrs
-                    </span>
-                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">Base</span>
-                  </div>
-                  <h4 className="text-base font-serif font-bold text-[#110D09]">Rose &amp; Cashmere Musk</h4>
-                  <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
-                    Intimate dry-down of dewy damascena rose, crisp mountain air, and magnetic cashmere musks leaving a 3-foot lingering aura.
-                  </p>
+                <div className="flex items-baseline space-x-3 py-2">
+                  <span className="font-mono text-xs uppercase tracking-widest text-[#8C6D42] font-bold w-32 shrink-0">
+                    Base Note:
+                  </span>
+                  <span className="font-bold text-[#110D09]">Rose + Fresh</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* TAB 2: ATMOSPHERES (INSTAGRAM POST STYLE) */}
-          {activeTab === 'moods' && (
+          {/* 2. EXPERIENCE: ALL LINKED IMAGES IN INSTAGRAM POST STYLE */}
+          {(activeTab === 'experience' || activeTab === 'all') && (
             <div className="bg-[#FFFDF9] border border-[#E8DFD3] rounded-3xl p-5 sm:p-7 shadow-xs space-y-6 animate-fadeIn">
-              <div className="max-w-2xl space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
-                  Atmospheric Pairings • Connected Moods
+              <div className="border-b border-[#E8DFD3] pb-3 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
+                    Visual Atmosphere
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                    Experience
+                  </h3>
+                </div>
+                <span className="text-[10px] font-mono text-[#8C6D42] uppercase tracking-wider bg-[#FAF6EE] px-2.5 py-1 rounded-md border border-[#E8DFD3] font-semibold">
+                  Instagram Post Style
                 </span>
-                <h3 className="text-lg sm:text-xl font-serif font-bold uppercase text-[#110D09]">
-                  Cinematic Mood Atmospheres Calibrated to Cacao Citrine
-                </h3>
-                <p className="text-xs text-[#554D45] font-light">
-                  Five curated lifestyle chapters that harmonize with every spray. Browse the live Instagram story post and switch moods below.
-                </p>
               </div>
 
-              {/* Two-Column Experience Stage: Left Instagram Post, Right Mood Details */}
+              {/* Instagram Post Showcase Stage */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#FAF6EE] p-4 sm:p-6 rounded-2xl border border-[#E8DFD3]">
-                
-                {/* LEFT COLUMN: AUTHENTIC INSTAGRAM POST CARD */}
+                {/* Left Column: Authentic Instagram Post Card */}
                 <div className="lg:col-span-5 max-w-sm mx-auto w-full">
                   <div className="bg-white border-2 border-[#110D09] rounded-2xl overflow-hidden shadow-lg">
-                    
                     {/* Instagram Header with Verified Badge and Stepper */}
                     <div className="p-3 border-b border-[#E8DFD3] flex items-center justify-between bg-[#FAF6EE]">
                       <div className="flex items-center space-x-2.5">
@@ -590,7 +511,6 @@ export default function CacaoCitrineProductPage() {
                         </div>
                       </div>
 
-                      {/* Top Stepper Controls */}
                       <div className="flex items-center space-x-1.5">
                         <span className="text-[10px] font-mono font-bold text-[#110D09]/70 mr-0.5">
                           0{activeMoodIndex + 1} / 0{moodSlides.length}
@@ -625,7 +545,6 @@ export default function CacaoCitrineProductPage() {
                         priority
                       />
 
-                      {/* Direct Click Zones for Instagram Tap */}
                       <button
                         type="button"
                         onClick={handlePrevMood}
@@ -643,7 +562,6 @@ export default function CacaoCitrineProductPage() {
                         <ChevronRight className="w-4 h-4" />
                       </button>
 
-                      {/* Dots Indicator */}
                       <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center space-x-1.5">
                         {moodSlides.map((_, idx) => (
                           <button
@@ -717,37 +635,32 @@ export default function CacaoCitrineProductPage() {
                       <div className="pt-0.5 text-[10px] font-mono text-[#8C6D42] space-x-1.5">
                         <span>#valcura</span>
                         <span>#cacaocitrine</span>
-                        <span>#extraitdeparfum</span>
-                        <span>#olfactoryart</span>
-                      </div>
-                      <div className="text-[9px] font-mono text-[#888075] uppercase pt-0.5">
-                        2 hours ago • View all 84 comments
+                        <span>#experience</span>
                       </div>
                     </div>
-
                   </div>
                 </div>
 
-                {/* RIGHT COLUMN: CURRENT MOOD NARRATIVE & 5 SWITCHER THUMBNAILS */}
+                {/* Right Column: Narrative & All 5 Linked Images in Grid */}
                 <div className="lg:col-span-7 space-y-4">
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
                       Atmosphere 0{activeMoodIndex + 1} of 0{moodSlides.length}
                     </span>
-                    <h3 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                    <h4 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
                       {moodSlides[activeMoodIndex].title}
-                    </h3>
+                    </h4>
                     <p className="text-sm font-serif italic text-[#110D09]/85 leading-relaxed">
                       &ldquo;{moodSlides[activeMoodIndex].desc}&rdquo;
                     </p>
                   </div>
 
-                  {/* 5 Clickable Connected Mood Thumbnails */}
+                  {/* All 5 Linked Images (Clickable Instagram Post Switchers) */}
                   <div className="space-y-2 pt-1">
                     <span className="text-[10px] font-mono uppercase tracking-widest text-[#554D45] font-bold block">
-                      Switch Connected Atmosphere:
+                      All Linked Atmosphere Images:
                     </span>
-                    <div className="grid grid-cols-5 gap-2">
+                    <div className="grid grid-cols-5 gap-2.5">
                       {moodSlides.map((m, idx) => (
                         <button
                           key={m.slug}
@@ -764,7 +677,7 @@ export default function CacaoCitrineProductPage() {
                             src={m.image}
                             alt={m.title}
                             fill
-                            sizes="80px"
+                            sizes="90px"
                             className="object-cover group-hover:scale-110 transition-transform duration-300"
                           />
                           <span className="absolute bottom-1 right-1 bg-black/75 text-white font-mono text-[7px] px-1 rounded-xs">
@@ -775,7 +688,6 @@ export default function CacaoCitrineProductPage() {
                     </div>
                   </div>
 
-                  {/* CTA To Full Mood Page */}
                   <div className="pt-2">
                     <Link
                       href={`/moods/${moodSlides[activeMoodIndex].slug}`}
@@ -786,77 +698,50 @@ export default function CacaoCitrineProductPage() {
                     </Link>
                   </div>
                 </div>
-
               </div>
             </div>
           )}
 
-          {/* TAB 3: VESSEL & APPLICATION RITUAL */}
-          {activeTab === 'ritual' && (
-            <div className="bg-white border border-[#E8DFD3] rounded-3xl p-5 sm:p-7 shadow-xs space-y-5 animate-fadeIn">
-              <div className="max-w-xl space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#8C6D42] font-bold">
-                  Vessel Craft &amp; Application
-                </span>
-                <h3 className="text-lg sm:text-xl font-serif font-bold uppercase text-[#110D09]">
-                  Physical Architecture &amp; Sensory Ritual
-                </h3>
-                <p className="text-xs text-[#554D45] font-light">
-                  Crafted to preserve delicate volatile top notes and provide a ceremonial tactile experience.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-white border border-[#E8DFD3] flex items-center justify-center text-[#8C6D42]">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
-                    Purity &amp; Concentration
+          {/* 3. DETAILS: EXACTLY 5 ONE-LINE POINTED BULLETS ABOUT THE FRAGRANCE */}
+          {(activeTab === 'details' || activeTab === 'all') && (
+            <div className="bg-white border border-[#E8DFD3] rounded-3xl p-6 sm:p-8 shadow-xs space-y-4 animate-fadeIn">
+              <div className="border-b border-[#E8DFD3] pb-3 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
+                    Product Dossier
                   </span>
-                  <h4 className="text-base font-serif font-bold text-[#110D09]">20% Extrait-Grade</h4>
-                  <p className="text-xs text-[#554D45] font-light leading-relaxed">
-                    Formulated with a 20% pure perfume oil concentration on certified organic grain alcohol. 100% vegan, cruelty-free, and phthalate-free.
-                  </p>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
+                    Details
+                  </h3>
                 </div>
-
-                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-white border border-[#E8DFD3] flex items-center justify-center text-[#8C6D42]">
-                    <Layers className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
-                    Vessel Architecture
-                  </span>
-                  <h4 className="text-base font-serif font-bold text-[#110D09]">Italian Crystal Flacon</h4>
-                  <p className="text-xs text-[#554D45] font-light leading-relaxed">
-                    Heavy base Italian crystal flacon with etched monogram, precision micro-mist atomization pump, and weighted magnetic obsidian cap.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-white border border-[#E8DFD3] flex items-center justify-center text-[#8C6D42]">
-                    <Check className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#8C6D42] font-bold block">
-                    Pulse-Point Mastery
-                  </span>
-                  <h4 className="text-base font-serif font-bold text-[#110D09]">Application Ritual</h4>
-                  <p className="text-xs text-[#554D45] font-light leading-relaxed">
-                    Apply 2–3 mists to lateral neck, wrists, and clavicle. Allow to air-dry naturally; never rub wrists to protect delicate citrus esters.
-                  </p>
-                </div>
-              </div>
-
-              {/* Provenance Seal */}
-              <div className="p-3.5 bg-[#FAF8F5] border border-[#E8DFD3] rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-[#554D45]">
-                <div className="flex items-center space-x-2">
-                  <ShieldCheck className="w-4 h-4 text-[#8C6D42]" />
-                  <span>Batch No. VC-CIT-001 • 28-Day Cold Maturation in Glass Carboys</span>
-                </div>
-                <span className="text-[#8C6D42] font-bold uppercase tracking-wider">
-                  IFRA Certified • Paraben &amp; Phthalate Free
+                <span className="text-[10px] font-mono text-[#8C6D42] uppercase tracking-wider bg-[#FAF6EE] px-2.5 py-1 rounded-md border border-[#E8DFD3] font-semibold">
+                  5 Key Specifications
                 </span>
               </div>
+
+              {/* Exact 5 One-Line Pointed Bullets About Fragrance */}
+              <ul className="space-y-3.5 text-xs sm:text-sm font-sans text-[#110D09] leading-relaxed pt-1">
+                <li className="flex items-center space-x-3">
+                  <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
+                  <span><strong>50 ML Extrait de Parfum</strong> formulated with a concentrated 20% pure oil ratio.</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
+                  <span><strong>4 Hours active projection</strong> radiating a distinctive, arm&apos;s-length fragrance aura.</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
+                  <span><strong>10 to 12+ Hours skin longevity</strong> settling into an intimate, warm chocolate-musk dry-down.</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
+                  <span><strong>Unisex composition</strong> harmonizing sparkling Italian citrus with velvety roasted hazelnut &amp; vanilla.</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
+                  <span><strong>100% Vegan &amp; cruelty-free</strong>, crafted on certified organic grain alcohol without phthalates.</span>
+                </li>
+              </ul>
             </div>
           )}
         </section>
