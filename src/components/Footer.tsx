@@ -157,25 +157,14 @@ export default function Footer() {
         <div className="mt-14 sm:mt-20 pt-10 sm:pt-14 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Left: Atmospheric Brand Card */}
           <div className="lg:col-span-6 w-full">
-            <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-[#111111] flex flex-col justify-between p-6 sm:p-8 select-none group">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#111111] border border-black/10 select-none group shadow-sm">
               <Image
-                src="/brand/home-banner-valcura-roses.jpg"
-                alt="VALCURA Fragrance"
+                src="/brand/valcura-mood-campaign-banner.jpg"
+                alt="VALCURA - For Every Mood"
                 fill
                 sizes="(max-width: 1024px) 100vw, 560px"
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/30" />
-
-              {/* Script Overlay */}
-              <p className="relative z-10 font-handwriting text-white/95 text-3xl sm:text-4xl lg:text-[42px] leading-tight drop-shadow-sm">
-                for every mood
-              </p>
-
-              {/* Bold Brand Wordmark */}
-              <h3 className="relative z-10 font-sans font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-[0.25em] uppercase drop-shadow-md">
-                VALCURA
-              </h3>
             </div>
           </div>
 

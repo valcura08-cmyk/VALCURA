@@ -85,6 +85,33 @@ export default function OurStoryPage() {
           </div>
         </div>
 
+        {/* Story Campaign Climax Banner */}
+        <div className="pt-6 sm:pt-10 space-y-8 text-center">
+          <div className="relative aspect-[16/9] w-full max-w-4xl mx-auto rounded-2xl overflow-hidden border border-[#E8E2D8] shadow-lg bg-[#110D09]">
+            <Image
+              src="/brand/valcura-mood-campaign-banner.jpg"
+              alt="VALCURA - For Every Mood Atelier Campaign"
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/collections/cacaoveil"
+              className="btn-luxury-primary text-xs tracking-luxury uppercase px-6 py-3"
+            >
+              Explore Cacaoveil Collection
+            </Link>
+            <Link
+              href="/moods"
+              className="btn-luxury-secondary text-xs tracking-luxury uppercase px-6 py-3"
+            >
+              Discover Curated Moods
+            </Link>
+          </div>
+        </div>
+
       </section>
     </div>
   );
