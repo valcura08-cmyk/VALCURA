@@ -331,119 +331,136 @@ export default function CheckoutPage() {
     return createData.orderId;
   };
 
-  // Payment Screenshot Upload (Instant, non-blocking & friendly)
-  const processReceiptImage = async (file: File) => {
-    if (!file) return;
-    setErrorMsg('');
-    setScanError('');
+  // Dynamically load Razorpay standard checkout script
+  const loadRazorpayScript = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if (typeof window === 'undefined') return resolve(false);
+      if ((window as any).Razorpay) return resolve(true);
 
-    // File Type Validation
-    if (!file.type.startsWith('image/')) {
-      setErrorMsg('Please select a valid image file (PNG, JPG, JPEG, or WEBP).');
-      return;
-    }
-
-    // File Size Validation: Max 15 MB
-    if (file.size > 15 * 1024 * 1024) {
-      setErrorMsg('Uploaded screenshot exceeds 15 MB. Please select a standard screenshot.');
-      return;
-    }
-
-    setIsUploading(true);
-    setReceiptFileName(file.name);
-    setReceiptFileSize(file.size);
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const dataUrl = e.target?.result as string;
-      setReceiptImage(dataUrl);
-      setIsUploading(false);
-      setScanSuccess(true);
-      setScanError('');
-    };
-    reader.onerror = () => {
-      setErrorMsg('Failed to read image file. Please re-select your screenshot.');
-      setIsUploading(false);
-    };
-    reader.readAsDataURL(file);
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
   };
 
-  // Direct Confirmation: Books order instantly & redirects to confirmation
-  const handleDirectConfirmPayment = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+  // Official Razorpay Gateway Trigger (UPI, Cards, NetBanking, Wallets)
+  const handlePayWithRazorpay = async () => {
     setErrorMsg('');
     setLoading(true);
 
     try {
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded) {
+        throw new Error(
+          'Payment gateway SDK failed to load. Please check your internet connection.'
+        );
+      }
+
+      // 1. Initialize server order in pending state
       const orderId = await initializeServerOrder();
 
-      const finalUtr =
-        upiUtr.trim() ||
-        (receiptImage
-          ? `PROOF-${Date.now().toString().slice(-6)}`
-          : `UPI-${Date.now().toString().slice(-6)}`);
-
-      const verifyRes = await fetch('/api/orders/verify-receipt', {
+      // 2. Request official gateway order creation
+      const res = await fetch('/api/payment/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          orderId,
-          utr: finalUtr,
           amount: totalPayableAmount,
-          receiptImageBase64: receiptImage || null,
+          orderId,
+          customer: formData,
         }),
       });
 
-      const verifyData = await verifyRes.json();
-      if (!verifyRes.ok || !verifyData.success) {
-        throw new Error(verifyData.error || 'Payment confirmation error. Please tap confirm again.');
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(
+          data.error ||
+            'Could not initialize official payment gateway. Please verify your connection or merchant credentials.'
+        );
       }
 
-      if (verifyData.order) {
-        saveOrderToAccount(verifyData.order);
-      }
+      // 3. Open official Razorpay Checkout modal
+      const options = {
+        key: data.keyId,
+        amount: data.amount,
+        currency: data.currency || 'INR',
+        name: 'VALCURA Haute Parfumerie',
+        description: `Flacon Allocation Reservation (${totalQuantity || 1} Flacon)`,
+        order_id: data.rzpOrderId,
+        prefill: {
+          name: formData.fullName,
+          email: formData.email,
+          contact: formData.phone.startsWith('+91')
+            ? formData.phone
+            : `+91${formData.phone}`,
+        },
+        theme: {
+          color: '#110D09',
+        },
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
+            setErrorMsg(
+              'Payment was cancelled or closed. Your order was NOT booked.'
+            );
+          },
+        },
+        handler: async function (response: any) {
+          try {
+            setLoading(true);
+            const verifyRes = await fetch('/api/payment/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                valcuraOrderId: orderId,
+              }),
+            });
 
-      clearCart();
-      router.push(`/order-confirmation/${orderId}`);
+            const verifyData = await verifyRes.json();
+            if (!verifyRes.ok || !verifyData.success) {
+              throw new Error(
+                verifyData.error ||
+                  'Payment verification signature failed. Transaction cannot be validated.'
+              );
+            }
+
+            if (verifyData.order) {
+              saveOrderToAccount(verifyData.order);
+            }
+
+            clearCart();
+            router.push(`/order-confirmation/${orderId}`);
+          } catch (err: any) {
+            console.error('Verify payment error:', err);
+            setErrorMsg(
+              err.message || 'Payment confirmation error. Please contact concierge.'
+            );
+            setLoading(false);
+          }
+        },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', function (response: any) {
+        setLoading(false);
+        setErrorMsg(
+          `Payment failed: ${response.error?.description || 'Transaction declined by bank.'}`
+        );
+      });
+      rzp.open();
     } catch (err: any) {
-      console.error('Confirm payment error:', err);
-      setErrorMsg(err.message || 'Payment confirmation error. Please tap confirm again.');
+      console.error('Official payment checkout error:', err);
+      setErrorMsg(
+        err.message || 'Could not initiate payment. Please verify your details.'
+      );
       setLoading(false);
     }
   };
-
-  // Dynamic Google Pay & UPI strings pre-encoded with exact cart amount and Raghav Sindhwani
-  const dynamicUpiString = `upi://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
-    MERCHANT_NAME
-  )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}`;
-
-  const gpayUpiString = `tez://upi/pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
-    MERCHANT_NAME
-  )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}&mc=5691`;
-
-  const phonepeUpiString = `phonepe://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
-    MERCHANT_NAME
-  )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}`;
-
-  const paytmUpiString = `paytmmp://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(
-    MERCHANT_NAME
-  )}&am=${totalPayableAmount}&cu=INR&tn=${encodeURIComponent('VALCURA Perfume Pre-Order')}`;
-
-  const handleLaunchGooglePay = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const start = Date.now();
-    window.location.href = gpayUpiString;
-    setTimeout(() => {
-      // If Google Pay tez:// protocol did not intercept (e.g. iOS or desktop), fall back to standard UPI
-      if (Date.now() - start < 2000) {
-        window.location.href = dynamicUpiString;
-      }
-    }, 700);
-  };
-
-  const dynamicQrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=10&data=${encodeURIComponent(
-    dynamicUpiString
-  )}`;
 
   // Empty cart view
   if (items.length === 0) {
@@ -1094,16 +1111,16 @@ export default function CheckoutPage() {
                   </p>
                 </div>
 
-                {/* 2. ATELIER PAYMENT PORTAL */}
+                {/* 2. ATELIER OFFICIAL PAYMENT PORTAL */}
                 <div className="bg-white border-2 border-[#110D09] p-6 sm:p-8 space-y-6 shadow-xl rounded-2xl">
                   {/* Header */}
                   <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-4">
                     <div>
                       <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono block font-semibold">
-                        Step 2 of 2 • Secure Payment
+                        Step 2 of 2 • Official Payment Gateway
                       </span>
                       <h2 className="text-xl sm:text-2xl font-serif text-[#110D09] font-bold">
-                        Pay via UPI, GPay, PhonePe or QR
+                        Official Payment Portal
                       </h2>
                     </div>
                     <div className="text-right">
@@ -1113,276 +1130,87 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Trust Banner */}
-                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-950">
+                  <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-950">
                     <div className="flex items-center space-x-2">
                       <ShieldCheck className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                       <span className="font-serif font-bold uppercase tracking-wider text-[11px]">
-                        Direct Merchant Settlement • 100% Secure &amp; Zero Risk
+                        Bank-Grade 256-Bit Encrypted Gateway • 100% Zero Risk
                       </span>
                     </div>
                     <span className="font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-emerald-300 font-bold uppercase text-emerald-800">
-                      ₹0 Extra Fees
+                      Official Settlement
                     </span>
                   </div>
 
-                  {/* SECTION A: PAYMENT METHODS (1-TAP APPS + QR CODE) */}
-                  <div className="bg-[#FAF8F5] border border-[#D5CDC2] rounded-2xl p-5 sm:p-6 space-y-5 shadow-sm">
-                    <div className="border-b border-[#E8E2D8] pb-3">
-                      <span className="text-[10px] font-mono uppercase tracking-luxury text-[#8C6D42] font-bold block">
-                        Option 1 • Fast 1-Tap UPI Apps
-                      </span>
-                      <h3 className="text-sm sm:text-base font-serif font-bold uppercase text-[#110D09]">
-                        Pay Directly from Your Mobile App
-                      </h3>
-                    </div>
+                  {/* Payment Mediums Showcase */}
+                  <div className="bg-[#FAF8F5] border border-[#D5CDC2] rounded-2xl p-5 sm:p-6 space-y-4">
+                    <span className="text-[10px] font-mono uppercase tracking-luxury text-[#8C6D42] font-bold block">
+                      Choose Any Payment Medium at Checkout:
+                    </span>
 
-                    {/* Google Pay Featured Card */}
-                    <div className="bg-white border-2 border-[#110D09] rounded-xl p-4 shadow-sm space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.64v3.03h3.88c2.27-2.09 3.66-5.17 3.66-9.11z" />
-                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.13C3.26 21.31 7.34 24 12 24z" />
-                            <path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.28C.46 8.2.01 10.04.01 12c0 1.96.45 3.8 1.27 5.42l4-3.13z" />
-                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.69 1.28 6.58l4 3.13c.95-2.83 3.6-4.96 6.72-4.96z" />
-                          </svg>
-                          <span className="font-serif font-bold text-sm text-[#110D09]">
-                            Google Pay (Pre-Filled ₹{totalPayableAmount})
-                          </span>
-                        </div>
-                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-bold uppercase">
-                          Recommended
-                        </span>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                      <div className="bg-white border border-[#D5CDC2] rounded-xl p-3.5 text-center space-y-1">
+                        <Smartphone className="w-5 h-5 mx-auto text-[#8C6D42]" />
+                        <span className="font-bold text-[#110D09] block text-xs">UPI</span>
+                        <span className="text-[10px] text-[#554D45] block">GPay, PhonePe, Paytm, CRED</span>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={handleLaunchGooglePay}
-                        className="w-full py-3 px-4 bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs sm:text-sm font-mono font-bold uppercase rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 group"
-                      >
-                        <span>Open &amp; Pay ₹{totalPayableAmount} in Google Pay</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </button>
-                    </div>
-
-                    {/* Secondary UPI app buttons */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-mono">
-                      <a
-                        href={phonepeUpiString}
-                        className="p-3 bg-white hover:bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl text-center font-bold text-[#110D09] transition-all hover:border-[#110D09] shadow-xs flex items-center justify-center space-x-1"
-                      >
-                        <span>Pay via PhonePe</span>
-                      </a>
-                      <a
-                        href={paytmUpiString}
-                        className="p-3 bg-white hover:bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl text-center font-bold text-[#110D09] transition-all hover:border-[#110D09] shadow-xs flex items-center justify-center space-x-1"
-                      >
-                        <span>Pay via Paytm</span>
-                      </a>
-                      <a
-                        href={dynamicUpiString}
-                        className="p-3 bg-white hover:bg-[#FAF8F5] border border-[#D5CDC2] rounded-xl text-center font-bold text-[#8C6D42] transition-all hover:border-[#110D09] shadow-xs flex items-center justify-center space-x-1"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Any Other UPI App</span>
-                      </a>
-                    </div>
-
-                    {/* QR Code & Merchant Details */}
-                    <div className="pt-2 border-t border-[#E8E2D8]">
-                      <span className="text-[10px] font-mono uppercase tracking-luxury text-[#8C6D42] font-bold block mb-3">
-                        Option 2 • Scan QR Code on Desktop or Another Screen
-                      </span>
-
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-                        {/* QR Code */}
-                        <div className="md:col-span-5 flex flex-col items-center text-center">
-                          <div className="p-3.5 bg-white rounded-2xl border-2 border-[#110D09] shadow-md flex items-center justify-center">
-                            <QRCodeSVG
-                              value={dynamicUpiString}
-                              size={160}
-                              level="M"
-                              bgColor="#FFFFFF"
-                              fgColor="#110D09"
-                              includeMargin={false}
-                            />
-                          </div>
-                          <p className="text-[10px] font-mono text-[#554D45] mt-2">
-                            Scan with GPay, PhonePe, Paytm, or BHIM
-                          </p>
-                        </div>
-
-                        {/* Payee Info & Copy UPI ID */}
-                        <div className="md:col-span-7 space-y-3 text-xs text-[#554D45]">
-                          <div className="p-3.5 bg-white rounded-xl border border-[#D5CDC2] space-y-2">
-                            <span className="text-[10px] uppercase font-mono text-[#8C6D42] font-bold block">
-                              Merchant Details
-                            </span>
-                            <div className="text-sm font-serif font-bold text-[#110D09]">
-                              {MERCHANT_NAME}
-                            </div>
-                            <div className="flex items-center justify-between bg-[#FAF8F5] border border-[#D5CDC2] rounded-lg px-3 py-2">
-                              <code className="font-mono text-xs sm:text-sm font-bold text-[#110D09] select-all">
-                                {MERCHANT_UPI_ID}
-                              </code>
-                              <button
-                                type="button"
-                                onClick={handleCopyUpi}
-                                className="inline-flex items-center space-x-1 px-2.5 py-1 text-[11px] font-mono font-bold text-[#8C6D42] hover:text-[#110D09] bg-white border border-[#D5CDC2] rounded transition-all ml-2"
-                              >
-                                {copiedUpi ? (
-                                  <>
-                                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                    <span className="text-emerald-700">Copied!</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="w-3.5 h-3.5" />
-                                    <span>Copy</span>
-                                  </>
-                                )}
-                              </button>
-                            </div>
-                            <div className="text-[11px] text-[#554D45] pt-1">
-                              Amount to transfer: <strong className="font-mono text-[#110D09]">₹{totalPayableAmount}</strong>
-                            </div>
-                          </div>
-                        </div>
+                      <div className="bg-white border border-[#D5CDC2] rounded-xl p-3.5 text-center space-y-1">
+                        <Lock className="w-5 h-5 mx-auto text-[#8C6D42]" />
+                        <span className="font-bold text-[#110D09] block text-xs">Cards</span>
+                        <span className="text-[10px] text-[#554D45] block">Visa, Mastercard, RuPay</span>
                       </div>
-                    </div>
-                  </div>
 
-                  {/* SECTION B: CONFIRM YOUR BOOKING (EFFORTLESS & FAIL-PROOF) */}
-                  <div className="bg-white border-2 border-[#110D09] rounded-2xl p-5 sm:p-7 space-y-5 shadow-lg">
-                    <div className="border-b border-[#E8E2D8] pb-3 flex items-center justify-between">
-                      <div>
-                        <span className="text-[10px] font-mono tracking-luxury text-[#8C6D42] uppercase font-bold block">
-                          Final Step • Instant Booking
-                        </span>
-                        <h3 className="text-base sm:text-lg font-serif font-bold uppercase text-[#110D09]">
-                          Done Paying? Confirm Your Order
-                        </h3>
+                      <div className="bg-white border border-[#D5CDC2] rounded-xl p-3.5 text-center space-y-1">
+                        <Sparkles className="w-5 h-5 mx-auto text-[#8C6D42]" />
+                        <span className="font-bold text-[#110D09] block text-xs">Net Banking</span>
+                        <span className="text-[10px] text-[#554D45] block">50+ Indian Banks</span>
                       </div>
-                      <span className="text-[10px] font-mono uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded font-bold">
-                        Instant Confirmation
-                      </span>
+
+                      <div className="bg-white border border-[#D5CDC2] rounded-xl p-3.5 text-center space-y-1">
+                        <CheckCircle2 className="w-5 h-5 mx-auto text-[#8C6D42]" />
+                        <span className="font-bold text-[#110D09] block text-xs">Wallets</span>
+                        <span className="text-[10px] text-[#554D45] block">Paytm, Mobikwik &amp; more</span>
+                      </div>
                     </div>
 
                     <p className="text-xs text-[#554D45] leading-relaxed">
-                      After completing payment in your UPI app, click the button below. Your order will be instantly booked, and your reservation receipt will be generated.
-                    </p>
-
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) processReceiptImage(file);
-                      }}
-                    />
-
-                    {/* Screenshot Attachment (Friendly & Optional) */}
-                    <div>
-                      {!receiptImage ? (
-                        <div
-                          onClick={() => fileInputRef.current?.click()}
-                          className="border border-dashed border-[#8C6D42]/60 hover:border-[#110D09] bg-[#FAF8F5] hover:bg-[#F3EFE8] p-4 rounded-xl text-center cursor-pointer transition-all flex items-center justify-center space-x-3 group"
-                        >
-                          <UploadCloud className="w-5 h-5 text-[#8C6D42] group-hover:text-[#110D09]" />
-                          <span className="text-xs font-mono text-[#110D09] font-medium">
-                            Attach Payment Screenshot (Optional)
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="p-3 bg-emerald-50/70 border border-emerald-300 rounded-xl flex items-center justify-between text-xs">
-                          <div className="flex items-center space-x-3">
-                            <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                            <div className="truncate max-w-[200px] sm:max-w-xs">
-                              <span className="font-mono font-bold text-emerald-900 block truncate">
-                                ✓ Screenshot Attached ({receiptFileName || 'receipt.jpg'})
-                              </span>
-                              <span className="text-[10px] text-emerald-700 font-mono">
-                                Will be linked to your order
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="text-[11px] font-mono text-[#8C6D42] hover:text-[#110D09] underline px-2 py-1"
-                          >
-                            Change
-                          </button>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* UPI Reference / Transaction ID Input (Optional/Flexible) */}
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <label
-                          htmlFor="upiUtr"
-                          className="text-xs font-mono font-bold uppercase tracking-wider text-[#110D09]"
-                        >
-                          UPI Ref / Transaction ID <span className="text-[#8C6D42] font-normal lowercase">(optional)</span>
-                        </label>
-                        {upiUtr && (
-                          <span className="text-[10px] font-mono text-emerald-700 font-semibold">
-                            ✓ {upiUtr}
-                          </span>
-                        )}
-                      </div>
-                      <input
-                        id="upiUtr"
-                        type="text"
-                        placeholder="e.g. 12-digit UTR or GPay Transaction ID"
-                        value={upiUtr}
-                        onChange={(e) => {
-                          setUpiUtr(e.target.value);
-                          setErrorMsg('');
-                        }}
-                        className="w-full border border-[#D5CDC2] focus:border-[#110D09] rounded-lg px-3.5 py-2.5 text-xs font-mono text-[#110D09] bg-white focus:outline-none transition-colors"
-                      />
-                      <p className="text-[10px] font-mono text-[#554D45]/80">
-                        Found in your bank SMS, Google Pay, PhonePe, or Paytm receipt.
-                      </p>
-                    </div>
-
-                    {/* Error message banner if any */}
-                    {errorMsg && (
-                      <div className="p-3.5 bg-red-50 border border-red-400 rounded-xl text-xs text-red-800 font-mono flex items-start space-x-2">
-                        <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-                        <span>{errorMsg}</span>
-                      </div>
-                    )}
-
-                    {/* Final Submission Button — ALWAYS ENABLED AND CLEAR */}
-                    <button
-                      type="button"
-                      disabled={loading}
-                      onClick={() => handleDirectConfirmPayment()}
-                      className="w-full py-4 text-xs sm:text-sm font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2 shadow-xl transition-all bg-[#110D09] hover:bg-emerald-800 text-white cursor-pointer ring-2 ring-emerald-500/30"
-                    >
-                      {loading ? (
-                        <div className="flex items-center space-x-2">
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Booking Your Order &amp; Securing Flacon...</span>
-                        </div>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                          <span>I&apos;ve Paid ₹{totalPayableAmount} — Book My Order</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </>
-                      )}
-                    </button>
-
-                    <p className="text-[11px] text-center font-mono text-[#554D45]">
-                      🔒 Secure direct settlement • Instant booking confirmation screen
+                      Click below to open the official gateway modal. You can choose any payment medium you prefer. Funds are transferred securely, and your reservation is verified and confirmed automatically.
                     </p>
                   </div>
+
+                  {/* Error message banner if any */}
+                  {errorMsg && (
+                    <div className="p-3.5 bg-red-50 border border-red-400 rounded-xl text-xs text-red-800 font-mono flex items-start space-x-2">
+                      <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                      <span>{errorMsg}</span>
+                    </div>
+                  )}
+
+                  {/* Official Payment Button */}
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => handlePayWithRazorpay()}
+                    className="w-full py-4 text-xs sm:text-sm font-serif font-bold tracking-luxury uppercase rounded-xl flex items-center justify-center space-x-2 shadow-xl transition-all bg-[#110D09] hover:bg-[#8C6D42] text-white cursor-pointer"
+                  >
+                    {loading ? (
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Opening Official Payment Gateway...</span>
+                      </div>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                        <span>Pay ₹{totalPayableAmount} via Official Gateway</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+
+                  <p className="text-[11px] text-center font-mono text-[#554D45]">
+                    🔒 Only bank-verified payments confirm and book the order. Non-payments are never booked.
+                  </p>
                 </div>
               </div>
             )}
