@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
@@ -31,6 +32,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth overflow-x-hidden">
       <head>
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -38,7 +41,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         {/* Official Google Identity Services SDK for Real One-Tap & Google Login */}
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <Script src="https://accounts.google.com/gsi/client" strategy="lazyOnload" />
       </head>
       <body className="bg-white text-[#110D09] min-h-screen flex flex-col font-sans antialiased selection:bg-[#110D09] selection:text-[#FAF7F2] overflow-x-hidden w-full max-w-full">
         <AuthProvider>

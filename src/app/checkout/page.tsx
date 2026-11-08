@@ -13,22 +13,15 @@ import {
   ChevronDown,
   Copy,
   Check,
-  QrCode,
   Smartphone,
   Sparkles,
   ShieldCheck,
   Loader2,
-  ExternalLink,
-  UploadCloud,
-  FileCheck,
-  RefreshCw,
-  ScanLine,
   MessageCircle,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { ALL_INDIAN_STATES, getCitiesForState } from '@/data/indiaLocations';
-import { QRCodeSVG } from 'qrcode.react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -71,34 +64,10 @@ export default function CheckoutPage() {
   const cityDropdownRef = useRef<HTMLDivElement>(null);
 
   // Payment UI state
-  const [copiedUpi, setCopiedUpi] = useState(false);
-  const [upiUtr, setUpiUtr] = useState('');
   const [paymentStep, setPaymentStep] = useState<'details' | 'payment'>('details');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
-  const [showOfficialPoster, setShowOfficialPoster] = useState(false);
-
-  // Screenshot Upload & AI Extraction State
-  const [receiptImage, setReceiptImage] = useState<string | null>(null);
-  const [receiptFileName, setReceiptFileName] = useState<string>('');
-  const [receiptFileSize, setReceiptFileSize] = useState<number>(0);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [isAnalyzingReceipt, setIsAnalyzingReceipt] = useState<boolean>(false);
-  const [scanStatus, setScanStatus] = useState<string>('');
-  const [scanError, setScanError] = useState<string>('');
-  const [scanSuccess, setScanSuccess] = useState<boolean>(false);
-  const [scanDetails, setScanDetails] = useState<{
-    payee?: string;
-    amount?: number;
-    app?: string;
-    confidence?: number;
-    message?: string;
-    utrExtracted?: boolean;
-    timestamp?: string;
-  } | null>(null);
-  const [showManualUtr, setShowManualUtr] = useState<boolean>(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -350,12 +319,6 @@ _Hello Maison VALCURA Concierge, I have reserved my limited flacon allocation on
   const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
     handleSendOrderToWhatsApp(e);
-  };
-
-  const handleCopyUpi = () => {
-    navigator.clipboard.writeText(MERCHANT_UPI_ID);
-    setCopiedUpi(true);
-    setTimeout(() => setCopiedUpi(false), 2500);
   };
 
   // Pre-generate / create server order when customer enters payment or taps GPay
