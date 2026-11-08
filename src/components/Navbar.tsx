@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingBag, User, Menu, X, ArrowRight, Instagram, ShieldCheck } from 'lucide-react';
+import { Search, ShoppingBag, User, Menu, X, ArrowRight, Instagram } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 
@@ -137,16 +137,6 @@ export default function Navbar() {
                 <Instagram className="w-4 h-4" />
               </a>
 
-              {/* Atelier Owner Portal Link */}
-              <Link
-                href="/admin"
-                className="text-[#110D09]/80 hover:text-[#A68455] transition-colors p-1 hidden sm:flex items-center"
-                aria-label="Atelier Owner Portal"
-                title="Atelier Owner Portal 🔐"
-              >
-                <ShieldCheck className="w-4 h-4 text-[#8C6D42]" />
-              </Link>
-
               {/* Account / Running Account Trigger */}
               {user ? (
                 <Link
@@ -266,13 +256,6 @@ export default function Navbar() {
                   className="text-xs tracking-luxury uppercase text-[#110D09]/80 hover:text-[#110D09] transition-colors"
                 >
                   Account & Order Inquiry
-                </Link>
-                <Link
-                  href="/admin"
-                  className="text-xs tracking-luxury uppercase text-[#8C6D42] hover:text-[#110D09] transition-colors font-semibold flex items-center space-x-1.5"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#8C6D42]" />
-                  <span>Atelier Owner Portal 🔐</span>
                 </Link>
                 <a
                   href="https://www.instagram.com/valcura__?cplk=MWdscXZoN3BqY3Q3NQ=="

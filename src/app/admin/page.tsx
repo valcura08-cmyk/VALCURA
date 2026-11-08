@@ -560,21 +560,6 @@ export default function AdminDashboardPage() {
                 </button>
               </div>
             </form>
-
-            {/* Quick credentials hint for the owner */}
-            <div className="mt-6 pt-5 border-t border-[#8C6D42]/20 text-[11px] font-mono text-[#FAF8F5]/60 space-y-1.5">
-              <div className="text-[10px] uppercase tracking-wider text-[#C5A059] font-semibold">
-                Owner Access Credentials:
-              </div>
-              <div className="flex justify-between items-center bg-[#110D09]/60 p-2 rounded border border-[#8C6D42]/20">
-                <span>Username: <strong className="text-[#FAF8F5]">valcura08@gmail.com</strong></span>
-                <span className="text-[10px] text-[#C5A059]/70">(or admin)</span>
-              </div>
-              <div className="flex justify-between items-center bg-[#110D09]/60 p-2 rounded border border-[#8C6D42]/20">
-                <span>Password: <strong className="text-[#FAF8F5]">valcura_atelier_2026</strong></span>
-                <span className="text-[10px] text-[#C5A059]/70">(or Valcura@2026)</span>
-              </div>
-            </div>
           </div>
 
           {/* Back to Storefront */}

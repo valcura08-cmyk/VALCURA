@@ -125,11 +125,6 @@ export default function Footer() {
                   Fragrance Finder
                 </Link>
               </li>
-              <li>
-                <Link href="/admin" className="hover:text-[#8C6D42] transition-colors flex items-center space-x-1 text-[#8C6D42] font-medium">
-                  <span>Owner Portal 🔐</span>
-                </Link>
-              </li>
             </ul>
 
             {/* Column 3: Legal & Policies */}
