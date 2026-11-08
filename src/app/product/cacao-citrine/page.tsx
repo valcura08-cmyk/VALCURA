@@ -417,10 +417,14 @@ export default function CacaoCitrineProductPage() {
             </div>
 
             {/* Quick Specs Pills */}
-            <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono text-[#554D45]">
+            <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono text-[#554D45]">
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
                 <span className="text-[#8C6D42] font-bold block">20% EDP</span>
-                <span className="text-[9px] text-[#888075]">Extrait Grade</span>
+                <span className="text-[9px] text-[#888075]">Extrait Ratio</span>
+              </div>
+              <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
+                <span className="text-[#8C6D42] font-bold block">4 HOURS</span>
+                <span className="text-[9px] text-[#888075]">Projection Time</span>
               </div>
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
                 <span className="text-[#8C6D42] font-bold block">10-12 HRS</span>
@@ -524,11 +528,11 @@ export default function CacaoCitrineProductPage() {
                     <span className="font-mono text-[10px] uppercase px-2.5 py-0.5 bg-white border border-[#E8DFD3] rounded-full text-[#8C6D42] font-bold">
                       Phase II • 30m–04 Hrs
                     </span>
-                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">Heart</span>
+                    <span className="text-[10px] font-mono text-[#8C6D42] font-bold">4 Hours Projection</span>
                   </div>
                   <h4 className="text-base font-serif font-bold text-[#110D09]">Roasted Hazelnut &amp; Cocoa</h4>
                   <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
-                    Warms into velvety roasted hazelnut praline and smooth cocoa butter, creating a tactile, second-skin indulgence that turns heads.
+                    Radiant 4-hour projection with an arm&apos;s-length sillage trail. Warms into velvety roasted hazelnut praline and smooth cocoa butter, creating a tactile, second-skin indulgence that turns heads.
                   </p>
                 </div>
 
@@ -882,13 +886,13 @@ export default function CacaoCitrineProductPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-[#FAF6EE] border border-[#E8DFD3] rounded-xl p-4 sm:p-5 space-y-2 shadow-xs hover:border-[#110D09] transition-all">
               <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#8C6D42] block">
-                Pillar I • Concentration
+                Pillar I • Concentration &amp; Projection
               </span>
               <h3 className="text-base font-serif font-bold uppercase tracking-wide text-[#110D09]">
-                20% Eau De Parfum
+                20% Eau De Parfum • 4 Hours Projection
               </h3>
               <p className="text-xs text-[#110D09]/75 font-light leading-relaxed">
-                Meticulously dosed at 20% fragrance oil concentration for radiant daylight projection and an intimate 8–10 hour skin trail.
+                Meticulously dosed at 20% fragrance oil concentration for 4 hours of radiant daylight projection and an intimate 10–12 hour skin trail.
               </p>
             </div>
 
