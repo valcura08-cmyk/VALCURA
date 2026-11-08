@@ -85,38 +85,6 @@ export default function OurStoryPage() {
           </div>
         </div>
 
-        {/* Story Chapter 3: The Cacao Collection Vision */}
-        <div className="bg-[#FAF8F5] border border-[#E8E2D8] p-8 sm:p-14 text-center space-y-6 shadow-sm">
-          <div className="relative w-8 h-8 mx-auto opacity-80">
-            <Image
-              src="/brand/valcura-emblem-dark.png"
-              alt="VALCURA Emblem"
-              fill
-              className="object-contain"
-            />
-          </div>
-          <span className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono block font-medium">
-            Part III • The Inaugural Trilogy
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-serif tracking-wide uppercase text-[#110D09]">
-            The Vision Behind The Cacao Collection
-          </h2>
-          <div className="w-12 h-px bg-[#110D09] mx-auto" />
-          <p className="text-sm sm:text-base text-[#110D09]/80 font-light max-w-2xl mx-auto leading-relaxed">
-            The Cacao Collection is our debut exploration: rethinking comforting gourmand warmth
-            through modern elegance and airy restraint. Led by our unisex flagship flacon,{' '}
-            <strong className="text-[#110D09] font-medium">Cacao Citrine</strong>, it celebrates the
-            delicate interplay of citrus freshness with creamy hazelnut depth.
-          </p>
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/collections/cacao" className="btn-luxury-primary text-xs">
-              Explore Cacao Collection
-            </Link>
-            <Link href="/product/cacao-citrine" className="btn-luxury-outline text-xs">
-              View Cacao Citrine
-            </Link>
-          </div>
-        </div>
       </section>
     </div>
   );
