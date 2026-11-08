@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingBag, User, Menu, X, ArrowRight } from 'lucide-react';
+import { Search, ShoppingBag, User, Menu, X, ArrowRight, Instagram } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 
@@ -124,6 +124,18 @@ export default function Navbar() {
               >
                 <Search className="w-4 h-4" />
               </button>
+
+              {/* Instagram Direct Link */}
+              <a
+                href="https://www.instagram.com/valcura__?cplk=MWdscXZoN3BqY3Q3NQ=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#110D09]/80 hover:text-[#A68455] transition-colors p-1"
+                aria-label="VALCURA Instagram (@valcura__)"
+                title="Follow @valcura__ on Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
 
               {/* Account / Running Account Trigger */}
               {user ? (
@@ -249,8 +261,17 @@ export default function Navbar() {
                   href="/admin"
                   className="text-xs tracking-luxury uppercase text-[#110D09]/60 hover:text-[#110D09] transition-colors"
                 >
-                  Atelier Admin & Orders
+                  Atelier Admin &amp; Orders
                 </Link>
+                <a
+                  href="https://www.instagram.com/valcura__?cplk=MWdscXZoN3BqY3Q3NQ=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 text-xs tracking-luxury uppercase text-[#8C6D42] hover:text-[#110D09] transition-colors font-medium pt-2 border-t border-[#E8E2D8]"
+                >
+                  <Instagram className="w-4 h-4" />
+                  <span>Instagram @valcura__</span>
+                </a>
               </div>
             </nav>
           </div>

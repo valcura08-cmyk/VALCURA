@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, Instagram } from 'lucide-react';
 
 export default function ContactUsPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -72,6 +72,21 @@ export default function ContactUsPage() {
                       className="text-[#110D09] hover:text-[#8C6D3F] font-medium"
                     >
                       valcura08@gmail.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Instagram className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[#888075] block font-mono">Official Instagram:</span>
+                    <a
+                      href="https://www.instagram.com/valcura__?cplk=MWdscXZoN3BqY3Q3NQ=="
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#110D09] hover:text-[#8C6D3F] font-medium"
+                    >
+                      @valcura__
                     </a>
                   </div>
                 </div>

@@ -47,12 +47,12 @@ export default function Footer() {
               STAY CONNECTED
             </h2>
             <a
-              href="https://instagram.com/valcura.atelier"
+              href="https://www.instagram.com/valcura__?cplk=MWdscXZoN3BqY3Q3NQ=="
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs sm:text-sm font-sans font-bold tracking-wider text-[#111111] uppercase hover:text-[#8C6D42] transition-colors"
             >
-              @VALCURA
+              @valcura__
             </a>
           </div>
         </div>
@@ -62,7 +62,7 @@ export default function Footer() {
           {/* Social Box: Square Instagram Button */}
           <div>
             <a
-              href="https://instagram.com/valcura.atelier"
+              href="https://www.instagram.com/valcura__?cplk=MWdscXZoN3BqY3Q3NQ=="
               target="_blank"
               rel="noopener noreferrer"
               className="w-11 h-11 bg-[#111111] text-white flex items-center justify-center hover:bg-[#8C6D42] transition-colors"
