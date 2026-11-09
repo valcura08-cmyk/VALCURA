@@ -49,7 +49,7 @@ export default function RootLayout({
             <Navbar />
             <CartDrawer />
             <AuthModal />
-            <main className="flex-1 pt-16 sm:pt-20 overflow-x-hidden w-full max-w-full">{children}</main>
+            <main className="flex-1 pt-12 sm:pt-14 overflow-x-hidden w-full max-w-full">{children}</main>
             <Footer />
           </CartProvider>
         </AuthProvider>

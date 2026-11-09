@@ -74,7 +74,7 @@ export default function HomeRotatingBanner() {
   const currentSlide = slides[currentIndex];
 
   return (
-    <section className="px-3 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto -mt-1 sm:-mt-3 mb-6 sm:mb-10">
+    <section className="px-3 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto -mt-1 sm:-mt-2 mb-3 sm:mb-5">
       {/* Sleek Wide Rectangular Banner Frame - Natural 1024/346 ratio preserves full image on mobile and desktop without cutting */}
       <div
         className="relative w-full aspect-[1024/346] rounded-xl sm:rounded-2xl overflow-hidden border border-[#110D09]/80 sm:border-2 sm:border-[#110D09] shadow-[0_12px_36px_-12px_rgba(17,13,9,0.2)] transition-colors duration-700 group select-none touch-pan-y"

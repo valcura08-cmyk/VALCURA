@@ -8,9 +8,9 @@ export default function ShopAllFragrancesPage() {
   const products = db.products;
 
   return (
-    <div className="bg-white text-[#110D09] min-h-screen pb-24">
+    <div className="bg-white text-[#110D09] min-h-screen pb-10 sm:pb-14">
       {/* Editorial Front Banner */}
-      <section className="relative w-full h-[300px] sm:h-[380px] lg:h-[440px] bg-[#110D09] overflow-hidden">
+      <section className="relative w-full h-[160px] sm:h-[220px] lg:h-[260px] bg-[#110D09] overflow-hidden">
         <Image
           src="/editorial/explore-by-scents-banner.jpg"
           alt="Explore By Scents - VALCURA Atelier"
@@ -19,12 +19,12 @@ export default function ShopAllFragrancesPage() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-        <div className="absolute inset-0 flex items-center justify-center text-center p-4">
-          <div className="max-w-2xl mx-auto space-y-2.5 text-white">
-            <h1 className="text-3xl sm:text-5xl font-serif tracking-wide uppercase text-[#FAF7F2]">
+        <div className="absolute inset-0 flex items-center justify-center text-center p-3 sm:p-4">
+          <div className="max-w-2xl mx-auto space-y-1.5 text-white">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-wide uppercase text-[#FAF7F2]">
               Explore By Scents
             </h1>
-            <p className="text-xs sm:text-sm text-white/85 font-light max-w-lg mx-auto leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-white/85 font-light max-w-lg mx-auto leading-relaxed">
               Discover our handcrafted 50 ML Eau de Parfum creations, olfactory pyramids, and second-skin sillage.
             </p>
           </div>
@@ -32,13 +32,13 @@ export default function ShopAllFragrancesPage() {
       </section>
 
       {/* Catalogue Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-        <div className="flex items-center justify-between pb-6 mb-8 border-b border-[#E8E2D8] text-xs text-[#110D09]/60 font-mono">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-8">
+        <div className="flex items-center justify-between pb-2.5 mb-4 border-b border-[#E8E2D8] text-xs text-[#110D09]/60 font-mono">
           <span>Showing {products.length} Fragrance Profiles</span>
           <span>Collection: Cacao Edition</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {products.map((product) => {
             const isAvailable = product.id === 'cacao-citrine';
 

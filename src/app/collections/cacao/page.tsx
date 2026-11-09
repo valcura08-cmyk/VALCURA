@@ -19,10 +19,10 @@ export default function CacaoveilCollectionPage() {
   );
 
   return (
-    <div className="bg-[#FAF7F2] text-[#110D09] min-h-screen pb-24">
+    <div className="bg-[#FAF7F2] text-[#110D09] min-h-screen pb-10 sm:pb-14">
       {/* Editorial Collection Header Banner */}
       <section className="relative w-full overflow-hidden border-b border-[#E8DFD3]">
-        <div className="relative aspect-[21/9] sm:aspect-[16/6] min-h-[280px] sm:min-h-[360px] w-full">
+        <div className="relative aspect-[21/9] sm:aspect-[16/5] min-h-[160px] sm:min-h-[220px] w-full">
           <Image
             src="/editorial/cacao-collection-citrus.jpg"
             alt="Cacaoveil by VALCURA"
@@ -33,15 +33,15 @@ export default function CacaoveilCollectionPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/30" />
 
           {/* Centered Editorial Typography */}
-          <div className="absolute inset-0 flex flex-col justify-end pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 text-center text-white">
-            <div className="max-w-3xl mx-auto space-y-2.5">
-              <span className="text-[10px] tracking-luxury uppercase text-[#E8D7C3] font-mono font-bold block">
+          <div className="absolute inset-0 flex flex-col justify-end pb-4 sm:pb-6 px-4 sm:px-6 lg:px-8 text-center text-white">
+            <div className="max-w-2xl mx-auto space-y-1">
+              <span className="text-[9px] tracking-luxury uppercase text-[#E8D7C3] font-mono font-bold block">
                 Inaugural Trilogy
               </span>
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold tracking-wide uppercase text-white drop-shadow-md">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold tracking-wide uppercase text-white drop-shadow-md">
                 Cacaoveil
               </h1>
-              <p className="text-xs sm:text-sm text-white/90 font-light max-w-xl mx-auto leading-relaxed drop-shadow-sm">
+              <p className="text-[11px] sm:text-xs text-white/90 font-light max-w-lg mx-auto leading-relaxed drop-shadow-sm">
                 Where rich hazelnut comfort and roasted cacao depth meet luminous citrus vitality.
               </p>
             </div>
@@ -50,13 +50,13 @@ export default function CacaoveilCollectionPage() {
       </section>
 
       {/* ONLY THE FRAGRANCES */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16">
-        <div className="flex items-center justify-between pb-6 mb-8 border-b border-[#E8DFD3] text-xs font-mono text-[#110D09]/60">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-8">
+        <div className="flex items-center justify-between pb-2.5 mb-4 border-b border-[#E8DFD3] text-xs font-mono text-[#110D09]/60">
           <span>Showing {products.length} Fragrances</span>
           <span className="font-semibold text-[#8C6D42]">The Cacaoveil Trilogy • 50 ML</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {products.map((product) => {
             const isAvailable = product.id === 'cacao-citrine';
 

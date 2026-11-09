@@ -20,21 +20,21 @@ export default function CartPage() {
   } = useCart();
 
   return (
-    <div className="bg-white text-[#110D09] min-h-screen pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 className="text-3xl sm:text-4xl font-serif uppercase tracking-wide text-[#110D09] pb-6 border-b border-[#E8E2D8]">
+    <div className="bg-white text-[#110D09] min-h-screen pb-10 sm:pb-14">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <h1 className="text-2xl sm:text-3xl font-serif uppercase tracking-wide text-[#110D09] pb-3 border-b border-[#E8E2D8]">
           Your Shopping Bag
         </h1>
 
         {items.length === 0 ? (
-          <div className="py-24 text-center max-w-md mx-auto space-y-6">
-            <div className="w-16 h-16 rounded-full border border-[#D5CDC2] mx-auto flex items-center justify-center">
-              <span className="font-serif text-2xl text-[#110D09]">V</span>
+          <div className="py-12 sm:py-16 text-center max-w-md mx-auto space-y-4">
+            <div className="w-12 h-12 rounded-full border border-[#D5CDC2] mx-auto flex items-center justify-center">
+              <span className="font-serif text-xl text-[#110D09]">V</span>
             </div>
-            <h2 className="text-xl font-serif uppercase tracking-wide text-[#110D09]">
+            <h2 className="text-lg sm:text-xl font-serif uppercase tracking-wide text-[#110D09]">
               Your bag is currently empty
             </h2>
-            <p className="text-xs sm:text-sm text-[#110D09]/60 font-light">
+            <p className="text-xs text-[#110D09]/60 font-light">
               Explore our debut Cacaoveil Collection and reserve your flacon before launch allocation is
               fulfilled.
             </p>
@@ -45,9 +45,9 @@ export default function CartPage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 pt-4">
             {/* Items Column */}
-            <div className="lg:col-span-8 space-y-6">
+            <div className="lg:col-span-8 space-y-3">
               {items.map((item) => {
                 const isDeposit = item.paymentPlan === 'deposit';
                 const itemPayable =

@@ -154,10 +154,10 @@ export default function CacaoCitrineProductPage() {
   };
 
   return (
-    <div className="bg-[#FAF7F2] text-[#110D09] min-h-[calc(100vh-70px)] pb-16">
+    <div className="bg-[#FAF7F2] text-[#110D09] min-h-[calc(100vh-70px)] pb-10 sm:pb-12">
       {/* Compact Editorial Breadcrumb */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 text-[11px] text-[#554D45] font-light flex items-center justify-between border-b border-[#E8DFD3]/70">
-        <div className="flex items-center space-x-2">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-2 text-[11px] text-[#554D45] font-light flex items-center justify-between border-b border-[#E8DFD3]/70">
+        <div className="flex items-center space-x-1.5">
           <Link href="/" className="hover:text-[#8C6D42] transition-colors">
             Home
           </Link>
@@ -174,8 +174,8 @@ export default function CacaoCitrineProductPage() {
       </div>
 
       {/* Main Single-Open Product Experience */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-4 sm:pt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 pt-2 sm:pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
           
           {/* ============================================================== */}
           {/* LEFT: VERTICAL ROW GALLERY (VERTICAL THUMBNAILS ON LEFT + MAIN PHOTO) */}

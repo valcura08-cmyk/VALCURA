@@ -236,10 +236,10 @@ ${customerDetails}`;
   };
 
   return (
-    <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen pb-24">
+    <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen pb-10 sm:pb-14">
       {/* Top Header Bar */}
-      <header className="border-b border-[#E8E2D8] bg-white sticky top-0 z-30 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <header className="border-b border-[#E8E2D8] bg-white sticky top-0 z-30 shadow-2xs">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <Link
             href="/shop"
             className="text-xs tracking-luxury uppercase text-[#110D09] hover:text-[#8C6D42] font-semibold transition-colors flex items-center gap-1.5"
@@ -256,72 +256,58 @@ ${customerDetails}`;
       </header>
 
       {/* Main Container */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12">
+      <main className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-5">
         {/* Title Header */}
-        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
-          <span className="text-[11px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
+        <div className="text-center max-w-xl mx-auto mb-3 sm:mb-4 space-y-0.5">
+          <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
             Maison Valcura • Official Reservation
           </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#110D09] font-bold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif text-[#110D09] font-bold tracking-tight">
             Reserve Your Flacon
           </h1>
-          <p className="text-xs sm:text-sm text-[#110D09]/70 font-light max-w-md mx-auto">
-            Zero tedious paperwork. Reserve your limited handcrafted flacon in 1 tap via WhatsApp or direct UPI.
+          <p className="text-xs text-[#110D09]/70 font-light max-w-md mx-auto">
+            Zero paperwork. Reserve your handcrafted flacon in 1 tap via WhatsApp or direct UPI.
           </p>
         </div>
 
         {/* 2-Column Responsive Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
           
           {/* LEFT COLUMN: Interactive Checkout Card (7 Cols) */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
 
-            {/* Quick 3-Step Interactive Timeline */}
-            <div className="bg-white border border-[#E8E2D8] rounded-2xl p-5 shadow-sm">
-              <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block mb-3">
-                Effortless 3-Step Atelier Process
-              </span>
-              <div className="grid grid-cols-3 gap-2.5 text-center">
-                <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200/80">
-                  <div className="w-6 h-6 rounded-full bg-[#8C6D42] text-white text-[11px] font-bold flex items-center justify-center mx-auto mb-1.5 font-mono">
-                    1
-                  </div>
-                  <p className="text-xs font-bold text-[#110D09]">1-Tap Order</p>
-                  <p className="text-[10px] text-[#110D09]/60 leading-tight mt-0.5">Locks your allocation</p>
-                </div>
-
-                <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/80">
-                  <div className="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center mx-auto mb-1.5 font-mono">
-                    2
-                  </div>
-                  <p className="text-xs font-bold text-[#110D09]">Drop Address</p>
-                  <p className="text-[10px] text-[#110D09]/60 leading-tight mt-0.5">Send in WhatsApp chat</p>
-                </div>
-
-                <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200/80">
-                  <div className="w-6 h-6 rounded-full bg-blue-600 text-white text-[11px] font-bold flex items-center justify-center mx-auto mb-1.5 font-mono">
-                    3
-                  </div>
-                  <p className="text-xs font-bold text-[#110D09]">Scan &amp; Ship</p>
-                  <p className="text-[10px] text-[#110D09]/60 leading-tight mt-0.5">Raghav sends ICICI QR</p>
-                </div>
+            {/* Quick Compact 3-Step Process Strip */}
+            <div className="bg-white border border-[#E8E2D8] rounded-xl px-3 py-2 shadow-2xs flex items-center justify-between gap-1 text-[10px] sm:text-xs font-mono">
+              <div className="flex items-center gap-1.5 font-bold text-[#110D09]">
+                <span className="w-4 h-4 rounded-full bg-[#8C6D42] text-white flex items-center justify-center text-[9px]">1</span>
+                <span>1-Tap Order</span>
+              </div>
+              <span className="text-[#8C6D42]/60">→</span>
+              <div className="flex items-center gap-1.5 font-bold text-emerald-800">
+                <span className="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[9px]">2</span>
+                <span>Drop Address</span>
+              </div>
+              <span className="text-[#8C6D42]/60">→</span>
+              <div className="flex items-center gap-1.5 font-bold text-blue-800">
+                <span className="w-4 h-4 rounded-full bg-blue-600 text-white flex items-center justify-center text-[9px]">3</span>
+                <span>Scan &amp; Ship</span>
               </div>
             </div>
 
             {/* Interactive Mode Switcher */}
-            <div className="bg-white border border-[#E8E2D8] rounded-2xl p-1.5 shadow-sm flex gap-1">
+            <div className="bg-white border border-[#E8E2D8] rounded-xl p-1 shadow-2xs flex gap-1">
               <button
                 type="button"
                 onClick={() => setCheckoutMode('whatsapp')}
-                className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
                   checkoutMode === 'whatsapp'
-                    ? 'bg-[#110D09] text-white shadow-md'
+                    ? 'bg-[#110D09] text-white shadow-xs'
                     : 'text-[#110D09]/70 hover:text-[#110D09] hover:bg-neutral-100'
                 }`}
               >
-                <MessageCircle className="w-4 h-4 text-emerald-400" />
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
                 <span>1-Click WhatsApp</span>
-                <span className="text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded-full font-mono uppercase tracking-wider hidden sm:inline">
+                <span className="text-[9px] bg-emerald-600 text-white px-1.5 py-0.2 rounded-full font-mono uppercase tracking-wider hidden sm:inline">
                   Fastest
                 </span>
               </button>
@@ -329,55 +315,55 @@ ${customerDetails}`;
               <button
                 type="button"
                 onClick={() => setCheckoutMode('direct_upi')}
-                className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
                   checkoutMode === 'direct_upi'
-                    ? 'bg-[#110D09] text-white shadow-md'
+                    ? 'bg-[#110D09] text-white shadow-xs'
                     : 'text-[#110D09]/70 hover:text-[#110D09] hover:bg-neutral-100'
                 }`}
               >
-                <QrCode className="w-4 h-4 text-amber-400" />
-                <span>Pay via UPI QR</span>
+                <QrCode className="w-3.5 h-3.5 text-amber-400" />
+                <span>Pay via UPI</span>
               </button>
             </div>
 
             {/* MODE 1: 1-CLICK WHATSAPP ORDER (Default & Most Frictionless) */}
             {checkoutMode === 'whatsapp' && (
-              <div className="bg-white border-2 border-emerald-500/30 rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
+              <div className="bg-white border-2 border-emerald-500/30 rounded-2xl p-4 sm:p-5 shadow-md space-y-3.5">
                 
                 {/* Banner */}
-                <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
-                    <MessageCircle className="w-5 h-5" />
+                <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 sm:p-3 flex items-start gap-2.5">
+                  <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+                    <MessageCircle className="w-4 h-4" />
                   </div>
                   <div className="space-y-0.5">
-                    <h3 className="text-sm font-serif font-bold text-emerald-950">
+                    <h3 className="text-xs sm:text-sm font-serif font-bold text-emerald-950">
                       Direct WhatsApp Priority Concierge
                     </h3>
-                    <p className="text-xs text-emerald-800 leading-relaxed font-light">
-                      No tedious 9-field forms! Tap below to open WhatsApp directly with founder Raghav Sindhwani (+91 6378582047). Your flacon reservation is pre-filled, and you can simply send your delivery address or live pin directly in chat.
+                    <p className="text-[11px] text-emerald-800 leading-snug font-light">
+                      No tedious forms! Tap below to open WhatsApp with founder Raghav Sindhwani (+91 6378582047). Send your address or live location pin directly in chat.
                     </p>
                   </div>
                 </div>
 
-                {/* Optional Quick Details (Zero Validation Stress) */}
-                <div className="space-y-3 pt-1">
+                {/* Optional Quick Details */}
+                <div className="space-y-2 pt-0.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-mono uppercase tracking-wider text-[#110D09]/70 font-semibold">
-                      Your Details (100% Optional)
+                    <label className="text-[11px] font-mono uppercase tracking-wider text-[#110D09]/70 font-semibold">
+                      Your Details (Optional)
                     </label>
                     <span className="text-[10px] text-[#8C6D42] font-mono">
-                      Skip if you prefer chatting directly
+                      Skip if chatting directly
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
                       <input
                         type="text"
                         placeholder="Your Name (e.g. Raghav)"
                         value={clientName}
                         onChange={(e) => setClientName(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-[#E8E2D8] bg-[#FAF8F5] text-xs sm:text-sm text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:border-[#8C6D42] focus:bg-white transition-all"
+                        className="w-full px-3 py-2 rounded-lg border border-[#E8E2D8] bg-[#FAF8F5] text-xs text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:border-[#8C6D42] focus:bg-white transition-all"
                       />
                     </div>
                     <div>
@@ -386,7 +372,7 @@ ${customerDetails}`;
                         placeholder="WhatsApp No. (e.g. 9876543210)"
                         value={clientPhone}
                         onChange={(e) => setClientPhone(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-[#E8E2D8] bg-[#FAF8F5] text-xs sm:text-sm text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:border-[#8C6D42] focus:bg-white transition-all"
+                        className="w-full px-3 py-2 rounded-lg border border-[#E8E2D8] bg-[#FAF8F5] text-xs text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:border-[#8C6D42] focus:bg-white transition-all"
                       />
                     </div>
                   </div>
@@ -394,44 +380,44 @@ ${customerDetails}`;
                   <div>
                     <input
                       type="text"
-                      placeholder="Your City or PIN code (Optional - or send directly on WhatsApp)"
+                      placeholder="Your City or PIN code (Optional - or send on WhatsApp)"
                       value={clientCity}
                       onChange={(e) => setClientCity(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-[#E8E2D8] bg-[#FAF8F5] text-xs sm:text-sm text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:border-[#8C6D42] focus:bg-white transition-all"
+                      className="w-full px-3 py-2 rounded-lg border border-[#E8E2D8] bg-[#FAF8F5] text-xs text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:border-[#8C6D42] focus:bg-white transition-all"
                     />
                   </div>
                 </div>
 
                 {/* Big Glowing WhatsApp Order Button */}
-                <div className="pt-2 space-y-3">
+                <div className="pt-1 space-y-2">
                   <button
                     type="button"
                     onClick={handleWhatsAppOrder}
                     disabled={loading}
-                    className="w-full py-4 sm:py-5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-serif font-bold text-base sm:text-lg tracking-wide shadow-xl shadow-emerald-600/25 transition-all flex items-center justify-center gap-3 group relative overflow-hidden"
+                    className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-serif font-bold text-sm sm:text-base tracking-wide shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 group relative overflow-hidden"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Reserving Flacon with Atelier...</span>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Reserving Flacon...</span>
                       </>
                     ) : (
                       <>
-                        <MessageCircle className="w-6 h-6 shrink-0 text-white" />
+                        <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-white" />
                         <span>Order via WhatsApp • ₹{totalPayableAmount}</span>
-                        <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </>
                     )}
                   </button>
 
-                  <div className="flex items-center justify-center gap-2 text-center text-[11px] text-[#110D09]/60 font-mono">
-                    <Sparkles className="w-3.5 h-3.5 text-[#8C6D42]" />
+                  <div className="flex items-center justify-center gap-1.5 text-center text-[10px] text-[#110D09]/60 font-mono">
+                    <Sparkles className="w-3 h-3 text-[#8C6D42]" />
                     <span>Instant 1-Click Allocation • Raghav will send official ICICI QR</span>
                   </div>
                 </div>
 
                 {errorMsg && (
-                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs">
+                  <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
                     {errorMsg}
                   </div>
                 )}
@@ -440,61 +426,61 @@ ${customerDetails}`;
 
             {/* MODE 2: DIRECT UPI PAYMENT */}
             {checkoutMode === 'direct_upi' && (
-              <div className="bg-white border border-[#E8E2D8] rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
-                <div className="flex items-start gap-3 bg-amber-50/70 border border-amber-200/80 rounded-xl p-4">
-                  <div className="w-9 h-9 rounded-full bg-[#8C6D42] text-white flex items-center justify-center shrink-0 mt-0.5">
-                    <QrCode className="w-5 h-5" />
+              <div className="bg-white border border-[#E8E2D8] rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5">
+                <div className="flex items-start gap-2.5 bg-amber-50/70 border border-amber-200/80 rounded-xl p-2.5 sm:p-3">
+                  <div className="w-7 h-7 rounded-full bg-[#8C6D42] text-white flex items-center justify-center shrink-0 mt-0.5">
+                    <QrCode className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-serif font-bold text-[#110D09]">
+                    <h3 className="text-xs sm:text-sm font-serif font-bold text-[#110D09]">
                       Direct ICICI Bank UPI Transfer
                     </h3>
-                    <p className="text-xs text-[#110D09]/70 leading-relaxed font-light">
-                      Transfer directly using your UPI app to official merchant Raghav Sindhwani or reach out on WhatsApp.
+                    <p className="text-[11px] text-[#110D09]/70 leading-snug font-light">
+                      Transfer directly to official merchant Raghav Sindhwani or reach out on WhatsApp.
                     </p>
                   </div>
                 </div>
 
                 {/* Official UPI & Contact Details Box */}
-                <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl p-5 space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E8E2D8]">
+                <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-xl p-3 sm:p-3.5 space-y-2.5">
+                  <div className="flex items-center justify-between gap-2 pb-2 border-b border-[#E8E2D8]">
                     <div>
-                      <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono block">
+                      <span className="text-[9px] tracking-luxury uppercase text-[#8C6D42] font-mono block">
                         Verified Beneficiary
                       </span>
-                      <p className="font-serif font-bold text-base text-[#110D09]">{MERCHANT_NAME}</p>
+                      <p className="font-serif font-bold text-xs sm:text-sm text-[#110D09]">{MERCHANT_NAME}</p>
                     </div>
-                    <div className="text-left sm:text-right">
-                      <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono block">
-                        Amount Payable
+                    <div className="text-right">
+                      <span className="text-[9px] tracking-luxury uppercase text-[#8C6D42] font-mono block">
+                        Amount
                       </span>
-                      <p className="font-mono font-bold text-lg text-emerald-800">₹{totalPayableAmount}</p>
+                      <p className="font-mono font-bold text-sm sm:text-base text-emerald-800">₹{totalPayableAmount}</p>
                     </div>
                   </div>
 
                   {/* UPI ID & Copy Button */}
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-[#110D09]/70 font-semibold">
-                      Official Merchant UPI ID:
+                  <div className="space-y-1">
+                    <span className="text-[9px] uppercase font-mono tracking-wider text-[#110D09]/70 font-semibold">
+                      Merchant UPI ID:
                     </span>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 bg-white border border-[#E8E2D8] rounded-xl px-4 py-2.5 font-mono text-xs sm:text-sm font-bold text-[#110D09] select-all">
+                    <div className="flex items-center gap-1.5">
+                      <div className="flex-1 bg-white border border-[#E8E2D8] rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold text-[#110D09] select-all truncate">
                         {MERCHANT_UPI_ID}
                       </div>
                       <button
                         type="button"
                         onClick={handleCopyUpi}
-                        className="px-4 py-2.5 rounded-xl bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-2.5 py-1.5 rounded-lg bg-[#110D09] hover:bg-[#8C6D42] text-white text-[11px] font-mono font-semibold transition-colors flex items-center gap-1 shrink-0"
                       >
                         {copiedUpi ? (
                           <>
-                            <Check className="w-4 h-4 text-emerald-400" />
-                            <span>Copied!</span>
+                            <Check className="w-3 h-3 text-emerald-400" />
+                            <span>Copied</span>
                           </>
                         ) : (
                           <>
-                            <Copy className="w-4 h-4" />
-                            <span>Copy UPI</span>
+                            <Copy className="w-3 h-3" />
+                            <span>Copy</span>
                           </>
                         )}
                       </button>
@@ -502,28 +488,28 @@ ${customerDetails}`;
                   </div>
 
                   {/* Merchant Mobile / WhatsApp Number & Copy Button */}
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-[#110D09]/70 font-semibold">
-                      Official Contact / WhatsApp Number:
+                  <div className="space-y-1">
+                    <span className="text-[9px] uppercase font-mono tracking-wider text-[#110D09]/70 font-semibold">
+                      Contact / WhatsApp Number:
                     </span>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 bg-white border border-[#E8E2D8] rounded-xl px-4 py-2.5 font-mono text-xs sm:text-sm font-bold text-[#110D09] select-all">
+                    <div className="flex items-center gap-1.5">
+                      <div className="flex-1 bg-white border border-[#E8E2D8] rounded-lg px-2.5 py-1.5 font-mono text-xs font-bold text-[#110D09] select-all">
                         +91 6378582047
                       </div>
                       <button
                         type="button"
                         onClick={handleCopyPhone}
-                        className="px-4 py-2.5 rounded-xl bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 shrink-0"
+                        className="px-2.5 py-1.5 rounded-lg bg-[#110D09] hover:bg-[#8C6D42] text-white text-[11px] font-mono font-semibold transition-colors flex items-center gap-1 shrink-0"
                       >
                         {copiedPhone ? (
                           <>
-                            <Check className="w-4 h-4 text-emerald-400" />
-                            <span>Copied!</span>
+                            <Check className="w-3 h-3 text-emerald-400" />
+                            <span>Copied</span>
                           </>
                         ) : (
                           <>
-                            <Copy className="w-4 h-4" />
-                            <span>Copy Number</span>
+                            <Copy className="w-3 h-3" />
+                            <span>Copy</span>
                           </>
                         )}
                       </button>
@@ -532,27 +518,27 @@ ${customerDetails}`;
                 </div>
 
                 {/* Confirm Paid via WhatsApp */}
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <button
                     type="button"
                     onClick={handleDirectUpiConfirmation}
                     disabled={loading}
-                    className="w-full py-4 px-6 rounded-2xl bg-[#110D09] hover:bg-[#8C6D42] text-white font-serif font-bold text-base tracking-wide transition-all flex items-center justify-center gap-3 shadow-lg"
+                    className="w-full py-2.5 px-4 rounded-xl bg-[#110D09] hover:bg-[#8C6D42] text-white font-serif font-bold text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-sm"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <Loader2 className="w-4 h-4 animate-spin" />
                         <span>Generating Confirmation...</span>
                       </>
                     ) : (
                       <>
-                        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                         <span>I Have Paid • Send Screenshot on WhatsApp</span>
                       </>
                     )}
                   </button>
 
-                  <p className="text-[11px] text-[#110D09]/60 font-mono text-center">
+                  <p className="text-[10px] text-[#110D09]/60 font-mono text-center">
                     Sends your payment reference directly to Raghav (+91 6378582047) for instant verification.
                   </p>
                 </div>
@@ -560,57 +546,57 @@ ${customerDetails}`;
             )}
 
             {/* Atelier Assurance Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="p-3 bg-white border border-[#E8E2D8] rounded-xl text-center space-y-1">
-                <ShieldCheck className="w-4 h-4 text-[#8C6D42] mx-auto" />
-                <p className="text-[10px] font-bold text-[#110D09]">100% Authentic</p>
-                <p className="text-[9px] text-[#110D09]/50 font-mono">Batch 01 Reserve</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              <div className="p-2 bg-white border border-[#E8E2D8] rounded-lg text-center space-y-0.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#8C6D42] mx-auto" />
+                <p className="text-[9px] font-bold text-[#110D09]">100% Authentic</p>
+                <p className="text-[8px] text-[#110D09]/50 font-mono">Batch 01</p>
               </div>
 
-              <div className="p-3 bg-white border border-[#E8E2D8] rounded-xl text-center space-y-1">
-                <Truck className="w-4 h-4 text-[#8C6D42] mx-auto" />
-                <p className="text-[10px] font-bold text-[#110D09]">Complimentary Courier</p>
-                <p className="text-[9px] text-[#110D09]/50 font-mono">Pan-India Priority</p>
+              <div className="p-2 bg-white border border-[#E8E2D8] rounded-lg text-center space-y-0.5">
+                <Truck className="w-3.5 h-3.5 text-[#8C6D42] mx-auto" />
+                <p className="text-[9px] font-bold text-[#110D09]">Free Courier</p>
+                <p className="text-[8px] text-[#110D09]/50 font-mono">Pan-India</p>
               </div>
 
-              <div className="p-3 bg-white border border-[#E8E2D8] rounded-xl text-center space-y-1">
-                <HeartHandshake className="w-4 h-4 text-[#8C6D42] mx-auto" />
-                <p className="text-[10px] font-bold text-[#110D09]">Founder Concierge</p>
-                <p className="text-[9px] text-[#110D09]/50 font-mono">Raghav Sindhwani</p>
+              <div className="p-2 bg-white border border-[#E8E2D8] rounded-lg text-center space-y-0.5">
+                <HeartHandshake className="w-3.5 h-3.5 text-[#8C6D42] mx-auto" />
+                <p className="text-[9px] font-bold text-[#110D09]">Founder Direct</p>
+                <p className="text-[8px] text-[#110D09]/50 font-mono">Raghav S.</p>
               </div>
 
-              <div className="p-3 bg-white border border-[#E8E2D8] rounded-xl text-center space-y-1">
-                <Sparkles className="w-4 h-4 text-[#8C6D42] mx-auto" />
-                <p className="text-[10px] font-bold text-[#110D09]">Atelier Packaging</p>
-                <p className="text-[9px] text-[#110D09]/50 font-mono">Handcrafted Cap</p>
+              <div className="p-2 bg-white border border-[#E8E2D8] rounded-lg text-center space-y-0.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#8C6D42] mx-auto" />
+                <p className="text-[9px] font-bold text-[#110D09]">Atelier Box</p>
+                <p className="text-[8px] text-[#110D09]/50 font-mono">Wooden Cap</p>
               </div>
             </div>
 
           </div>
 
           {/* RIGHT COLUMN: Interactive Cart & Order Summary (5 Cols) */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white border border-[#E8E2D8] rounded-2xl p-6 sm:p-7 shadow-sm sticky top-24 space-y-6">
+          <div className="lg:col-span-5 space-y-3 sm:space-y-4">
+            <div className="bg-white border border-[#E8E2D8] rounded-2xl p-4 sm:p-5 shadow-2xs sticky top-16 space-y-3.5">
               
-              <div className="flex items-center justify-between pb-4 border-b border-[#E8E2D8]">
-                <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-4 h-4 text-[#8C6D42]" />
-                  <h2 className="text-base font-serif font-bold text-[#110D09]">Your Atelier Flacon</h2>
+              <div className="flex items-center justify-between pb-2.5 border-b border-[#E8E2D8]">
+                <div className="flex items-center gap-1.5">
+                  <ShoppingBag className="w-3.5 h-3.5 text-[#8C6D42]" />
+                  <h2 className="text-xs sm:text-sm font-serif font-bold text-[#110D09]">Your Atelier Flacon</h2>
                 </div>
-                <span className="text-xs font-mono font-bold text-[#8C6D42]">
+                <span className="text-[11px] font-mono font-bold text-[#8C6D42]">
                   {flaconCount} Flacon{flaconCount > 1 ? 's' : ''}
                 </span>
               </div>
 
               {/* Items List or Default Cacao Citrine Card */}
               {items.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-2.5">
                   {items.map((item) => (
                     <div
                       key={item.productId}
-                      className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DFD3] flex items-center gap-4"
+                      className="p-2.5 sm:p-3 rounded-xl bg-[#FAF8F5] border border-[#E8DFD3] flex items-center gap-2.5"
                     >
-                      <div className="relative w-16 h-16 rounded-lg bg-neutral-900 border border-[#8C6D42]/30 shrink-0 overflow-hidden">
+                      <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-neutral-900 border border-[#8C6D42]/30 shrink-0 overflow-hidden">
                         <Image
                           src={item.image || '/images/perfume-front.webp'}
                           alt={item.name}
@@ -620,15 +606,15 @@ ${customerDetails}`;
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-serif font-bold text-sm text-[#110D09] truncate">
+                        <h3 className="font-serif font-bold text-xs sm:text-sm text-[#110D09] truncate">
                           {item.name}
                         </h3>
-                        <p className="text-[11px] text-[#8C6D42] font-mono">
+                        <p className="text-[10px] text-[#8C6D42] font-mono">
                           50 ML Extrait de Parfum
                         </p>
                         
                         {/* Interactive Quantity Stepper */}
-                        <div className="flex items-center gap-2 mt-2">
+                        <div className="flex items-center gap-1.5 mt-1.5">
                           <button
                             type="button"
                             onClick={() => {
@@ -638,26 +624,26 @@ ${customerDetails}`;
                                 removeFromCart(item.productId);
                               }
                             }}
-                            className="w-6 h-6 rounded-full bg-white border border-[#E8E2D8] flex items-center justify-center text-xs font-bold text-[#110D09] hover:bg-neutral-100 transition-colors"
+                            className="w-5 h-5 rounded-full bg-white border border-[#E8E2D8] flex items-center justify-center text-[10px] font-bold text-[#110D09] hover:bg-neutral-100 transition-colors"
                           >
-                            <Minus className="w-3 h-3" />
+                            <Minus className="w-2.5 h-2.5" />
                           </button>
                           <span className="text-xs font-mono font-bold px-1">{item.quantity}</span>
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                            className="w-6 h-6 rounded-full bg-white border border-[#E8E2D8] flex items-center justify-center text-xs font-bold text-[#110D09] hover:bg-neutral-100 transition-colors"
+                            className="w-5 h-5 rounded-full bg-white border border-[#E8E2D8] flex items-center justify-center text-[10px] font-bold text-[#110D09] hover:bg-neutral-100 transition-colors"
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-2.5 h-2.5" />
                           </button>
                         </div>
                       </div>
 
                       <div className="text-right shrink-0">
-                        <p className="font-mono font-bold text-sm text-[#110D09]">
+                        <p className="font-mono font-bold text-xs sm:text-sm text-[#110D09]">
                           ₹{399 * item.quantity}
                         </p>
-                        <p className="text-[10px] text-[#110D09]/40 line-through font-mono">
+                        <p className="text-[9px] text-[#110D09]/40 line-through font-mono">
                           ₹{599 * item.quantity}
                         </p>
                       </div>
@@ -666,9 +652,9 @@ ${customerDetails}`;
                 </div>
               ) : (
                 /* Instant Default Bottle Showcase if cart was empty */
-                <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-3">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 rounded-lg bg-neutral-900 border border-[#8C6D42]/30 shrink-0 overflow-hidden">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-[#FAF8F5] border border-[#E8DFD3] space-y-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="relative w-12 h-12 rounded-lg bg-neutral-900 border border-[#8C6D42]/30 shrink-0 overflow-hidden">
                       <Image
                         src="/images/perfume-front.webp"
                         alt="Cacao Citrine"
@@ -676,81 +662,74 @@ ${customerDetails}`;
                         className="object-cover"
                       />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-serif font-bold text-sm text-[#110D09]">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-serif font-bold text-xs text-[#110D09] truncate">
                         Cacao Citrine
                       </h3>
-                      <p className="text-[11px] text-[#8C6D42] font-mono">
+                      <p className="text-[10px] text-[#8C6D42] font-mono">
                         50 ML Extrait de Parfum
                       </p>
-                      <span className="inline-block px-2 py-0.5 mt-1 rounded bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold">
-                        Pre-Order Rate: ₹399
+                      <span className="inline-block px-1.5 py-0.2 mt-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-mono font-bold">
+                        Pre-Order: ₹399
                       </span>
                     </div>
-                    <div className="text-right">
-                      <p className="font-mono font-bold text-sm text-[#110D09]">₹399</p>
-                      <p className="text-[10px] text-[#110D09]/40 line-through font-mono">₹599</p>
+                    <div className="text-right shrink-0">
+                      <p className="font-mono font-bold text-xs sm:text-sm text-[#110D09]">₹399</p>
+                      <p className="text-[9px] text-[#110D09]/40 line-through font-mono">₹599</p>
                     </div>
                   </div>
 
                   <button
                     type="button"
                     onClick={handleQuickAddCacaoCitrine}
-                    className="w-full py-2 px-3 rounded-lg bg-white border border-[#8C6D42] hover:bg-[#8C6D42] hover:text-white text-xs font-serif font-bold text-[#8C6D42] transition-colors flex items-center justify-center gap-1.5"
+                    className="w-full py-1.5 px-2.5 rounded-lg bg-white border border-[#8C6D42] hover:bg-[#8C6D42] hover:text-white text-[11px] font-serif font-bold text-[#8C6D42] transition-colors flex items-center justify-center gap-1"
                   >
-                    <Plus className="w-3.5 h-3.5" />
+                    <Plus className="w-3 h-3" />
                     <span>Confirm 1 Flacon in Bag</span>
                   </button>
                 </div>
               )}
 
               {/* Price Calculation Breakdown */}
-              <div className="space-y-2.5 pt-3 border-t border-[#E8E2D8] text-xs font-mono">
+              <div className="space-y-1.5 pt-2 border-t border-[#E8E2D8] text-[11px] font-mono">
                 <div className="flex justify-between text-[#110D09]/60">
                   <span>Standard Atelier Value:</span>
                   <span className="line-through">₹{standardTotalValue}</span>
                 </div>
 
                 <div className="flex justify-between text-[#8C6D42] font-bold">
-                  <span>Pre-Order Privilege Savings:</span>
+                  <span>Pre-Order Savings:</span>
                   <span>- ₹{totalSavings}</span>
                 </div>
 
                 <div className="flex justify-between text-[#110D09]/80">
                   <span>Pan-India Priority Courier:</span>
-                  <span className="text-emerald-700 font-bold uppercase text-[10px]">
+                  <span className="text-emerald-700 font-bold uppercase text-[9px]">
                     FREE (₹0)
                   </span>
                 </div>
 
-                <div className="flex justify-between text-[#110D09]/80">
-                  <span>Tamper-Proof Wooden Cap Atelier Box:</span>
-                  <span className="text-emerald-700 font-bold uppercase text-[10px]">
-                    FREE (₹0)
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-baseline pt-3 border-t border-[#E8E2D8] text-base font-serif font-bold text-[#110D09]">
+                <div className="flex justify-between items-baseline pt-2 border-t border-[#E8E2D8] text-sm sm:text-base font-serif font-bold text-[#110D09]">
                   <span>Total Payable Today:</span>
-                  <span className="font-mono text-xl sm:text-2xl text-emerald-800">
+                  <span className="font-mono text-lg sm:text-xl text-emerald-800">
                     ₹{totalPayableAmount}
                   </span>
                 </div>
               </div>
 
               {/* Reassurance Notice */}
-              <div className="p-3.5 bg-amber-50/50 border border-amber-200/60 rounded-xl space-y-1.5 text-[11px] text-[#110D09]/80 font-light">
-                <div className="flex items-center gap-1.5 font-bold text-amber-900 font-serif">
-                  <Info className="w-3.5 h-3.5 text-[#8C6D42]" />
+              <div className="p-2.5 bg-amber-50/50 border border-amber-200/60 rounded-xl space-y-1 text-[10px] text-[#110D09]/80 font-light">
+                <div className="flex items-center gap-1 font-bold text-amber-900 font-serif">
+                  <Info className="w-3 h-3 text-[#8C6D42]" />
                   <span>Founder's Direct Commitment:</span>
                 </div>
-                <p className="leading-relaxed">
-                  Your reservation goes directly to founder Raghav Sindhwani. Every single flacon is numbered and allocated strictly in order of pre-order confirmation.
+                <p className="leading-snug">
+                  Reservation goes directly to founder Raghav Sindhwani. Flacons allocated strictly by confirmation order.
                 </p>
               </div>
 
               {/* Founder Contact Pill */}
-              <div className="p-3 rounded-xl bg-neutral-100 border border-neutral-200 text-center font-mono text-[11px] text-[#110D09]/70">
+              <div className="p-2 rounded-xl bg-neutral-100 border border-neutral-200 text-center font-mono text-[10px] text-[#110D09]/70">
                 Direct WhatsApp Helpline: <strong className="text-[#110D09]">+91 6378582047</strong>
               </div>
 

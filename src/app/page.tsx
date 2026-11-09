@@ -21,15 +21,15 @@ export default function HomePage() {
       <HomeRotatingBanner />
 
       {/* 3. DISCOVERY GATEWAYS: 3 SQUARE / RECTANGULAR BOXES (MOODS, SCENTS, ALL COLLECTIONS) */}
-      <section id="discovery-gateways" className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 space-y-1.5">
+      <section id="discovery-gateways" className="py-4 sm:py-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="text-center max-w-xl mx-auto mb-3 sm:mb-5 space-y-1">
           <span className="text-[10px] tracking-[0.25em] uppercase text-[#8C6D42] font-mono font-bold block">
             Begin Your Olfactory Journey
           </span>
-          <h2 className="text-xl sm:text-3xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
+          <h2 className="text-lg sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
             Find A Scent That Feels Like You
           </h2>
-          <p className="text-xs sm:text-sm text-[#110D09]/70 font-light leading-relaxed">
+          <p className="text-xs text-[#110D09]/70 font-light leading-relaxed">
             Choose whether to explore curated moods, browse our creations directly, or explore our themed collections.
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. SUBTLE MONOGRAM BRAND SIGN-OFF */}
-      <section className="py-14 px-4 sm:px-6 lg:px-8 text-center bg-[#FAF7F2] border-t border-[#E8DFD3]">
+      <section className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 text-center bg-[#FAF7F2] border-t border-[#E8DFD3]">
         <div className="max-w-xl mx-auto space-y-3">
           <div className="relative w-7 h-7 mx-auto opacity-75">
             <Image
