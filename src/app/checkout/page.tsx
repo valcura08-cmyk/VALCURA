@@ -164,32 +164,21 @@ export default function CheckoutPage() {
       // 1. Create order in database & Supabase
       const orderId = await initializeServerOrder();
 
-      // 2. Prepare items list
-      const orderList =
-        items.length > 0
-          ? items.map((i) => `• *${i.name}* (50 ML Extrait) × ${i.quantity} = ₹${399 * i.quantity}`).join('\n')
-          : `• *Cacao Citrine* (50 ML Extrait) × 1 = ₹399`;
-
-      const clientInfo = [
-        clientName.trim() ? `• *Client:* ${clientName.trim()}` : null,
-        clientPhone.trim() ? `• *Mobile:* +91 ${clientPhone.trim()}` : null,
-        clientCity.trim() ? `• *Location/City:* ${clientCity.trim()}` : '• *Address:* Sending directly in this chat',
+      // 2. Customer details and message
+      const customerDetails = [
+        clientName.trim() ? `• Name: ${clientName.trim()}` : null,
+        clientPhone.trim() ? `• Phone: ${clientPhone.trim()}` : null,
+        clientCity.trim() ? `• City / Address: ${clientCity.trim()}` : null,
+        `• Order ID: ${orderId}`,
+        `• Total: ₹${totalPayableAmount}${flaconCount > 1 ? ` (${flaconCount} flacons)` : ''}`,
       ]
         .filter(Boolean)
         .join('\n');
 
-      const whatsappMessage = `🏛️ *MAISON VALCURA — 1-CLICK ATELIER ORDER*
----------------------------------------
-*Order ID:* ${orderId}
-*Total Payable:* ₹${totalPayableAmount} (Flat Pre-Order Privilege Rate)
+      const whatsappMessage = `Hello Raghav Sindhwani, I want to reserve my Cacao Citrine. Please provide me the scanner to pay.
 
-*Reserved Flacon(s):*
-${orderList}
-
-*Client Details:*
-${clientInfo}
----------------------------------------
-_Hello Raghav / VALCURA Concierge! I have locked my flacon allocation on the website. Please share the official ICICI UPI QR code so I can complete payment of ₹${totalPayableAmount} and confirm my delivery address!_`;
+Customer Details:
+${customerDetails}`;
 
       const whatsappUrl = `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -217,16 +206,20 @@ _Hello Raghav / VALCURA Concierge! I have locked my flacon allocation on the web
     try {
       const orderId = await initializeServerOrder();
 
-      const whatsappMessage = `🏛️ *MAISON VALCURA — UPI PAYMENT CONFIRMATION*
----------------------------------------
-*Order ID:* ${orderId}
-*Amount Paid:* ₹${totalPayableAmount}
-*UPI Beneficiary:* ${MERCHANT_NAME} (${MERCHANT_UPI_ID})
+      const customerDetails = [
+        clientName.trim() ? `• Name: ${clientName.trim()}` : null,
+        clientPhone.trim() ? `• Phone: ${clientPhone.trim()}` : null,
+        clientCity.trim() ? `• City / Address: ${clientCity.trim()}` : null,
+        `• Order ID: ${orderId}`,
+        `• Amount Paid: ₹${totalPayableAmount}${flaconCount > 1 ? ` (${flaconCount} flacons)` : ''}`,
+      ]
+        .filter(Boolean)
+        .join('\n');
 
-*Client Name:* ${clientName.trim() || 'Valued Client'}
-*Address:* ${clientCity.trim() || 'Sharing in chat below'}
----------------------------------------
-_Hello Raghav! I have completed payment of ₹${totalPayableAmount} to your ICICI UPI ID (${MERCHANT_UPI_ID}). Here is my payment screenshot and delivery address._`;
+      const whatsappMessage = `Hello Raghav Sindhwani, I have paid ₹${totalPayableAmount} for my Cacao Citrine reservation to your UPI ID (${MERCHANT_UPI_ID}). Please find my payment screenshot below.
+
+Customer Details:
+${customerDetails}`;
 
       const whatsappUrl = `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
