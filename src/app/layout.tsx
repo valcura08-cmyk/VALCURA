@@ -11,7 +11,7 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'VALCURA | A Scent for Every Side of You',
   description:
-    'VALCURA is a modern fragrance house built around individuality, moods and personal expression. Discover Cacaoveil and our flagship fragrance, Cacao Citrine.',
+    'VALCURA is a modern fragrance house built around individuality, moods and personal expression. Discover Cacaoaveil and our flagship fragrance, Cacao Citrine.',
   icons: {
     icon: '/brand/valcura-emblem-dark.png',
   },

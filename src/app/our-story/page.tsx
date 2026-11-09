@@ -98,10 +98,10 @@ export default function OurStoryPage() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
-              href="/collections/cacaoveil"
+              href="/collections/cacaoaveil"
               className="btn-luxury-primary text-xs tracking-luxury uppercase px-6 py-3"
             >
-              Explore Cacaoveil Collection
+              Explore Cacaoaveil Collection
             </Link>
             <Link
               href="/moods"

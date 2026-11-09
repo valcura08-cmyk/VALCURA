@@ -259,10 +259,10 @@ export default async function OrderConfirmationPage({ params }: Props) {
               Return to Homepage
             </Link>
             <Link
-              href="/collections/cacaoveil"
+              href="/collections/cacaoaveil"
               className="py-3.5 px-6 bg-[#110D09] hover:bg-[#8C6D42] text-white rounded-xl text-xs font-mono uppercase tracking-luxury text-center font-bold transition-all shadow-md flex-1 flex items-center justify-center space-x-2"
             >
-              <span>Explore Cacao Veil Collection</span>
+              <span>Explore Cacaoaveil Collection</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

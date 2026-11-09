@@ -17,7 +17,12 @@ const nextConfig = {
     return [
       {
         source: '/collections/cacao',
-        destination: '/collections/cacaoveil',
+        destination: '/collections/cacaoaveil',
+        permanent: true,
+      },
+      {
+        source: '/collections/cacaoveil',
+        destination: '/collections/cacaoaveil',
         permanent: true,
       },
     ];

@@ -445,7 +445,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                   <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between items-center text-center space-y-3">
                     <div className="space-y-1 pt-1">
                       <span className="text-[9px] font-mono uppercase tracking-wider text-[#8C6D42] font-semibold block">
-                        {product.collection || 'Cacaoveil'}
+                        {product.collection || 'Cacaoaveil'}
                       </span>
                       <h3 className="text-base sm:text-lg font-serif font-bold tracking-wide uppercase text-[#110D09] leading-tight">
                         {product.name}
@@ -815,10 +815,10 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                             </button>
                           ) : (
                             <Link
-                              href="/collections/cacaoveil"
+                              href="/collections/cacaoaveil"
                               className="flex-1 py-3 px-5 bg-[#110D09] text-white text-xs font-serif font-bold uppercase tracking-[0.2em] rounded-xl text-center"
                             >
-                              Preview in Cacaoveil
+                              Preview in Cacaoaveil
                             </Link>
                           )}
 

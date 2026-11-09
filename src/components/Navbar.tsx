@@ -245,10 +245,10 @@ export default function Navbar() {
                   Explore the Mood
                 </Link>
                 <Link
-                  href="/collections/cacaoveil"
+                  href="/collections/cacaoaveil"
                   className="text-xs tracking-luxury uppercase text-[#8C6D42] hover:text-[#110D09] transition-colors font-medium"
                 >
-                  Cacaoveil
+                  Cacaoaveil
                 </Link>
                 <Link
                   href="/account"
@@ -314,7 +314,7 @@ export default function Navbar() {
                   { name: 'The Coffee Date (Mood 01)', href: '/moods/coffee-date' },
                   { name: 'After Hours (Mood 02)', href: '/moods/after-hours' },
                   { name: 'Slow Moments (Mood 04)', href: '/moods/slow-moments' },
-                  { name: 'Cacaoveil Collection', href: '/collections/cacaoveil' },
+                  { name: 'Cacaoaveil Collection', href: '/collections/cacaoaveil' },
                   { name: 'Pre-Order Privilege (₹399)', href: '/product/cacao-citrine' },
                   { name: 'Atelier Philosophy', href: '/our-story' },
                 ].map((tag) => (

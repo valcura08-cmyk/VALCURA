@@ -13,8 +13,8 @@ export default function RoastedZestPage() {
             Home
           </Link>
           <span>/</span>
-          <Link href="/collections/cacaoveil" className="hover:text-[#8C6D42] transition-colors">
-            Cacaoveil
+          <Link href="/collections/cacaoaveil" className="hover:text-[#8C6D42] transition-colors">
+            Cacaoaveil
           </Link>
           <span>/</span>
           <span className="text-[#110D09] font-bold font-mono uppercase">Roasted Zest</span>
@@ -51,7 +51,7 @@ export default function RoastedZestPage() {
           {/* Just perfume name and Coming Soon */}
           <div className="space-y-3">
             <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
-              Cacaoveil
+              Cacaoaveil
             </span>
 
             <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-wide uppercase text-[#110D09]">
@@ -71,10 +71,10 @@ export default function RoastedZestPage() {
               Discover Cacao Citrine
             </Link>
             <Link
-              href="/collections/cacaoveil"
+              href="/collections/cacaoaveil"
               className="btn-luxury-outline text-xs tracking-luxury uppercase py-3 px-6 font-bold"
             >
-              View Cacaoveil
+              View Cacaoaveil
             </Link>
           </div>
         </div>

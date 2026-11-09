@@ -4,15 +4,16 @@ import Image from 'next/image';
 import { getDb } from '@/lib/db';
 
 export const metadata = {
-  title: 'Cacaoveil | VALCURA Atelier',
+  title: 'Cacaoaveil | VALCURA Atelier',
   description:
-    'Explore the 3 fragrances in our inaugural Cacaoveil Collection: Cacao Citrine, Silken Sambac, and Roasted Zest.',
+    'Explore the 3 fragrances in our inaugural Cacaoaveil Collection: Cacao Citrine, Silken Sambac, and Roasted Zest.',
 };
 
-export default function CacaoveilCollectionPage() {
+export default function CacaoaveilCollectionPage() {
   const db = getDb();
   const products = db.products.filter(
     (p) =>
+      p.collection === 'Cacaoaveil' ||
       p.collection === 'Cacaoveil' ||
       p.collection === 'Cacao Collection' ||
       p.collection?.toLowerCase().includes('cacao')
@@ -25,7 +26,7 @@ export default function CacaoveilCollectionPage() {
         <div className="relative aspect-[21/9] sm:aspect-[16/5] min-h-[160px] sm:min-h-[220px] w-full">
           <Image
             src="/editorial/cacao-collection-citrus.jpg"
-            alt="Cacaoveil by VALCURA"
+            alt="Cacaoaveil by VALCURA"
             fill
             className="object-cover"
             priority
@@ -39,7 +40,7 @@ export default function CacaoveilCollectionPage() {
                 Inaugural Trilogy
               </span>
               <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold tracking-wide uppercase text-white drop-shadow-md">
-                Cacaoveil
+                Cacaoaveil
               </h1>
               <p className="text-[11px] sm:text-xs text-white/90 font-light max-w-lg mx-auto leading-relaxed drop-shadow-sm">
                 Where rich hazelnut comfort and roasted cacao depth meet luminous citrus vitality.
@@ -53,7 +54,7 @@ export default function CacaoveilCollectionPage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-8">
         <div className="flex items-center justify-between pb-2.5 mb-4 border-b border-[#E8DFD3] text-xs font-mono text-[#110D09]/60">
           <span>Showing {products.length} Fragrances</span>
-          <span className="font-semibold text-[#8C6D42]">The Cacaoveil Trilogy • 50 ML</span>
+          <span className="font-semibold text-[#8C6D42]">The Cacaoaveil Trilogy • 50 ML</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">

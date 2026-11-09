@@ -65,11 +65,11 @@ export default function CartDrawer() {
                   Your luxury fragrance bag is currently empty.
                 </p>
                 <Link
-                  href="/collections/cacaoveil"
+                  href="/collections/cacaoaveil"
                   onClick={() => setIsCartOpen(false)}
                   className="inline-flex items-center space-x-2 text-xs tracking-luxury uppercase text-[#110D09] border border-[#110D09] px-5 py-2.5 hover:bg-[#110D09] hover:text-[#FAF7F2] transition-all"
                 >
-                  <span>Explore Cacaoveil</span>
+                  <span>Explore Cacaoaveil</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
