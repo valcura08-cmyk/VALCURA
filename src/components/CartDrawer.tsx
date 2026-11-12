@@ -194,7 +194,7 @@ export default function CartDrawer() {
                   </span>
                 </div>
                 <div className="p-2 bg-white border border-[#E8DFD3] text-[10px] text-[#8C6D42] font-mono text-center">
-                  ✨ Pre-Order Privilege: Flat ₹399 per flacon (Dispatched with priority).
+                  ✨ Pre-Order Privilege: Flat ₹399 per bottle (Dispatched with priority).
                 </div>
               </div>
 

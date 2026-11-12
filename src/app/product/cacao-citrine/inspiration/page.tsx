@@ -54,7 +54,7 @@ export default function CacaoCitrineInspirationPage() {
         <div className="text-center max-w-3xl mx-auto space-y-4 animate-fadeIn">
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#FAF6EE] border border-[#E8DFD3] text-[10px] tracking-luxury uppercase font-mono text-[#8C6D42]">
             <BookOpen className="w-3 h-3 text-[#8C6D42]" />
-            <span>Atelier Lookbook & Botanical Journal</span>
+            <span>Fragrance Lookbook & Botanical Journal</span>
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif tracking-wide uppercase text-[#18120E]">
             The Inspiration
@@ -109,7 +109,7 @@ export default function CacaoCitrineInspirationPage() {
           <div className="lg:col-span-7 p-8 sm:p-12 space-y-6 flex flex-col justify-center">
             <div className="space-y-2">
               <span className="text-[10px] font-mono uppercase tracking-luxury text-[#8C6D42] font-semibold">
-                Chapter 01 • The Atelier Origin
+                Chapter 01 • The Story
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif uppercase tracking-wide text-[#18120E]">
                 Indulgence Reimagined Through Modern Restraint
@@ -140,7 +140,7 @@ export default function CacaoCitrineInspirationPage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
           <span className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono font-medium">
-            Integrity Dossier
+            Quality Promise
           </span>
           <h3 className="text-2xl sm:text-3xl font-serif uppercase tracking-wide text-[#18120E]">
             Three Uncompromising Pillars

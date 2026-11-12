@@ -216,7 +216,7 @@ export default function CacaoCitrineExperiencePage() {
 
               <div className="p-4 bg-[#FAF7F2] border border-[#E8DFD3] space-y-1">
                 <span className="text-[10px] font-mono uppercase text-[#8C6D42] font-semibold block">
-                  Atelier Application Ritual
+                  Application Guide
                 </span>
                 <p className="text-xs text-[#18120E]/75 font-light">
                   {experiences[selectedMoodIndex].applicationTip}
@@ -237,7 +237,7 @@ export default function CacaoCitrineExperiencePage() {
                 onClick={handleQuickAdd}
                 className="btn-luxury-primary py-2.5 px-4 text-xs font-semibold uppercase tracking-luxury"
               >
-                Add Flacon to Bag
+                Add Bottle to Bag
               </button>
             </div>
           </div>

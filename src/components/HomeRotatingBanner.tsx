@@ -26,7 +26,7 @@ const slides: BannerSlide[] = [
   {
     id: 'valcura-roses',
     image: '/brand/home-banner-valcura-roses.jpg',
-    title: 'VALCURA Atelier Fragrances',
+    title: 'VALCURA Fragrances',
     link: '/shop', // Redirects to All Scents catalogue as requested!
     bgColor: '#26070B',
     objectPosition: 'center 38%',

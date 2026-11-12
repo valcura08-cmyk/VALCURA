@@ -248,7 +248,7 @@ export default function AuthModal() {
                 Choose an account
               </h2>
               <p className="text-xs text-[#5f6368]">
-                to continue to <span className="font-semibold text-[#202124]">VALCURA Atelier</span>
+                to continue to <span className="font-semibold text-[#202124]">VALCURA</span>
               </p>
             </div>
 
@@ -349,7 +349,7 @@ export default function AuthModal() {
                   </div>
 
                   <p className="text-[10px] text-[#5f6368] leading-relaxed pt-0.5">
-                    To continue, Google will share your verified email and profile with VALCURA Atelier to maintain your fragrance allocations and running orders.
+                    To continue, Google will share your verified email and profile with VALCURA to maintain your fragrance allocations and running orders.
                   </p>
                 </div>
 
@@ -432,7 +432,7 @@ export default function AuthModal() {
                 Pick a Microsoft account
               </h2>
               <p className="text-xs text-[#505050]">
-                to continue to <span className="font-semibold text-[#1b1b1b]">VALCURA Atelier</span>
+                to continue to <span className="font-semibold text-[#1b1b1b]">VALCURA</span>
               </p>
             </div>
 
@@ -567,7 +567,7 @@ export default function AuthModal() {
         )}
 
         {/* ======================================================== */}
-        {/* VIEW 3: STANDARD VALCURA ATELIER EMAIL AUTHENTICATION    */}
+        {/* VIEW 3: STANDARD VALCURA EMAIL AUTHENTICATION            */}
         {/* ======================================================== */}
         {socialProvider === 'email' && (
           <div className="animate-fade-in space-y-4">
@@ -585,7 +585,7 @@ export default function AuthModal() {
                 VALCURA Client Portal
               </span>
               <h2 className="text-xl font-serif uppercase tracking-wide text-[#110D09]">
-                {mode === 'signin' ? 'Sign In To Atelier' : 'Create Atelier Account'}
+                {mode === 'signin' ? 'Sign In To Account' : 'Create Account'}
               </h2>
             </div>
 
@@ -773,7 +773,7 @@ export default function AuthModal() {
                     ? 'Authenticating...'
                     : mode === 'signin'
                     ? 'Sign In To Account'
-                    : 'Create Atelier Account'}
+                    : 'Create Account'}
                 </span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>

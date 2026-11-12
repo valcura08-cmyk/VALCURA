@@ -175,7 +175,7 @@ export default function Footer() {
                 Sign up for our Newsletter
               </h3>
               <p className="text-xs sm:text-sm text-[#111111]/70 font-light leading-relaxed mb-6 max-w-lg">
-                Be the first one to know about private reserve drops, upcoming fragrance debuts, and olfactory journals. Unsubscribe whenever you like.
+                Be the first one to know about private reserve drops, upcoming fragrance debuts, and fragrance stories. Unsubscribe whenever you like.
               </p>
 
               <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2 sm:gap-0 w-full max-w-md">

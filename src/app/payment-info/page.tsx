@@ -41,8 +41,8 @@ export default function PaymentInfoPage() {
               Pre-Order Pricing Breakdown
             </h2>
             <div className="p-4 bg-[#FAF8F5] border border-[#E8E2D8] space-y-2 font-mono text-[11px] text-[#110D09]">
-              <p className="font-sans text-xs text-[#8C6D3F] font-semibold">Standard Retail Price: ₹500 / flacon</p>
-              <p>• Promotional Pre-Order Rate: ₹399 / flacon (Save ₹101 instantly)</p>
+              <p className="font-sans text-xs text-[#8C6D3F] font-semibold">Standard Retail Price: ₹500 / bottle</p>
+              <p>• Promotional Pre-Order Rate: ₹399 / bottle (Save ₹101 instantly)</p>
               <p>• Direct UPI Payment to Merchant: Raghav Sindhwani (raghavsindhwanial@okicici)</p>
               <p>• Free cancellation within 24 hours via email with 100% full refund</p>
               <p>• 100% money back for transit damage reported within 24 hours</p>

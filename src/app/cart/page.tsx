@@ -128,7 +128,7 @@ export default function CartPage() {
                     </div>
 
                     <div className="pt-3 border-t border-[#E8E2D8] flex items-center justify-between text-xs font-mono">
-                      <span className="text-[#110D09]/70">Flacon Price: ₹{item.fullUnitPrice}</span>
+                      <span className="text-[#110D09]/70">Bottle Price: ₹{item.fullUnitPrice}</span>
                       <span className="text-[#110D09] font-bold text-sm">Total: ₹{item.fullUnitPrice * item.quantity}</span>
                     </div>
                   </div>
@@ -165,7 +165,7 @@ export default function CartPage() {
                 </div>
 
                 <div className="p-3 bg-[#FAF8F5] border border-[#E8DFD3] text-[10px] text-[#8C6D42] font-mono text-center">
-                  ✨ Pre-Order Privilege: Flat ₹399 per flacon. Direct WhatsApp booking available at checkout.
+                  ✨ Pre-Order Privilege: Flat ₹399 per bottle. Direct WhatsApp booking available at checkout.
                 </div>
 
                 <div className="pt-1">

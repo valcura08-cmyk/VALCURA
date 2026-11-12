@@ -24,7 +24,7 @@ export default function HomePage() {
       <section id="discovery-gateways" className="py-4 sm:py-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="text-center max-w-xl mx-auto mb-3 sm:mb-5 space-y-1">
           <span className="text-[10px] tracking-[0.25em] uppercase text-[#8C6D42] font-mono font-bold block">
-            Begin Your Olfactory Journey
+            Begin Your Fragrance Journey
           </span>
           <h2 className="text-lg sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
             Find A Scent That Feels Like You
@@ -134,7 +134,7 @@ export default function HomePage() {
                   Explore All Collections
                 </h3>
                 <p className="text-[11px] sm:text-xs text-[#110D09]/70 font-light leading-relaxed line-clamp-2">
-                  Discover our curated themed trilogies and olfactory worlds, featuring the inaugural Cacaoaveil Collection.
+                  Discover our curated themed trilogies and scent worlds, featuring the inaugural Cacaoaveil Collection.
                 </p>
               </div>
 

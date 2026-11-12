@@ -9,7 +9,7 @@ export default function OurStoryPage() {
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 border-b border-[#E8E2D8] bg-[#FAF8F5] text-center overflow-hidden">
         <div className="max-w-3xl mx-auto space-y-4 relative z-10">
           <span className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono font-medium">
-            Maison Philosophy
+            VALCURA Philosophy
           </span>
           <h1 className="text-4xl sm:text-6xl font-serif tracking-wide uppercase text-[#110D09]">
             Our Story
@@ -47,7 +47,7 @@ export default function OurStoryPage() {
           <div className="md:col-span-6 relative aspect-[4/5] bg-[#F8F5F0] border border-[#E8E2D8] overflow-hidden shadow-md">
             <Image
               src="/editorial/our-story-arch.jpg"
-              alt="Atelier Sandstone Architecture"
+              alt="Studio Sandstone Architecture"
               fill
               className="object-cover"
             />
@@ -79,7 +79,7 @@ export default function OurStoryPage() {
               alluring depth of midnight conversations.
             </p>
             <p className="text-sm sm:text-base text-[#110D09]/80 font-light leading-relaxed">
-              We design each olfactory profile to accompany an emotional state, allowing you to choose
+              We design each fragrance profile to accompany an emotional state, allowing you to choose
               a scent that feels authentically personal in that specific breath of time.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function OurStoryPage() {
           <div className="relative aspect-[16/9] w-full max-w-4xl mx-auto rounded-2xl overflow-hidden border border-[#E8E2D8] shadow-lg bg-[#110D09]">
             <Image
               src="/brand/valcura-mood-campaign-banner.jpg"
-              alt="VALCURA - For Every Mood Atelier Campaign"
+              alt="VALCURA - For Every Mood Campaign"
               fill
               className="object-cover"
             />

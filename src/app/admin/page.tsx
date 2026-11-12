@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -123,7 +123,7 @@ export default function AdminDashboardPage() {
   const [requestSearchQuery, setRequestSearchQuery] = useState('');
   const [customerSearchQuery, setCustomerSearchQuery] = useState('');
 
-  // Modals & Dossiers
+  // Modals & Profiles
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [selectedCustomer, setSelectedCustomer] = useState<AdminCustomer | null>(null);
   const [notificationBanner, setNotificationBanner] = useState<string | null>(null);
@@ -198,7 +198,7 @@ export default function AdminDashboardPage() {
         setLoginError(data.error || 'Invalid credentials. Please verify username and password.');
       }
     } catch {
-      setLoginError('Network error connecting to Atelier auth server.');
+      setLoginError('Network error connecting to auth server.');
     } finally {
       setLoginLoading(false);
     }
@@ -480,7 +480,7 @@ export default function AdminDashboardPage() {
       <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen flex flex-col items-center justify-center p-6 text-center">
         <div className="w-10 h-10 border-2 border-[#8C6D42] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
         <p className="text-xs uppercase tracking-widest text-[#8C6D42] font-mono font-semibold">
-          Verifying Atelier Security Credentials...
+          Verifying Admin Security Credentials...
         </p>
         <p className="text-[11px] text-[#110D09]/40 mt-1 font-serif italic">
           Valcura Haute Parfumerie &bull; Executive Portal
@@ -504,10 +504,10 @@ export default function AdminDashboardPage() {
               <Lock className="w-6 h-6 text-[#C5A059]" />
             </div>
             <div className="text-[11px] tracking-luxury uppercase text-[#8C6D42] font-mono font-semibold">
-              Maison Valcura
+              VALCURA
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif tracking-widest uppercase text-[#FAF8F5] mt-1">
-              Atelier Command Center
+              Admin Command Center
             </h1>
             <p className="text-xs text-[#FAF8F5]/60 mt-1.5 font-sans">
               Executive dashboard for orders, delivery tracking &amp; client relations
@@ -586,11 +586,11 @@ export default function AdminDashboardPage() {
                   {loginLoading ? (
                     <>
                       <div className="w-3.5 h-3.5 border-2 border-[#FAF8F5] border-t-transparent rounded-full animate-spin" />
-                      <span>Authenticating Atelier Token...</span>
+                      <span>Authenticating Admin Token...</span>
                     </>
                   ) : (
                     <>
-                      <span>Unlock Atelier Dashboard</span>
+                      <span>Unlock Admin Dashboard</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}
@@ -619,7 +619,7 @@ export default function AdminDashboardPage() {
       <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen py-24 text-center">
         <div className="w-8 h-8 border-2 border-[#110D09] border-t-transparent rounded-full animate-spin mx-auto" />
         <p className="text-xs text-[#110D09]/60 mt-4 font-mono">
-          Loading VALCURA Atelier Executive Command Center...
+          Loading VALCURA Admin Command Center...
         </p>
       </div>
     );
@@ -699,20 +699,20 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="bg-[#FAF8F5] text-[#110D09] min-h-screen pb-24">
-      {/* TOP ATELIER EXECUTIVE HEADER */}
+      {/* TOP EXECUTIVE HEADER */}
       <section className="bg-white border-b border-[#E8E2D8] py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2 text-xs tracking-luxury uppercase text-[#8C6D42] font-mono font-medium">
               <ShieldCheck className="w-4 h-4 text-[#8C6D42]" />
-              <span>Valcura Executive Atelier Command Center</span>
+              <span>Valcura Executive Admin Command Center</span>
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Live Ledger Active
               </span>
             </div>
             <h1 className="text-3xl font-serif uppercase tracking-wide text-[#110D09] mt-1">
-              Atelier Management Portal
+              Admin Management Portal
             </h1>
           </div>
 
@@ -738,7 +738,7 @@ export default function AdminDashboardPage() {
             <button
               onClick={handleLogout}
               className="text-xs tracking-luxury uppercase bg-[#110D09] text-[#FAF8F5] px-4 py-2 hover:bg-[#8C6D42] transition-colors font-mono flex items-center space-x-1.5 shadow-sm"
-              title="Sign out of Atelier Command Center"
+              title="Sign out of Admin Command Center"
             >
               <LogOut className="w-3.5 h-3.5 text-[#C5A059]" />
               <span>Sign Out</span>
@@ -785,10 +785,10 @@ export default function AdminDashboardPage() {
             <p className="text-[10px] text-emerald-700 font-mono font-medium">Flat ₹399 Privileges</p>
           </div>
 
-          {/* KPI 2: Flacons Reserved */}
+          {/* KPI 2: Bottles Reserved */}
           <div className="bg-white border border-[#E8E2D8] p-4 space-y-1.5 shadow-sm">
             <span className="text-[10px] tracking-widest uppercase text-[#110D09]/50 font-mono block">
-              Flacons Reserved
+              Bottles Reserved
             </span>
             <p className="text-2xl font-serif text-[#110D09] font-bold">
               {data.stats.totalBottlesReserved}
@@ -796,10 +796,10 @@ export default function AdminDashboardPage() {
             <p className="text-[10px] text-[#8C6D42] font-mono">50 ML Cacaoaveil Trilogy</p>
           </div>
 
-          {/* KPI 3: Delivered Flacons (Ticked) */}
+          {/* KPI 3: Delivered Bottles (Ticked) */}
           <div className="bg-white border border-[#E8E2D8] p-4 space-y-1.5 shadow-sm">
             <span className="text-[10px] tracking-widest uppercase text-[#110D09]/50 font-mono block">
-              Delivered Flacons
+              Delivered Bottles
             </span>
             <p className="text-2xl font-serif text-emerald-700 font-bold">
               {data.stats.deliveredCount || 0}
@@ -838,7 +838,7 @@ export default function AdminDashboardPage() {
             <p className="text-2xl font-serif text-[#8C6D42] font-bold">
               {data.customers?.length || 0}
             </p>
-            <p className="text-[10px] text-[#110D09]/60 font-mono">Dossiers tracked</p>
+            <p className="text-[10px] text-[#110D09]/60 font-mono">Customer profiles</p>
           </div>
         </div>
 
@@ -882,7 +882,7 @@ export default function AdminDashboardPage() {
             }`}
           >
             <Users className="w-4 h-4 text-[#8C6D42]" />
-            <span>Client Dossiers & Gaps ({data.customers?.length || 0})</span>
+            <span>Customer Profiles & Gaps ({data.customers?.length || 0})</span>
           </button>
 
           <button
@@ -996,7 +996,7 @@ export default function AdminDashboardPage() {
                               }}
                               className="text-[10px] text-[#8C6D42] hover:text-[#110D09] underline font-sans ml-1"
                             >
-                              [View Dossier]
+                              [View Profile]
                             </button>
                           </div>
 
@@ -1038,7 +1038,7 @@ export default function AdminDashboardPage() {
                             onClick={() => setSelectedOrder(order)}
                             className="text-xs text-[#8C6D42] hover:text-[#110D09] font-mono underline"
                           >
-                            Inspect Dossier →
+                            Inspect Profile →
                           </button>
 
                           <button
@@ -1443,7 +1443,7 @@ export default function AdminDashboardPage() {
                         {/* Quick Communications Buttons */}
                         <div className="flex items-center space-x-2 flex-shrink-0">
                           <a
-                            href={`mailto:${req.email}?subject=VALCURA Atelier Concierge - Re: ${encodeURIComponent(
+                            href={`mailto:${req.email}?subject=VALCURA Concierge - Re: ${encodeURIComponent(
                               req.subject || req.id
                             )}`}
                             className="px-3 py-1.5 bg-[#FAF8F5] border border-[#D5CDC2] text-xs font-mono text-[#110D09] hover:bg-[#110D09] hover:text-white transition-colors flex items-center space-x-1"
@@ -1475,7 +1475,7 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* TAB 3: CLIENT DOSSIERS & "WHERE WE ARE LACKING" DIAGNOSTIC RADAR */}
+        {/* TAB 3: CLIENT PROFILES & "WHERE WE ARE LACKING" DIAGNOSTIC RADAR */}
         {activeTab === 'customers' && (
           <div className="space-y-6">
             {/* Header & Filter Controls */}
@@ -1522,7 +1522,7 @@ export default function AdminDashboardPage() {
                     <th className="py-3 px-4">Contact Channels</th>
                     <th className="py-3 px-4">Orders & Spend</th>
                     <th className="py-3 px-4">Action Radar: "Where We Are Lacking"</th>
-                    <th className="py-3 px-4 text-right">Dossier</th>
+                    <th className="py-3 px-4 text-right">Profile</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E8E2D8]">
@@ -1572,7 +1572,7 @@ export default function AdminDashboardPage() {
                           {/* Orders & Spend */}
                           <td className="py-3.5 px-4 font-mono">
                             <span className="text-[#110D09] font-bold block">
-                              {cust.ordersCount} Flacon(s)
+                              {cust.ordersCount} Bottle(s)
                             </span>
                             <span className="text-emerald-800 font-bold text-xs">
                               ₹{cust.totalSpent} Paid
@@ -1618,7 +1618,7 @@ export default function AdminDashboardPage() {
                               }}
                               className="text-xs text-[#8C6D42] hover:text-[#110D09] font-mono underline font-medium"
                             >
-                              Open Dossier →
+                              Open Profile →
                             </button>
                           </td>
                         </tr>
@@ -1885,7 +1885,7 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      {/* SEPARATE CUSTOMER HEADER PAGE & DOSSIER MODAL ("WHERE WE ARE LACKING" REPORT) */}
+      {/* SEPARATE CUSTOMER HEADER PAGE & PROFILE MODAL ("WHERE WE ARE LACKING" REPORT) */}
       {selectedCustomer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
           <div className="bg-white border border-[#E8E2D8] w-full max-w-4xl max-h-[92vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl relative">
@@ -1901,7 +1901,7 @@ export default function AdminDashboardPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E2D8] pb-4">
                 <div>
                   <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono block font-semibold">
-                    Atelier Patron Dossier
+                    Customer Profile
                   </span>
                   <div className="flex items-center space-x-3 mt-1">
                     <h2 className="text-2xl sm:text-3xl font-serif text-[#110D09]">
@@ -1948,7 +1948,7 @@ export default function AdminDashboardPage() {
               {/* Lifetime Stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
                 <div>
-                  <span className="text-[#110D09]/50 block">Flacons Reserved:</span>
+                  <span className="text-[#110D09]/50 block">Bottles Reserved:</span>
                   <span className="text-base text-[#110D09] font-bold">
                     {selectedCustomer.ordersCount} Units
                   </span>
@@ -2072,7 +2072,7 @@ export default function AdminDashboardPage() {
             {/* CLIENT ORDERS LEDGER (WITH DELIVERY TICK) */}
             <div className="space-y-3">
               <span className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono block font-medium">
-                Orders & Flacon Allocations
+                Orders & Bottle Allocations
               </span>
 
               <div className="space-y-3">
@@ -2164,7 +2164,7 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      {/* MODAL: ORDER INSPECTOR DOSSIER */}
+      {/* MODAL: ORDER INSPECTOR */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
           <div className="bg-white border border-[#E8E2D8] w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl relative">
@@ -2177,7 +2177,7 @@ export default function AdminDashboardPage() {
 
             <div className="border-b border-[#E8E2D8] pb-4">
               <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono block font-medium">
-                Atelier Order Dossier
+                Order Details
               </span>
               <h2 className="text-2xl font-serif text-[#110D09]">{selectedOrder.id}</h2>
               <p className="text-xs text-[#110D09]/50 font-mono">
@@ -2193,7 +2193,7 @@ export default function AdminDashboardPage() {
                 </span>
                 <span className="text-[11px] text-amber-900 font-mono">
                   {(selectedOrder as any).isDelivered || selectedOrder.orderStatus === 'Delivered'
-                    ? 'Flacon is marked as DELIVERED to client.'
+                    ? 'Bottle is marked as DELIVERED to client.'
                     : 'Awaiting dispatch / delivery tick.'}
                 </span>
               </div>

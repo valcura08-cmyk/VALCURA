@@ -21,11 +21,11 @@ export default function FAQPage() {
     },
     {
       q: 'What fragrance notes make up Cacao Citrine?',
-      a: 'Cacao Citrine is a long-lasting unisex Eau de Parfum crafted for Indian weather with three distinct accords: Sparkling Citrus (Top Note), Creamy Chocolate & Vanilla (Heart Note), and Warm Amber Rose (Base Note).',
+      a: 'Cacao Citrine is a long-lasting unisex Eau de Parfum crafted for Indian weather with three distinct fragrance layers: Sparkling Citrus (Top Note), Creamy Chocolate & Vanilla (Heart Note), and Warm Amber Rose (Base Note).',
     },
     {
       q: 'When will Silken Sambac and Roasted Zest become available?',
-      a: 'Silken Sambac (For Her) and Roasted Zest (For Him) are currently in private atelier formulation. We show blurred teaser previews to provide a glimpse into the evolving Cacaoaveil Collection. As soon as formulation is finalized, pricing, verified notes, and pre-orders will be unlocked.',
+      a: 'Silken Sambac (For Her) and Roasted Zest (For Him) are currently in private formulation. We show blurred teaser previews to provide a glimpse into the evolving Cacaoaveil Collection. As soon as formulation is finalized, pricing, verified notes, and pre-orders will be unlocked.',
     },
     {
       q: 'Are shipping charges included in my pre-order?',

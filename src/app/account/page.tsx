@@ -127,7 +127,7 @@ export default function AccountPage() {
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-[#F5EFE6] border-b border-[#E8DFD3] text-center">
           <div className="max-w-2xl mx-auto space-y-3">
             <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
-              Atelier Client Portal
+              VALCURA Client Portal
             </span>
             <h1 className="text-3xl sm:text-5xl font-serif font-bold tracking-wide uppercase text-[#110D09]">
               Account & Order History
@@ -428,7 +428,7 @@ export default function AccountPage() {
               <div className="space-y-6">
                 <div className="flex items-center justify-between text-xs font-mono text-[#110D09]/65 pb-2">
                   <span>Displaying {orders.length} Previous Order{orders.length > 1 ? 's' : ''}</span>
-                  <span className="text-[#8C6D42] font-semibold">Atelier Verified Purchases</span>
+                  <span className="text-[#8C6D42] font-semibold">Verified Purchases</span>
                 </div>
 
                 {orders.map((order) => {

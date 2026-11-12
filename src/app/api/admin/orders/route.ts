@@ -144,7 +144,7 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `Order #${orderId} deleted successfully from atelier database and cloud.`,
+      message: `Order #${orderId} deleted successfully from database and cloud.`,
       deletedCount: beforeCount - db.orders.length,
     });
   } catch (err: any) {

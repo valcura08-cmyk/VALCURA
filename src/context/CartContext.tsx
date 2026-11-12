@@ -163,7 +163,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Calculations - Flat ₹399 Pre-Order Rate
   const totalQuantity = items.reduce((acc, i) => acc + i.quantity, 0);
 
-  const subtotalPayableToday = totalQuantity * PREORDER_FULL_PRICE; // ₹399 per flacon
+  const subtotalPayableToday = totalQuantity * PREORDER_FULL_PRICE; // ₹399 per bottle
   const totalRemainingBalance = 0; // Flat ₹399, no remaining balance
   const totalOrderPlanValue = totalQuantity * PREORDER_FULL_PRICE;
   const totalStandardValue = totalQuantity * STANDARD_PRICE;

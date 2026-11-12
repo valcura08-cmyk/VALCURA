@@ -36,7 +36,7 @@ export default function ShippingPolicyPage() {
               2. Pre-Order Dispatch Timeline
             </h2>
             <p>
-              Cacao Citrine is currently in pre-order allocation. Flacons are dispatched sequentially
+              Cacao Citrine is currently in pre-order allocation. Bottles are dispatched sequentially
               based on order confirmation timestamp once bottling is complete. Customers receive
               instant tracking updates via email and SMS when the consignment is handed over to our
               express courier partner.

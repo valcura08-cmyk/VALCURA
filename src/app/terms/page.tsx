@@ -37,9 +37,9 @@ export default function TermsPage() {
             </h2>
             <p>
               Pre-orders for Cacao Citrine grant priority batch allocation at the exclusive promotional
-              rate of ₹399 per flacon. Reservations can be cancelled free of charge within 24 hours of
+              rate of ₹399 per bottle. Reservations can be cancelled free of charge within 24 hours of
               booking by emailing valcura08@gmail.com. Due to strict cosmetic hygiene regulations,
-              opened or unsealed bottles cannot be returned. Damaged flacons reported within 24 hours of
+              opened or unsealed bottles cannot be returned. Damaged bottles reported within 24 hours of
               delivery are covered under our 100% money-back guarantee.
             </p>
           </div>

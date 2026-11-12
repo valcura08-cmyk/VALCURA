@@ -40,7 +40,7 @@ export default function CacaoCitrineCompositionPage() {
       notes: [
         { name: 'Sun-drenched Bergamot', origin: 'Calabria, Italy', profile: 'Sparkling, brisk, aromatic peel' },
         { name: 'Crisp Mandarin Peel Accord', origin: 'Sicily', profile: 'Juicy, bright, sun-kissed sweetness' },
-        { name: 'Crystalline Morning Air', origin: 'Atelier Solar Accord', profile: 'Aerated, breezy, uplifting ozone' },
+        { name: 'Crystalline Morning Air', origin: 'Solar Fresh Citrus Note', profile: 'Aerated, breezy, uplifting ozone' },
       ],
       sensoryColor: 'from-[#FFF7ED] to-[#FEF3C7]',
       borderColor: 'border-amber-300',
@@ -60,7 +60,7 @@ export default function CacaoCitrineCompositionPage() {
       borderColor: 'border-[#8C6D42]',
     },
     base: {
-      name: 'Base Notes • The Enduring Sillage',
+      name: 'Base Notes • Enduring Skin Trail',
       timeline: 'Hours 03 to 10+',
       intensity: 'Intimate Magnetic Skin-scent',
       description:
@@ -100,13 +100,13 @@ export default function CacaoCitrineCompositionPage() {
         <div className="text-center max-w-3xl mx-auto space-y-4 animate-fadeIn">
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#FAF6EE] border border-[#E8DFD3] text-[10px] tracking-luxury uppercase font-mono text-[#8C6D42]">
             <Sparkles className="w-3 h-3 text-[#8C6D42]" />
-            <span>Formulation Architectural Dossier</span>
+            <span>Formula & Notes Breakdown</span>
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif tracking-wide uppercase text-[#18120E]">
             The Composition
           </h1>
           <p className="text-sm sm:text-base text-[#18120E]/75 font-light leading-relaxed">
-            A three-tier olfactory pyramid engineered to balance high-voltage citrus freshness with deep, tactile gourmand warmth.
+            A three-tier fragrance notes pyramid engineered to balance high-voltage citrus freshness with deep, tactile gourmand warmth.
           </p>
 
           <div className="pt-2 flex items-center justify-center space-x-4">
@@ -128,7 +128,7 @@ export default function CacaoCitrineCompositionPage() {
         </div>
       </section>
 
-      {/* Interactive 3-Tier Olfactory Pyramid */}
+      {/* Interactive 3-Tier Fragrance Notes Pyramid */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tier Selector Bar */}
         <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
@@ -213,7 +213,7 @@ export default function CacaoCitrineCompositionPage() {
               Pure Technical Standards
             </span>
             <h3 className="text-2xl sm:text-3xl font-serif uppercase tracking-wide">
-              Atelier Purity & Concentration Matrix
+              Purity & Concentration Matrix
             </h3>
           </div>
 

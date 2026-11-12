@@ -84,7 +84,7 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
           </div>
           <div>
             <span className="text-[10px] tracking-luxury uppercase font-mono font-bold text-[#8C6D42] block">
-              VALCURA Atelier • Fragrance Sommelier
+              VALCURA • AI Fragrance Guide
             </span>
             <h3 className="text-base sm:text-lg font-serif font-bold uppercase tracking-wide text-[#110D09]">
               Curator for {mood.title}
@@ -138,7 +138,7 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
         <div className="pt-8 space-y-6 max-w-2xl mx-auto animate-fade-in">
           <div className="text-center space-y-1.5">
             <span className="text-[10px] font-mono uppercase text-[#8C6D42] font-semibold tracking-widest">
-              Question 1 of 2 • Olfactory Energy
+              Question 1 of 2 • Scent Vibe
             </span>
             <h4 className="text-lg sm:text-xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
               What sensory energy speaks to you most right now?
@@ -242,7 +242,7 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
             <Sparkles className="w-6 h-6" />
           </div>
           <p className="text-sm font-serif italic text-[#110D09]/80">
-            Atelier Sommelier is synthesizing your preferences with our olfactory library...
+            Fragrance Guide is finding your match from our collection...
           </p>
         </div>
       )}
@@ -252,7 +252,7 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
         <div className="pt-8 space-y-6 max-w-3xl mx-auto animate-fade-in">
           <div className="text-center space-y-2">
             <span className="text-[10px] tracking-luxury uppercase font-mono font-bold text-emerald-800 bg-emerald-50 px-3 py-1 border border-emerald-200 inline-block">
-              ✦ Your Bespoke Atelier Match
+              ✦ Your Curated Fragrance Match
             </span>
             <h4 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
               {recommendedProduct.name}
@@ -397,7 +397,7 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
               onClick={handleStartConsultation}
               className="text-xs font-serif uppercase tracking-[0.18em] text-[#8C6D42] hover:text-[#110D09] font-bold border-b border-[#8C6D42] pb-0.5 transition-colors"
             >
-              Need help deciding? Ask the Sommelier to choose the best match ↑
+              Need help deciding? Ask the Fragrance Guide to choose the best match ↑
             </button>
           </div>
         </div>

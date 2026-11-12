@@ -53,9 +53,9 @@ export default function RefundPolicyPage() {
               </strong>
             </p>
             <p>
-              We recommend reviewing our detailed olfactory breakdown (Top: Citrus, Heart: Creamy
+              We recommend reviewing our detailed fragrance notes breakdown (Top: Citrus, Heart: Creamy
               Chocolate &amp; Vanilla, Base: Rose &amp; Fresh) on the product page before unsealing
-              your flacon.
+              your bottle.
             </p>
           </div>
 
@@ -64,11 +64,11 @@ export default function RefundPolicyPage() {
               3. 100% Money-Back Guarantee for Transit Damage (Report Within 24 Hours)
             </h2>
             <p>
-              Every VALCURA flacon is packaged in reinforced luxury protective housing. In the
+              Every VALCURA bottle is packaged in reinforced luxury protective housing. In the
               unfortunate event that your bottle arrives damaged, cracked, or leaking due to courier
               mishandling, we offer a{' '}
               <strong className="text-[#110D09] font-medium">100% full money-back refund</strong> or
-              an immediate priority replacement flacon at no additional cost.
+              an immediate priority replacement bottle at no additional cost.
             </p>
             <p>
               To claim transit damage protection, simply contact us at{' '}

@@ -74,7 +74,7 @@ export function evaluateFragranceRecommendation(
         answers.notes === 'I Am Open to Anything'
       ) {
         score += 35;
-        matches.push(answers.notes === 'I Am Open to Anything' ? 'Open Olfactory Horizon' : answers.notes);
+        matches.push(answers.notes === 'I Am Open to Anything' ? 'Open Scent Horizon' : answers.notes);
       } else if (
         answers.notes === 'Sweet and Gourmand' ||
         answers.notes === 'Woody and Warm'
@@ -129,7 +129,7 @@ export function evaluateFragranceRecommendation(
       matchReason: 'Your scent profile suggests notes outside our current single launch edition.',
       matchedAttributes: [],
       explanation:
-        'Your bespoke selections lean towards specialized notes that are currently in our atelier formulation phase (such as upcoming Silken Sambac and Roasted Zest). We welcome you to explore our full fragrance journal.',
+        'Your bespoke selections lean towards specialized notes that are currently in our private formulation phase (such as upcoming Silken Sambac and Roasted Zest). We welcome you to explore our full fragrance collection.',
       isAiEnhanced: false,
     };
   }

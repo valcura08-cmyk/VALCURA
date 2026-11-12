@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
 
     const formData = new URLSearchParams();
     formData.append('amount', (amount || 399).toString());
-    formData.append('purpose', `VALCURA Pre-Order Flacon (${orderId})`);
-    formData.append('buyer_name', customer?.fullName || 'Atelier Client');
+    formData.append('purpose', `VALCURA Pre-Order Bottle (${orderId})`);
+    formData.append('buyer_name', customer?.fullName || 'VALCURA Client');
     formData.append('email', customer?.email || 'concierge@valcura.com');
     formData.append('phone', customer?.phone || '9999999999');
     formData.append('redirect_url', redirectUrl);

@@ -44,11 +44,11 @@ export default function CheckoutPage() {
   const MERCHANT_UPI_ID = 'raghavsindhwanial@okicici';
   const CONCIERGE_WHATSAPP_NUMBER = '916378582047';
 
-  // Flat ₹399 pre-order rate per flacon
-  const flaconCount = totalQuantity > 0 ? totalQuantity : 1;
-  const totalPayableAmount = flaconCount * 399;
-  const standardTotalValue = flaconCount * 599;
-  const totalSavings = flaconCount * 200;
+  // Flat ₹399 pre-order rate per bottle
+  const bottleCount = totalQuantity > 0 ? totalQuantity : 1;
+  const totalPayableAmount = bottleCount * 399;
+  const standardTotalValue = bottleCount * 599;
+  const totalSavings = bottleCount * 200;
 
   // Active Checkout Tab: 'whatsapp' (default 1-click) | 'direct_upi' | 'card_gateway'
   const [checkoutMode, setCheckoutMode] = useState<'whatsapp' | 'direct_upi' | 'card_gateway'>('whatsapp');
@@ -128,7 +128,7 @@ export default function CheckoutPage() {
         ? `City/Note: ${clientCity.trim()} (Direct WhatsApp Dispatch)`
         : 'Address provided directly in WhatsApp chat',
       city: clientCity.trim() || 'India',
-      state: 'Atelier Priority',
+      state: 'Priority Delivery',
       pincode: 'Direct WhatsApp',
     };
 
@@ -170,7 +170,7 @@ export default function CheckoutPage() {
         clientPhone.trim() ? `• Phone: ${clientPhone.trim()}` : null,
         clientCity.trim() ? `• City / Address: ${clientCity.trim()}` : null,
         `• Order ID: ${orderId}`,
-        `• Total: ₹${totalPayableAmount}${flaconCount > 1 ? ` (${flaconCount} flacons)` : ''}`,
+        `• Total: ₹${totalPayableAmount}${bottleCount > 1 ? ` (${bottleCount} bottles)` : ''}`,
       ]
         .filter(Boolean)
         .join('\n');
@@ -216,7 +216,7 @@ ${customerDetails}`;
         clientPhone.trim() ? `• Phone: ${clientPhone.trim()}` : null,
         clientCity.trim() ? `• City / Address: ${clientCity.trim()}` : null,
         `• Order ID: ${orderId}`,
-        `• Amount Paid: ₹${totalPayableAmount}${flaconCount > 1 ? ` (${flaconCount} flacons)` : ''}`,
+        `• Amount Paid: ₹${totalPayableAmount}${bottleCount > 1 ? ` (${bottleCount} bottles)` : ''}`,
       ]
         .filter(Boolean)
         .join('\n');
@@ -255,13 +255,13 @@ ${customerDetails}`;
             href="/shop"
             className="text-xs tracking-luxury uppercase text-[#110D09] hover:text-[#8C6D42] font-semibold transition-colors flex items-center gap-1.5"
           >
-            ← Back to Atelier Shop
+            ← Back to Store
           </Link>
 
           <div className="flex items-center gap-2 text-xs text-[#8C6D42] font-mono font-semibold">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span className="hidden sm:inline">100% Authentic • Direct Atelier Concierge</span>
-            <span className="sm:hidden">Atelier Checkout</span>
+            <span className="hidden sm:inline">100% Authentic • Direct Concierge</span>
+            <span className="sm:hidden">VALCURA Checkout</span>
           </div>
         </div>
       </header>
@@ -271,7 +271,7 @@ ${customerDetails}`;
         {/* Title Header */}
         <div className="text-center max-w-xl mx-auto mb-3 sm:mb-4 space-y-0.5">
           <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
-            VALCURA Atelier • Priority Booking
+            VALCURA • Priority Booking
           </span>
           <h1 className="text-2xl sm:text-3xl font-serif text-[#110D09] font-bold tracking-tight">
             Reserve Your Perfume Bottle
@@ -643,7 +643,7 @@ ${customerDetails}`;
               </div>
             )}
 
-            {/* Atelier Assurance Badges */}
+            {/* Assurance Badges */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
               <div className="p-2 bg-white border border-[#E8E2D8] rounded-lg text-center space-y-0.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#8C6D42] mx-auto" />
@@ -665,7 +665,7 @@ ${customerDetails}`;
 
               <div className="p-2 bg-white border border-[#E8E2D8] rounded-lg text-center space-y-0.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#8C6D42] mx-auto" />
-                <p className="text-[9px] font-bold text-[#110D09]">Atelier Box</p>
+                <p className="text-[9px] font-bold text-[#110D09]">Luxury Box</p>
                 <p className="text-[8px] text-[#110D09]/50 font-mono">Wooden Cap</p>
               </div>
             </div>
@@ -679,10 +679,10 @@ ${customerDetails}`;
               <div className="flex items-center justify-between pb-2.5 border-b border-[#E8E2D8]">
                 <div className="flex items-center gap-1.5">
                   <ShoppingBag className="w-3.5 h-3.5 text-[#8C6D42]" />
-                  <h2 className="text-xs sm:text-sm font-serif font-bold text-[#110D09]">Your Atelier Flacon</h2>
+                  <h2 className="text-xs sm:text-sm font-serif font-bold text-[#110D09]">Your Perfume Bottle</h2>
                 </div>
                 <span className="text-[11px] font-mono font-bold text-[#8C6D42]">
-                  {flaconCount} Flacon{flaconCount > 1 ? 's' : ''}
+                  {bottleCount} Bottle{bottleCount > 1 ? 's' : ''}
                 </span>
               </div>
 
@@ -783,7 +783,7 @@ ${customerDetails}`;
                     className="w-full py-1.5 px-2.5 rounded-lg bg-white border border-[#8C6D42] hover:bg-[#8C6D42] hover:text-white text-[11px] font-serif font-bold text-[#8C6D42] transition-colors flex items-center justify-center gap-1"
                   >
                     <Plus className="w-3 h-3" />
-                    <span>Confirm 1 Flacon in Bag</span>
+                    <span>Confirm 1 Bottle in Bag</span>
                   </button>
                 </div>
               )}
@@ -791,7 +791,7 @@ ${customerDetails}`;
               {/* Price Calculation Breakdown */}
               <div className="space-y-1.5 pt-2 border-t border-[#E8E2D8] text-[11px] font-mono">
                 <div className="flex justify-between text-[#110D09]/60">
-                  <span>Standard Atelier Value:</span>
+                  <span>Standard Value:</span>
                   <span className="line-through">₹{standardTotalValue}</span>
                 </div>
 
@@ -822,7 +822,7 @@ ${customerDetails}`;
                   <span>Founder's Direct Commitment:</span>
                 </div>
                 <p className="leading-snug">
-                  Reservation goes directly to founder Raghav Sindhwani. Flacons allocated strictly by confirmation order.
+                  Reservation goes directly to founder Raghav Sindhwani. Bottles allocated strictly by confirmation order.
                 </p>
               </div>
 

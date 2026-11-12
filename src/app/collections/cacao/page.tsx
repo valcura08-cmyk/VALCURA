@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { getDb } from '@/lib/db';
 
 export const metadata = {
-  title: 'Cacaoaveil | VALCURA Atelier',
+  title: 'Cacaoaveil | VALCURA',
   description:
     'Explore the 3 fragrances in our inaugural Cacaoaveil Collection: Cacao Citrine, Silken Sambac, and Roasted Zest.',
 };
@@ -125,7 +125,7 @@ export default function CacaoaveilCollectionPage() {
               );
             }
 
-            // Blurred Teaser Flacons (Silken Sambac / Roasted Zest)
+            // Blurred Teaser Bottles (Silken Sambac / Roasted Zest)
             return (
               <div
                 key={product.id}

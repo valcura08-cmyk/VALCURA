@@ -18,7 +18,7 @@ export default function MoodsClientView({ moods }: Props) {
       <section className="relative w-full h-[300px] sm:h-[380px] lg:h-[440px] bg-[#110D09] overflow-hidden">
         <Image
           src="/editorial/explore-by-moods-banner.jpg"
-          alt="Explore By Moods - VALCURA Atelier"
+          alt="Explore By Moods - VALCURA"
           fill
           className="object-cover object-center opacity-80"
           priority

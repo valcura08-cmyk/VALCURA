@@ -122,7 +122,7 @@ export default function PayBalancePortalPage({
             Finalize Your Fragrance Allocation
           </h1>
           <p className="text-xs sm:text-sm text-[#110D09]/60 font-mono">
-            Atelier Order: <strong className="text-[#110D09]">{order.id}</strong>
+            Order Reference: <strong className="text-[#110D09]">{order.id}</strong>
           </p>
         </div>
 
@@ -140,8 +140,8 @@ export default function PayBalancePortalPage({
             </h2>
             <p className="text-sm text-[#110D09]/80 font-light max-w-lg mx-auto leading-relaxed">
               Your remaining balance has been received and verified. Your order status has been
-              updated to <strong className="text-emerald-800">Ready for Fulfilment</strong>. Our atelier
-              is preparing your flacon for dispatch.
+              updated to <strong className="text-emerald-800">Ready for Fulfilment</strong>. Our team
+              is preparing your bottle for dispatch.
             </p>
 
             <div className="bg-[#FAF8F5] border border-[#E8E2D8] p-4 max-w-md mx-auto text-xs font-mono text-left space-y-1">
@@ -168,7 +168,7 @@ export default function PayBalancePortalPage({
                 View Updated Confirmation Receipt
               </Link>
               <Link href="/" className="btn-luxury-primary text-xs">
-                Return to Atelier Home
+                Return to Home
               </Link>
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function PayBalancePortalPage({
                 Availability Alert Received
               </span>
               <p className="text-xs text-[#110D09]/80 leading-relaxed font-light">
-                Hello {order.customer.fullName}, your reserved flacon is bottled and ready for
+                Hello {order.customer.fullName}, your reserved bottle is ready for
                 dispatch. Complete the remaining balance below to authorize immediate courier
                 dispatch.
               </p>

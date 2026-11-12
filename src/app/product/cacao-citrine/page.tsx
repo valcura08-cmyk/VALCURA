@@ -92,7 +92,7 @@ export default function CacaoCitrineProductPage() {
     {
       src: '/products/cacao-citrine-3.jpg',
       caption: 'Champagne Silk Satin',
-      alt: 'VALCURA Cacao Citrine - Lay-flat Flacon in Liquid Silk',
+      alt: 'VALCURA Cacao Citrine - Lay-flat Bottle in Liquid Silk',
     },
     {
       src: '/products/cacao-citrine-4.jpg',
@@ -307,7 +307,7 @@ export default function CacaoCitrineProductPage() {
           </div>
 
           {/* ============================================================== */}
-          {/* RIGHT: BESPOKE ATELIER DOSSIER, PYRAMID & ACQUISITION */}
+          {/* RIGHT: PRODUCT DETAILS, NOTES & ACQUISITION */}
           {/* ============================================================== */}
           <div className="lg:col-span-6 space-y-4">
             
@@ -556,7 +556,7 @@ export default function CacaoCitrineProductPage() {
               <div className="border-b border-[#E8DFD3] pb-3 flex items-center justify-between">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
-                    Olfactory Structure
+                    Fragrance Notes Structure
                   </span>
                   <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
                     The Notes
@@ -626,7 +626,7 @@ export default function CacaoCitrineProductPage() {
                         </div>
                         <div>
                           <div className="flex items-center space-x-1">
-                            <span className="text-xs font-mono font-bold text-[#110D09]">valcura.atelier</span>
+                            <span className="text-xs font-mono font-bold text-[#110D09]">valcura.official</span>
                             <span className="w-2.5 h-2.5 rounded-full bg-[#8C6D42] text-white flex items-center justify-center text-[7px] font-bold">✓</span>
                           </div>
                           <span className="text-[9px] font-mono text-[#8C6D42] block">
@@ -751,7 +751,7 @@ export default function CacaoCitrineProductPage() {
                         {isLiked ? '1,429 likes' : '1,428 likes'}
                       </div>
                       <p className="leading-snug">
-                        <span className="font-bold mr-1.5 font-mono text-[11px]">valcura.atelier</span>
+                        <span className="font-bold mr-1.5 font-mono text-[11px]">valcura.official</span>
                         <span className="font-serif italic font-medium">{moodSlides[activeMoodIndex].title}</span>
                         {' — '}
                         <span className="text-[#554D45] font-light">{moodSlides[activeMoodIndex].desc}</span>
@@ -817,7 +817,7 @@ export default function CacaoCitrineProductPage() {
                       href={`/moods/${moodSlides[activeMoodIndex].slug}`}
                       className="inline-flex items-center space-x-2 bg-[#110D09] hover:bg-[#8C6D42] text-white py-3 px-5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider shadow-sm hover:shadow-md transition-all cursor-pointer"
                     >
-                      <span>Explore {moodSlides[activeMoodIndex].title} Dossier</span>
+                      <span>Explore {moodSlides[activeMoodIndex].title} Details</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
@@ -832,7 +832,7 @@ export default function CacaoCitrineProductPage() {
               <div className="border-b border-[#E8DFD3] pb-3 flex items-center justify-between">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
-                    Product Dossier
+                    Product Details
                   </span>
                   <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
                     Details

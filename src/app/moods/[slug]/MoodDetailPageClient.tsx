@@ -255,7 +255,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
             <div className="lg:col-span-7 p-6 sm:p-8 space-y-3">
               <div className="space-y-1">
                 <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
-                  Olfactory Lifestyle Match
+                  Fragrance Lifestyle Match
                 </span>
                 <h1 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
                   {mood.title}
@@ -288,7 +288,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
               </h2>
             </div>
             <span className="text-xs font-mono text-[#8C6D42] font-semibold">
-              {recommendedProducts.length} Olfactory Creation{recommendedProducts.length > 1 ? 's' : ''} Linked
+              {recommendedProducts.length} Fragrance{recommendedProducts.length > 1 ? 's' : ''} Linked
             </span>
           </div>
 
@@ -307,7 +307,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                     key={product.id}
                     className="bg-[#FAF6EE] border border-[#110D09] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300"
                   >
-                    {/* Compact Flacon Image with Status Tag */}
+                    {/* Compact Bottle Image with Status Tag */}
                     <Link
                       href={`/product/${product.slug}`}
                       className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F4ECE1] overflow-hidden block group"
@@ -451,7 +451,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                         {product.name}
                       </h3>
                       <p className="text-[10px] text-[#110D09]/65 italic font-serif">
-                        In Atelier Formulation
+                        In Private Formulation
                       </p>
                     </div>
 
@@ -479,7 +479,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
               </div>
               <div>
                 <span className="text-[10px] tracking-luxury uppercase font-mono font-bold text-[#8C6D42] block">
-                  VALCURA Atelier • Bespoke Fragrance Advisor
+                  VALCURA • Personal Fragrance Guide
                 </span>
                 <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-wide text-[#110D09]">
                   Help To Find Best One
@@ -737,7 +737,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                 <div className="py-12 text-center space-y-4 animate-fade-in">
                   <div className="w-10 h-10 border-2 border-[#110D09] border-t-transparent rounded-full animate-spin mx-auto" />
                   <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
-                    Analyzing Your Olfactory Responses...
+                    Analyzing Your Fragrance Preferences...
                   </span>
                   <p className="text-xs text-[#110D09]/60 font-light">
                     Harmonizing your answers with the {mood.title} mood profile.
@@ -750,7 +750,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                 <div className="space-y-6 max-w-2xl mx-auto animate-fade-in pt-2">
                   <div className="text-center space-y-1 pb-4 border-b border-[#E8DFD3]">
                     <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-emerald-700 font-bold block">
-                      ✓ Best Match Determined For You • 99% Olfactory Resonance
+                      ✓ Best Match Determined For You • 99% Scent Match
                     </span>
                     <h4 className="text-2xl font-serif font-bold uppercase text-[#110D09]">
                       Your Recommended Signature: {quizResultProduct.name}

@@ -79,7 +79,7 @@ function CheckoutSuccessContent() {
         </h2>
         <p className="text-xs text-[#554D45] leading-relaxed">
           {status === 'success'
-            ? 'Your flacon reservation is officially locked. Redirecting to confirmation screen...'
+            ? 'Your bottle reservation is officially locked. Redirecting to confirmation screen...'
             : 'Connecting to bank settlement gateway and securing your master cellar reservation...'}
         </p>
       </div>

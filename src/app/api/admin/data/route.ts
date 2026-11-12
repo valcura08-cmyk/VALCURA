@@ -289,7 +289,7 @@ export async function GET() {
             type: 'delivery',
             severity: 'high',
             title: `Delivery Tick Pending (Order #${o.id})`,
-            description: `Flacon (${o.items?.[0]?.productName || 'Fragrance'}) has not been marked as delivered yet. Tick once delivered to client.`,
+            description: `Bottle (${o.items?.[0]?.productName || 'Fragrance'}) has not been marked as delivered yet. Tick once delivered to client.`,
             orderId: o.id,
           });
         }

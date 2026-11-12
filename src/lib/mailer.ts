@@ -67,7 +67,7 @@ Please notify this customer as soon as the fresh batch slot is unlocked.
       </div>
 
       <p style="margin-top: 24px; font-size: 11px; color: #888075; text-align: center;">
-        VALCURA Atelier Concierge Notification System • valcura08@gmail.com
+        VALCURA Concierge Notification System • valcura08@gmail.com
       </p>
     </div>
   `;
@@ -87,7 +87,7 @@ Please notify this customer as soon as the fresh batch slot is unlocked.
       });
 
       await transporter.sendMail({
-        from: `"VALCURA Atelier" <${smtpUser}>`,
+        from: `"VALCURA" <${smtpUser}>`,
         to: recipient,
         replyTo: customerEmail,
         subject,

@@ -110,7 +110,7 @@ export default function CacaoCitrineCharacterPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-[#FAF6EE] border border-[#E8DFD3] p-8 space-y-4 hover:border-[#18120E] transition-all">
             <span className="text-[10px] font-mono uppercase tracking-widest text-[#8C6D42] font-semibold">
-              Dimension 01 • Olfactory Tension
+              Dimension 01 • Fragrance Harmony
             </span>
             <h3 className="text-2xl font-serif uppercase tracking-wide text-[#18120E]">
               Zest Meets Cream
@@ -122,7 +122,7 @@ export default function CacaoCitrineCharacterPage() {
 
           <div className="bg-[#FAF6EE] border border-[#E8DFD3] p-8 space-y-4 hover:border-[#18120E] transition-all">
             <span className="text-[10px] font-mono uppercase tracking-widest text-[#8C6D42] font-semibold">
-              Dimension 02 • Sillage &amp; 6-8 Hours Projection
+              Dimension 02 • Scent Projection & Radiance
             </span>
             <h3 className="text-2xl font-serif uppercase tracking-wide text-[#18120E]">
               6-8 Hours Radiant Projection

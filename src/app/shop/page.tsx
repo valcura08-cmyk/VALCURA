@@ -13,7 +13,7 @@ export default function ShopAllFragrancesPage() {
       <section className="relative w-full h-[160px] sm:h-[220px] lg:h-[260px] bg-[#110D09] overflow-hidden">
         <Image
           src="/editorial/explore-by-scents-banner.jpg"
-          alt="Explore By Scents - VALCURA Atelier"
+          alt="Explore By Scents - VALCURA"
           fill
           className="object-cover object-[center_15%] opacity-85"
           priority
@@ -25,7 +25,7 @@ export default function ShopAllFragrancesPage() {
               Explore By Scents
             </h1>
             <p className="text-[11px] sm:text-xs text-white/85 font-light max-w-lg mx-auto leading-relaxed">
-              Discover our handcrafted 50 ML Eau de Parfum creations, olfactory pyramids, and second-skin sillage.
+              Discover our handcrafted 50 ML Eau de Parfum creations, fragrance notes, and lasting scent trail.
             </p>
           </div>
         </div>

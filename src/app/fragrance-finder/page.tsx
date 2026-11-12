@@ -55,7 +55,7 @@ export default function FragranceFinderPage() {
     {
       id: 3,
       title: 'QUESTION 3 — WHICH FRAGRANCE NOTES ATTRACT YOU?',
-      subtitle: 'Preference choices help us match your olfactory affinities.',
+      subtitle: 'Preference choices help us match your scent affinities.',
       currentValue: notes,
       setter: setNotes,
       options: [
@@ -126,7 +126,7 @@ export default function FragranceFinderPage() {
         <div className="max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center space-x-2 text-xs tracking-luxury uppercase text-[#8C6D42] font-mono font-medium">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Atelier Recommendation Engine</span>
+            <span>Fragrance Recommendation Engine</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-serif tracking-wide uppercase text-[#110D09]">
             Find Your Fragrance
@@ -149,7 +149,7 @@ export default function FragranceFinderPage() {
             </h2>
             <p className="text-sm text-[#110D09]/75 font-light max-w-lg mx-auto leading-relaxed">
               We believe perfume discovery should not require navigating technical chemistry or
-              opaque jargon. In 4 quick questions, discover which scent from our atelier aligns with
+              opaque jargon. In 4 quick questions, discover which scent from our collection aligns with
               your current side.
             </p>
             <div className="pt-4">
@@ -261,7 +261,7 @@ export default function FragranceFinderPage() {
               <div className="bg-white border border-[#E8E2D8] p-16 text-center space-y-4 shadow-lg">
                 <div className="w-12 h-12 border-2 border-[#110D09] border-t-transparent rounded-full animate-spin mx-auto" />
                 <h3 className="text-lg font-serif tracking-luxury uppercase text-[#110D09]">
-                  Consulting VALCURA Atelier
+                  Consulting VALCURA Fragrances
                 </h3>
                 <p className="text-xs text-[#110D09]/60 font-light">
                   Analyzing preferred occasion, mood affinity, verified accords, and availability...
@@ -360,7 +360,7 @@ export default function FragranceFinderPage() {
                 {/* Transparency Footnote */}
                 <div className="text-[11px] text-[#110D09]/50 border-t border-[#E8E2D8] pt-4 flex items-center justify-between font-mono">
                   <span>
-                    Recommendation calculated using verified product metadata & atelier scoring engine.
+                    Recommendation calculated using verified product metadata & fragrance matching engine.
                   </span>
                   <span>Match Confidence: {result.matchScore}%</span>
                 </div>
@@ -374,7 +374,7 @@ export default function FragranceFinderPage() {
                 </h3>
                 <p className="text-sm text-[#110D09]/70 font-light max-w-lg mx-auto leading-relaxed">
                   {result?.explanation ||
-                    'Your selections lean towards fragrance families currently in private atelier formulation (such as upcoming Silken Sambac and Roasted Zest). We invite you to explore our debut Cacaoaveil Collection.'}
+                    'Your selections lean towards fragrance families currently in private formulation (such as upcoming Silken Sambac and Roasted Zest). We invite you to explore our debut Cacaoaveil Collection.'}
                 </p>
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button

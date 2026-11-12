@@ -53,7 +53,7 @@ export default function ContactUsPage() {
             Contact Us
           </h1>
           <p className="text-xs sm:text-sm text-[#554D45] font-light">
-            Our atelier concierge is dedicated to assisting you with order inquiries, pre-order
+            Our customer concierge is dedicated to assisting you with order inquiries, pre-order
             reservations, and bespoke scent recommendations.
           </p>
         </div>
@@ -114,7 +114,7 @@ export default function ContactUsPage() {
                 <div className="flex items-start space-x-3">
                   <MapPin className="w-4 h-4 text-[#8C6D3F] flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-[#888075] block font-mono">Atelier Headquarters:</span>
+                    <span className="text-[#888075] block font-mono">VALCURA Headquarters:</span>
                     <span className="text-[#110D09] font-medium">Jaipur, Rajasthan, India</span>
                   </div>
                 </div>
@@ -187,7 +187,7 @@ export default function ContactUsPage() {
                           onChange={(e) => setForm({ ...form, category: e.target.value })}
                           className="w-full bg-[#FAF8F5] border border-[#D5CDC2] p-3 text-[#110D09] focus:outline-none focus:border-[#8C6D3F]"
                         >
-                          <option value="General Inquiry">General Atelier Inquiry</option>
+                          <option value="General Inquiry">General Inquiry</option>
                           <option value="Pre-Order Status">Pre-Order & Delivery Status</option>
                           <option value="24-Hour Cancellation">24-Hour Free Cancellation Request</option>
                           <option value="Damaged Bottle Guarantee">Damaged Bottle (100% Money Back Claim)</option>

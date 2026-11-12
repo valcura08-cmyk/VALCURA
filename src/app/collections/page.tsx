@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { ArrowRight, Compass } from 'lucide-react';
 
 export const metadata = {
-  title: 'Our Collections | VALCURA Atelier',
-  description: 'Explore the curated chapters and olfactive universes conceived by VALCURA.',
+  title: 'Our Collections | VALCURA',
+  description: 'Explore the curated chapters and fragrance universes conceived by VALCURA.',
 };
 
 export default function CollectionsOverviewPage() {
@@ -15,7 +15,7 @@ export default function CollectionsOverviewPage() {
       <section className="relative w-full h-[180px] sm:h-[220px] bg-[#110D09] overflow-hidden">
         <Image
           src="/editorial/explore-all-collections-banner.jpg"
-          alt="Our Collections - VALCURA Atelier"
+          alt="Our Collections - VALCURA"
           fill
           className="object-cover object-center opacity-85"
           priority
@@ -31,7 +31,7 @@ export default function CollectionsOverviewPage() {
               Our Collections
             </h1>
             <p className="text-[11px] sm:text-xs text-white/80 font-light max-w-md mx-auto leading-relaxed">
-              Explore our inaugural fragrance chapters and themed olfactory universes.
+              Explore our inaugural fragrance chapters and themed fragrance collections.
             </p>
           </div>
         </div>
@@ -47,7 +47,7 @@ export default function CollectionsOverviewPage() {
             Select A Collection
           </h2>
           <p className="text-[11px] text-[#110D09]/60 font-light">
-            Click to explore the collection and reveal all included flacons
+            Click to explore the collection and reveal all included bottles
           </p>
         </div>
 

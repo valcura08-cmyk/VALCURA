@@ -44,9 +44,9 @@ export default async function OrderConfirmationPage({ params }: Props) {
         fullName: 'Valued Client',
         email: 'Direct Concierge Notification',
         phone: 'Registered Mobile',
-        address: 'Handcrafted Flacon Priority Delivery Address',
+        address: 'Handcrafted Bottle Priority Delivery Address',
         city: 'India',
-        state: 'Atelier Priority',
+        state: 'Priority Delivery',
         pincode: 'Verified',
       },
       items: [
@@ -88,7 +88,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
           </div>
 
           <span className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono block font-bold">
-            Maison Valcura • Official Atelier Reservation
+            VALCURA • Official Order Confirmation
           </span>
 
           {/* EXACT REQUESTED HEADINGS */}
@@ -102,7 +102,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
           </div>
 
           <p className="text-xs sm:text-sm text-[#110D09]/70 font-mono pt-1">
-            Atelier Booking Reference: <strong className="text-[#110D09] font-bold">{order.id}</strong>
+            Order Reference: <strong className="text-[#110D09] font-bold">{order.id}</strong>
           </p>
         </div>
       </section>
@@ -118,10 +118,10 @@ export default async function OrderConfirmationPage({ params }: Props) {
               </div>
               <div className="space-y-1">
                 <h2 className="text-base sm:text-lg font-serif font-bold text-[#110D09]">
-                  Payment Verified • Flacon Reservation Officially Locked
+                  Payment Verified • Bottle Reservation Officially Locked
                 </h2>
                 <p className="text-xs sm:text-sm text-[#554D45] leading-relaxed">
-                  Thank you, <strong className="text-[#110D09]">{order.customer.fullName}</strong>. Our Atelier Concierge has received your payment confirmation for order <strong className="text-[#110D09]">#{order.id}</strong>. Your artisanal flacon is locked in our master cellar allocation with priority fulfillment status.
+                  Thank you, <strong className="text-[#110D09]">{order.customer.fullName}</strong>. Our Concierge has received your payment confirmation for order <strong className="text-[#110D09]">#{order.id}</strong>. Your handcrafted bottle is locked in our allocation with priority fulfillment status.
                 </p>
               </div>
             </div>
@@ -136,10 +136,10 @@ export default async function OrderConfirmationPage({ params }: Props) {
               </div>
             </div>
 
-            {/* 4-Step Live Atelier Journey Tracker */}
+            {/* 4-Step Live Order Status Tracker */}
             <div className="pt-2">
               <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono block font-bold mb-3">
-                Live Atelier Journey Tracker
+                Order Status Tracker
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs font-mono">
                 <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-300 text-emerald-900 shadow-sm">
@@ -165,7 +165,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
           {/* Reserved Items Table */}
           <div className="space-y-4">
             <h3 className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono border-b border-[#E8E2D8] pb-2 font-bold">
-              Reserved Atelier Flacons
+              Ordered Bottles
             </h3>
             <div className="divide-y divide-[#E8E2D8]">
               {order.items.map((item, idx) => (
@@ -234,7 +234,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
                 Updates dispatched to: <strong className="text-[#110D09] font-mono">{order.customer.email}</strong>
               </p>
               <p className="text-[11px] text-[#554D45] leading-relaxed font-light">
-                As soon as your flacon is packaged and sealed for courier dispatch, our concierge will ping you with live AWB tracking and delivery notifications.
+                As soon as your bottle is packaged and sealed for courier dispatch, our concierge will ping you with live AWB tracking and delivery notifications.
               </p>
               <div className="pt-2">
                 <a
