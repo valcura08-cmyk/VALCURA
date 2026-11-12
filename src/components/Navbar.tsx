@@ -301,22 +301,22 @@ export default function Navbar() {
 
             <div className="mt-4">
               <p className="text-[10px] tracking-luxury uppercase text-[#8C6D42] mb-2 font-mono">
-                Creative Olfactory Discoveries
+                Popular Notes & Fragrances
               </p>
               <div className="flex flex-wrap gap-2">
                 {[
                   { name: 'Cacao Citrine', href: '/product/cacao-citrine' },
                   { name: 'Calabrian Bergamot', href: '/product/cacao-citrine' },
                   { name: 'Roasted Cacao Absolute', href: '/product/cacao-citrine' },
-                  { name: 'Hazelnut Praline Notes', href: '/product/cacao-citrine' },
+                  { name: 'Creamy Hazelnut Note', href: '/product/cacao-citrine' },
                   { name: 'Golden Amber Silk', href: '/product/cacao-citrine' },
                   { name: '20% Eau De Parfum', href: '/product/cacao-citrine' },
                   { name: 'The Coffee Date (Mood 01)', href: '/moods/coffee-date' },
                   { name: 'After Hours (Mood 02)', href: '/moods/after-hours' },
                   { name: 'Slow Moments (Mood 04)', href: '/moods/slow-moments' },
                   { name: 'Cacaoaveil Collection', href: '/collections/cacaoaveil' },
-                  { name: 'Pre-Order Privilege (₹399)', href: '/product/cacao-citrine' },
-                  { name: 'Atelier Philosophy', href: '/our-story' },
+                  { name: 'Join Next Slot Waitlist (₹399)', href: '/product/cacao-citrine#notify' },
+                  { name: 'About VALCURA', href: '/our-story' },
                 ].map((tag) => (
                   <Link
                     key={tag.name}

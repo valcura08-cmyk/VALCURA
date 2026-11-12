@@ -59,8 +59,8 @@ export default function ShopAllFragrancesPage() {
                       priority
                     />
                     <div className="absolute top-2 left-2">
-                      <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#110D09] text-white font-bold rounded-full shadow-xs">
-                        Available Now • 50 ML
+                      <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-amber-950 text-amber-200 border border-amber-600/40 font-bold rounded-full shadow-xs">
+                        Current Slot Sold Out • 50 ML
                       </span>
                     </div>
                   </Link>
@@ -83,20 +83,20 @@ export default function ShopAllFragrancesPage() {
                           ₹{product.fullPrice || 399}
                         </span>
                         <span className="text-[10px] text-[#110D09]/40 line-through font-mono">
-                          ₹{product.standardPrice || 599}
+                          MRP ₹{product.standardPrice || 599}
                         </span>
-                        <span className="text-[9px] text-emerald-800 bg-emerald-50 px-1.5 py-0.2 border border-emerald-200 font-mono font-bold rounded">
-                          Save ₹200
+                        <span className="text-[9px] text-amber-900 bg-amber-50 px-1.5 py-0.2 border border-amber-300 font-mono font-bold rounded">
+                          Slot Full
                         </span>
                       </div>
                     </div>
 
                     <div className="pt-2 border-t border-[#E8E2D8]">
                       <Link
-                        href={`/product/${product.slug}`}
+                        href={`/product/${product.slug}#notify`}
                         className="w-full btn-luxury-primary text-center block text-[11px] font-bold py-2 px-3 uppercase tracking-luxury rounded-lg shadow-2xs"
                       >
-                        Add to Cart • ₹399
+                        Notify Me For Next Slot →
                       </Link>
                     </div>
                   </div>

@@ -96,6 +96,7 @@ export default function AdminDashboardPage() {
     customers: AdminCustomer[];
     requests?: CustomerRequest[];
     subscribers?: any[];
+    restockWaitlist?: any[];
     stats: {
       totalOrders: number;
       fullyPaidCount: number;
@@ -111,7 +112,7 @@ export default function AdminDashboardPage() {
   } | null>(null);
 
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'orders' | 'requests' | 'customers' | 'products'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'requests' | 'customers' | 'products' | 'waitlist'>('orders');
 
   // Filter States
   const [orderFilter, setOrderFilter] = useState<'all' | 'pending_delivery' | 'delivered' | 'paid' | 'deposit'>('all');
@@ -894,6 +895,23 @@ export default function AdminDashboardPage() {
           >
             <Truck className="w-4 h-4 text-[#8C6D42]" />
             <span>Inventory & Availability ({data.products.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('waitlist')}
+            className={`pb-4 px-6 text-xs tracking-luxury uppercase font-mono transition-all border-b-2 flex items-center space-x-2 whitespace-nowrap relative ${
+              activeTab === 'waitlist'
+                ? 'border-[#110D09] text-[#110D09] font-bold'
+                : 'border-transparent text-[#110D09]/50 hover:text-[#110D09]'
+            }`}
+          >
+            <Bell className="w-4 h-4 text-[#8C6D42]" />
+            <span>Restock Waitlist ({data.restockWaitlist?.length || 0})</span>
+            {(data.restockWaitlist?.length || 0) > 0 && (
+              <span className="ml-1 px-1.5 py-0.2 bg-amber-600 text-white rounded-full text-[9px] font-bold">
+                {data.restockWaitlist?.length}
+              </span>
+            )}
           </button>
         </div>
 
@@ -1731,6 +1749,137 @@ export default function AdminDashboardPage() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 5: RESTOCK WAITLIST & NOTIFY LEADS */}
+        {activeTab === 'waitlist' && (
+          <div className="space-y-6">
+            <div className="bg-white border border-[#E8E2D8] p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+              <div>
+                <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
+                  Next Batch Priority Leads
+                </span>
+                <h2 className="text-xl font-serif text-[#110D09] font-bold">
+                  Restock Waitlist ({data?.restockWaitlist?.length || 0} Customers)
+                </h2>
+                <p className="text-xs text-[#110D09]/65">
+                  Customers who entered their email to get notified the second Cacao Citrine is back in stock.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const emails = (data?.restockWaitlist || []).map((w: any) => w.email).filter(Boolean).join(', ');
+                    if (emails) {
+                      navigator.clipboard.writeText(emails);
+                      setNotificationBanner('Copied all waitlist emails to clipboard!');
+                      setTimeout(() => setNotificationBanner(null), 3000);
+                    }
+                  }}
+                  className="py-2 px-3.5 bg-[#110D09] hover:bg-[#8C6D42] text-white text-xs font-mono font-bold uppercase rounded-md transition-all flex items-center space-x-1.5 shadow-2xs"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>Copy All Emails</span>
+                </button>
+
+                <a
+                  href={`mailto:${(data?.restockWaitlist || []).map((w: any) => w.email).filter(Boolean).join(',')}`}
+                  className="py-2 px-3.5 bg-[#FAF8F5] border border-[#D5CDC2] text-[#110D09] hover:bg-[#EFE9DF] text-xs font-mono font-bold uppercase rounded-md transition-all flex items-center space-x-1.5"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[#8C6D42]" />
+                  <span>Email All (BCC)</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Waitlist Table */}
+            <div className="bg-white border border-[#E8E2D8] shadow-sm overflow-x-auto">
+              {(!data?.restockWaitlist || data.restockWaitlist.length === 0) ? (
+                <div className="py-16 text-center text-[#110D09]/50 font-mono text-xs">
+                  <Bell className="w-8 h-8 mx-auto mb-2 text-[#8C6D42] opacity-40" />
+                  <p>No restock requests yet. Submissions from the product page will appear here immediately.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left text-xs font-mono border-collapse">
+                  <thead>
+                    <tr className="bg-[#FAF8F5] border-b border-[#E8E2D8] text-[#8C6D42] uppercase text-[10px] tracking-wider">
+                      <th className="py-3 px-4">Customer Email</th>
+                      <th className="py-3 px-4">WhatsApp / Phone</th>
+                      <th className="py-3 px-4">Requested Scent</th>
+                      <th className="py-3 px-4">Received Time</th>
+                      <th className="py-3 px-4 text-right">Quick Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#E8E2D8]">
+                    {data.restockWaitlist.map((item: any, idx: number) => {
+                      const cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
+                      return (
+                        <tr key={item.id || idx} className="hover:bg-[#FAF8F5]/80 transition-colors">
+                          <td className="py-3.5 px-4 font-bold text-[#110D09]">
+                            <a href={`mailto:${item.email}`} className="hover:text-[#8C6D42] hover:underline flex items-center space-x-1.5">
+                              <Mail className="w-3.5 h-3.5 text-[#8C6D42]" />
+                              <span>{item.email}</span>
+                            </a>
+                          </td>
+                          <td className="py-3.5 px-4 text-[#554D45]">
+                            {cleanPhone ? (
+                              <a
+                                href={`https://wa.me/91${cleanPhone}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center space-x-1"
+                              >
+                                <MessageCircle className="w-3.5 h-3.5" />
+                                <span>{item.phone}</span>
+                              </a>
+                            ) : (
+                              <span className="text-gray-400 italic">Not provided</span>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className="px-2 py-0.5 bg-[#FAF6EE] text-[#110D09] border border-[#D5CDC2] rounded text-[10px] font-bold">
+                              {item.product || 'Cacao Citrine'}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 text-[#888075] text-[11px]">
+                            {new Date(item.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                          </td>
+                          <td className="py-3.5 px-4 text-right space-x-1.5">
+                            {cleanPhone && (
+                              <a
+                                href={`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(
+                                  `Hello! Good news from VALCURA: Cacao Citrine fresh slot is now live. Here is your VIP booking link: https://valcura.vercel.app/product/cacao-citrine`
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center space-x-1 py-1 px-2.5 bg-emerald-600 text-white rounded text-[10px] font-bold hover:bg-emerald-700 transition-colors"
+                              >
+                                <span>WhatsApp Alert</span>
+                              </a>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard.writeText(item.email);
+                                setNotificationBanner(`Copied ${item.email}`);
+                                setTimeout(() => setNotificationBanner(null), 2000);
+                              }}
+                              className="py-1 px-2 border border-[#D5CDC2] text-[#110D09] rounded text-[10px] hover:bg-[#FAF8F5]"
+                              title="Copy Email"
+                            >
+                              Copy
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         )}

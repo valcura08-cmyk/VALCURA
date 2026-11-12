@@ -16,6 +16,10 @@ import {
   Bookmark,
   Check,
   ShoppingBag,
+  Bell,
+  Lock,
+  Mail,
+  Phone,
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
@@ -31,6 +35,48 @@ export default function CacaoCitrineProductPage() {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [shareFeedback, setShareFeedback] = useState(false);
+
+  // Next Slot Waitlist & Restock Alert State
+  const [waitlistEmail, setWaitlistEmail] = useState('');
+  const [waitlistPhone, setWaitlistPhone] = useState('');
+  const [waitlistStatus, setWaitlistStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [waitlistMessage, setWaitlistMessage] = useState('');
+
+  const handleNotifySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!waitlistEmail || !waitlistEmail.includes('@')) {
+      setWaitlistStatus('error');
+      setWaitlistMessage('Kindly enter a valid email address.');
+      return;
+    }
+    setWaitlistStatus('loading');
+    setWaitlistMessage('');
+    try {
+      const res = await fetch('/api/notify-restock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: waitlistEmail,
+          phone: waitlistPhone,
+          product: 'Cacao Citrine',
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setWaitlistStatus('success');
+        setWaitlistMessage(
+          data.message ||
+            `Thank you! We will email you at ${waitlistEmail} as soon as the fresh batch slot unlocks.`
+        );
+      } else {
+        setWaitlistStatus('error');
+        setWaitlistMessage(data.error || 'Could not submit request. Please try again.');
+      }
+    } catch {
+      setWaitlistStatus('error');
+      setWaitlistMessage('Network error. Kindly try again or WhatsApp Raghav directly at +91 6378582047.');
+    }
+  };
 
   const images = [
     {
@@ -287,92 +333,165 @@ export default function CacaoCitrineProductPage() {
             </div>
 
             {/* ========================================================== */}
-            {/* BOUTIQUE ACQUISITION BAR */}
+            {/* BOUTIQUE ACQUISITION BAR (OUT OF STOCK + NEXT SLOT WAITLIST) */}
             {/* ========================================================== */}
-            <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl p-4 space-y-3.5 shadow-2xs">
-              <div className="flex items-baseline justify-between">
+            <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-2xl p-4 sm:p-5 space-y-4 shadow-2xs">
+              {/* Price & Out of Stock Status Badge */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E8DFD3]">
                 <div>
                   <div className="flex items-baseline space-x-2">
                     <span className="text-2xl sm:text-3xl font-serif font-bold text-[#110D09]">
-                      ₹{totalFull}
+                      ₹399
                     </span>
                     <span className="text-xs font-mono text-[#888075] line-through">
-                      ₹{totalStandard}
+                      MRP ₹599
                     </span>
                     <span className="text-[10px] tracking-wider uppercase font-mono px-2 py-0.5 bg-[#EFE9DF] text-[#6E532F] border border-[#D5CDC2] rounded-sm font-semibold">
-                      Save ₹{totalStandard - totalFull}
+                      Save ₹200 (Launch Offer)
                     </span>
                   </div>
                   <span className="text-[10px] text-[#8C6D42] font-mono block mt-0.5">
-                    All Taxes Included • Complimentary Pan-India Delivery
+                    MRP (Inclusive of all taxes) • Complimentary Pan-India Delivery
                   </span>
                 </div>
-                <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 bg-[#110D09] text-white rounded-md font-bold">
-                  In Stock
-                </span>
+
+                <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-amber-950/90 text-amber-200 border border-amber-600/40 rounded-full text-[10px] font-mono uppercase tracking-wider font-bold shrink-0 self-start sm:self-auto shadow-2xs">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span>Current Slot Sold Out • Out of Stock</span>
+                </div>
               </div>
 
-              {/* Quantity Selector & ADD TO CART Button */}
-              <div className="flex items-center gap-2.5 pt-2">
-                <div className="inline-flex items-center border border-[#D5CDC2] bg-white rounded-xl overflow-hidden shrink-0 shadow-2xs">
-                  <button
-                    type="button"
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold cursor-pointer"
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <span className="w-8 text-center font-mono text-sm text-[#110D09] font-semibold">
-                    {quantity}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-9 h-11 text-sm hover:text-[#8C6D42] hover:bg-[#FAF8F5] transition-colors font-mono font-bold cursor-pointer"
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
+              {/* Interactive Next Batch Slot Waitlist Card */}
+              <div id="notify" className="bg-[#FAF6EE] border-2 border-[#110D09] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-xs">
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-1.5 text-[#8C6D42] text-[10px] font-mono uppercase tracking-wider font-bold">
+                    <Bell className="w-3.5 h-3.5" />
+                    <span>Next Batch Slot Priority</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-serif font-bold text-[#110D09] uppercase tracking-wide">
+                    Get Notified When Next Slot Drops
+                  </h3>
+                  <p className="text-xs text-[#554D45] leading-relaxed">
+                    Due to high demand, our current batch of Cacao Citrine is completely sold out! Kindly drop your email address below, and we will notify you directly the very moment our fresh batch slot opens.
+                  </p>
                 </div>
 
+                {waitlistStatus === 'success' ? (
+                  <div className="bg-emerald-50 border border-emerald-300 rounded-xl p-4 text-center space-y-2 animate-fadeIn">
+                    <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-xs">
+                      <Check className="w-4 h-4" />
+                    </div>
+                    <p className="text-xs font-sans text-emerald-950 font-semibold">
+                      {waitlistMessage}
+                    </p>
+                    <p className="text-[11px] text-emerald-800 font-light">
+                      We have notified our team at valcura08@gmail.com. You will receive first priority when new bottles arrive!
+                    </p>
+                    <div className="pt-2">
+                      <a
+                        href={`https://wa.me/916378582047?text=${encodeURIComponent(
+                          `Hello Raghav, I have submitted my email (${waitlistEmail}) for Cacao Citrine next slot notification. Kindly give me VIP priority for the next batch!`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center space-x-1.5 text-xs font-mono uppercase tracking-wider bg-[#25D366] text-white py-2 px-4 rounded-lg font-bold shadow-xs hover:bg-[#1EBE5D] transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>Ping Raghav on WhatsApp for VIP Priority</span>
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleNotifySubmit} className="space-y-3">
+                    <div>
+                      <label className="block text-[10px] font-mono uppercase tracking-wider text-[#110D09] font-bold mb-1">
+                        Your Email Address <span className="text-rose-600">*</span>
+                      </label>
+                      <div className="relative">
+                        <Mail className="w-4 h-4 text-[#888075] absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="email"
+                          required
+                          placeholder="Enter your email (e.g. name@gmail.com)"
+                          value={waitlistEmail}
+                          onChange={(e) => setWaitlistEmail(e.target.value)}
+                          className="w-full bg-white border border-[#D5CDC2] rounded-xl py-2.5 pl-9 pr-3.5 text-xs font-sans text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:ring-2 focus:ring-[#110D09]"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-mono uppercase tracking-wider text-[#110D09] font-bold mb-1">
+                        WhatsApp Number <span className="text-[#888075] font-normal">(Optional, for 1-tap WhatsApp alert)</span>
+                      </label>
+                      <div className="relative">
+                        <Phone className="w-4 h-4 text-[#888075] absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="tel"
+                          placeholder="Enter 10-digit mobile number (e.g. 9876543210)"
+                          value={waitlistPhone}
+                          onChange={(e) => setWaitlistPhone(e.target.value)}
+                          className="w-full bg-white border border-[#D5CDC2] rounded-xl py-2.5 pl-9 pr-3.5 text-xs font-sans text-[#110D09] placeholder:text-[#110D09]/40 focus:outline-none focus:ring-2 focus:ring-[#110D09]"
+                        />
+                      </div>
+                    </div>
+
+                    {waitlistStatus === 'error' && (
+                      <p className="text-[11px] font-mono text-rose-600 font-semibold">
+                        {waitlistMessage}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={waitlistStatus === 'loading'}
+                      className="w-full py-3 px-4 bg-[#110D09] hover:bg-[#8C6D42] text-white rounded-xl text-xs font-serif font-bold uppercase tracking-[0.18em] transition-all shadow-sm hover:shadow-md cursor-pointer disabled:opacity-60 flex items-center justify-center space-x-2"
+                    >
+                      <Bell className="w-3.5 h-3.5" />
+                      <span>{waitlistStatus === 'loading' ? 'Saving Your Priority Spot...' : 'Notify Me When Next Slot Drops'}</span>
+                    </button>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-between pt-1 text-[10px] font-mono text-[#554D45] gap-1">
+                      <span>🔒 Zero spam • Instant notification when stock arrives</span>
+                      <a
+                        href="https://wa.me/916378582047?text=Hello%20Raghav,%20when%20will%20the%20next%20slot%20of%20Cacao%20Citrine%20open?"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#8C6D42] hover:underline font-bold"
+                      >
+                        Direct WhatsApp Support (+91 6378582047)
+                      </a>
+                    </div>
+                  </form>
+                )}
+              </div>
+
+              {/* Out of Stock Button indicator */}
+              <div className="pt-1">
                 <button
                   type="button"
-                  onClick={handleAddToCart}
-                  className={`flex-1 h-11 text-xs font-serif font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border ${
-                    isAdded
-                      ? 'bg-emerald-700 text-white border-emerald-600'
-                      : 'bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] border-[#C5A880]/30'
-                  }`}
+                  disabled
+                  className="w-full h-11 text-xs font-serif font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2 rounded-xl bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
                 >
-                  {isAdded ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>ADDED TO CART!</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag className="w-4 h-4" />
-                      <span>ADD TO CART</span>
-                    </>
-                  )}
+                  <Lock className="w-3.5 h-3.5" />
+                  <span>Out of Stock • Current Slot Full</span>
                 </button>
               </div>
             </div>
 
-            {/* Quick Specs Pills */}
+            {/* Quick Specs Pills in Indian English */}
             <div className="grid grid-cols-3 gap-2.5 text-center text-[10px] font-mono text-[#554D45]">
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
                 <span className="text-[#8C6D42] font-bold block">20% EDP</span>
-                <span className="text-[9px] text-[#888075]">Extrait Ratio</span>
+                <span className="text-[9px] text-[#888075]">High Oil Concentration</span>
               </div>
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
                 <span className="text-[#8C6D42] font-bold block">4 HOURS</span>
-                <span className="text-[9px] text-[#888075]">Projection Time</span>
+                <span className="text-[9px] text-[#888075]">Strong Scent Projection</span>
               </div>
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
                 <span className="text-[#8C6D42] font-bold block">4-5 HOURS</span>
-                <span className="text-[9px] text-[#888075]">Skin Longevity</span>
+                <span className="text-[9px] text-[#888075]">Tested on Indian Climate</span>
               </div>
             </div>
 

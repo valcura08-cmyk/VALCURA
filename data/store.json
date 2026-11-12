@@ -7,8 +7,8 @@
       "collection": "Cacaoaveil",
       "category": "Unisex",
       "volume": "50 ML",
-      "status": "Available",
-      "isAvailable": true,
+      "status": "Out of Stock",
+      "isAvailable": false,
       "isPreorder": false,
       "isComingSoon": false,
       "standardPrice": 599,
@@ -29,8 +29,10 @@
         "Roasted Hazelnut Cream",
         "Cacao Shell Veil"
       ],
-      "inventory": 120,
-      "featured": true
+      "inventory": 0,
+      "featured": true,
+      "slotStatus": "Current Slot Sold Out • Out of Stock",
+      "nextSlotNotice": "Next batch slot dropping soon. Drop your email to get notified."
     },
     {
       "id": "silken-sambac",

@@ -18,8 +18,8 @@ const slides: BannerSlide[] = [
   {
     id: 'cacaoaveil',
     image: '/brand/home-banner-cacaoaveil.jpg',
-    title: 'Cacaoaveil Is Now Live',
-    link: '/collections/cacaoaveil',
+    title: 'Cacao Citrine • Current Slot Sold Out (Join Next Slot Waitlist)',
+    link: '/product/cacao-citrine#notify',
     bgColor: '#3D2314',
     objectPosition: 'center center',
   },

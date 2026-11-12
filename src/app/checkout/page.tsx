@@ -260,13 +260,13 @@ ${customerDetails}`;
         {/* Title Header */}
         <div className="text-center max-w-xl mx-auto mb-3 sm:mb-4 space-y-0.5">
           <span className="text-[10px] tracking-luxury uppercase text-[#8C6D42] font-mono font-bold block">
-            Maison Valcura • Official Reservation
+            VALCURA Atelier • Priority Booking
           </span>
           <h1 className="text-2xl sm:text-3xl font-serif text-[#110D09] font-bold tracking-tight">
-            Reserve Your Flacon
+            Reserve Your Perfume Bottle
           </h1>
           <p className="text-xs text-[#110D09]/70 font-light max-w-md mx-auto">
-            Zero paperwork. Reserve your handcrafted flacon in 1 tap via WhatsApp or direct UPI.
+            Zero paperwork. Reserve your 50 ML bottle in 1 tap via WhatsApp or direct UPI.
           </p>
         </div>
 
@@ -275,6 +275,17 @@ ${customerDetails}`;
           
           {/* LEFT COLUMN: Interactive Checkout Card (7 Cols) */}
           <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+
+            {/* Next Batch Slot Notice */}
+            <div className="bg-amber-50 border border-amber-300 rounded-xl p-3 text-xs text-amber-950 font-mono shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                <span><strong>Next Batch Slot Booking:</strong> Current batch is 100% booked out. Booking now locks in your bottle for the incoming batch!</span>
+              </div>
+              <Link href="/product/cacao-citrine#notify" className="underline font-bold shrink-0 hover:text-amber-800 text-[11px] self-end sm:self-auto">
+                Or Drop Email
+              </Link>
+            </div>
 
             {/* Quick Compact 3-Step Process Strip */}
             <div className="bg-white border border-[#E8E2D8] rounded-xl px-3 py-2 shadow-2xs flex items-center justify-between gap-1 text-[10px] sm:text-xs font-mono">

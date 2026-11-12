@@ -61,17 +61,26 @@ export default function CartDrawer() {
                 <div className="w-16 h-16 rounded-full border border-[#D5CDC2] flex items-center justify-center">
                   <span className="font-serif text-2xl text-[#110D09]">V</span>
                 </div>
-                <p className="text-sm text-[#110D09]/70 font-light max-w-xs">
-                  Your luxury fragrance bag is currently empty.
+                <p className="text-xs text-[#110D09]/70 font-light max-w-xs">
+                  Current batch slot for Cacao Citrine is 100% sold out! Drop your email to get notified when our next slot drops.
                 </p>
-                <Link
-                  href="/collections/cacaoaveil"
-                  onClick={() => setIsCartOpen(false)}
-                  className="inline-flex items-center space-x-2 text-xs tracking-luxury uppercase text-[#110D09] border border-[#110D09] px-5 py-2.5 hover:bg-[#110D09] hover:text-[#FAF7F2] transition-all"
-                >
-                  <span>Explore Cacaoaveil</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                <div className="flex flex-col gap-2 w-full max-w-xs pt-1">
+                  <Link
+                    href="/product/cacao-citrine#notify"
+                    onClick={() => setIsCartOpen(false)}
+                    className="inline-flex items-center justify-center space-x-2 text-xs tracking-luxury uppercase bg-[#110D09] text-white px-5 py-2.5 hover:bg-[#8C6D42] transition-all rounded-lg font-bold shadow-2xs"
+                  >
+                    <span>Notify Me For Next Slot</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    href="/collections/cacaoaveil"
+                    onClick={() => setIsCartOpen(false)}
+                    className="inline-flex items-center justify-center space-x-2 text-xs tracking-luxury uppercase text-[#110D09] border border-[#110D09] px-5 py-2 hover:bg-[#FAF6EE] transition-all rounded-lg font-bold"
+                  >
+                    <span>Explore Cacaoaveil</span>
+                  </Link>
+                </div>
               </div>
             ) : (
               items.map((item) => {

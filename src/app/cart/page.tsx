@@ -34,18 +34,25 @@ export default function CartPage() {
             <h2 className="text-lg sm:text-xl font-serif uppercase tracking-wide text-[#110D09]">
               Your bag is currently empty
             </h2>
-            <p className="text-xs text-[#110D09]/60 font-light">
-              Explore our debut Cacaoaveil Collection and reserve your flacon before launch allocation is
-              fulfilled.
+            <p className="text-xs text-[#110D09]/70 font-light">
+              Current slot for Cacao Citrine is 100% sold out! Drop your email on the product page to get notified the second our new slot arrives.
             </p>
-            <div>
-              <Link href="/collections/cacaoaveil" className="btn-luxury-primary">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+              <Link href="/product/cacao-citrine#notify" className="btn-luxury-primary text-xs">
+                Notify Me For Next Slot
+              </Link>
+              <Link href="/collections/cacaoaveil" className="btn-luxury-outline text-xs">
                 Explore Cacaoaveil
               </Link>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 pt-4">
+          <div className="pt-4 space-y-4">
+            <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl flex items-center space-x-2 text-xs text-amber-950 font-mono shadow-2xs">
+              <span className="font-bold">⚠️ Notice:</span>
+              <span>Current batch slot is sold out! Orders placed today receive first priority in our next batch drop.</span>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
             {/* Items Column */}
             <div className="lg:col-span-8 space-y-3">
               {items.map((item) => {
@@ -178,6 +185,7 @@ export default function CartPage() {
               </div>
             </div>
           </div>
+        </div>
         )}
       </div>
     </div>

@@ -9,15 +9,19 @@ export default function FAQPage() {
   const faqs = [
     {
       q: 'How does the VALCURA pre-order system work?',
-      a: 'Secure your handcrafted flacon of Cacao Citrine at an exclusive introductory pre-order price of ₹399. Your allocation is confirmed immediately upon booking with complimentary insured delivery across India and zero hidden fees.',
+      a: 'Secure your handcrafted 50 ML bottle of Cacao Citrine at an exclusive introductory pre-order price of ₹399 (MRP ₹599). Your booking is confirmed immediately with free insured courier delivery across all Indian pin codes and zero hidden charges.',
+    },
+    {
+      q: 'When will fresh stock / the next batch slot open for Cacao Citrine?',
+      a: 'Because Cacao Citrine is handcrafted in limited batches in India, slots fill very quickly! When a batch is sold out, simply enter your email on the product page. You will receive a direct notification the second our new slot arrives. You can also chat with Raghav on WhatsApp (+91 6378582047) for priority VIP reservation.',
     },
     {
       q: 'What is your cancellation and return policy?',
-      a: 'We offer 100% free cancellation within 24 hours of placing your order—simply email valcura08@gmail.com with your details. Due to cosmetic hygiene standards, we cannot accept returns once the bottle has been opened or unsealed. If your bottle arrives damaged during transit, we offer 100% money back or an immediate replacement when contacted within 24 hours of delivery.',
+      a: 'We offer 100% free cancellation within 24 hours of placing your order—simply email valcura08@gmail.com or WhatsApp Raghav at +91 6378582047. If your perfume bottle arrives damaged during courier transit, we offer 100% money back or an immediate free replacement when notified within 24 hours of delivery.',
     },
     {
       q: 'What fragrance notes make up Cacao Citrine?',
-      a: 'Cacao Citrine is an exquisite unisex composition verified with three distinct accords: Citrus, Creamy Hazelnut, and Fresh. The coffee and chocolate lifestyle imagery represents the intimate mood and occasions associated with the experience, rather than synthetic food ingredients.',
+      a: 'Cacao Citrine is a long-lasting unisex Eau de Parfum crafted for Indian weather with three distinct accords: Sparkling Citrus (Top Note), Creamy Hazelnut & Vanilla (Heart Note), and Warm Amber Rose (Base Note).',
     },
     {
       q: 'When will Silken Sambac and Roasted Zest become available?',

@@ -81,8 +81,8 @@ export default function CacaoaveilCollectionPage() {
                       priority
                     />
                     <div className="absolute top-2 left-2">
-                      <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-[#110D09] text-[#FAF7F2] font-bold rounded-full shadow-xs">
-                        Available Now • 50 ML
+                      <span className="text-[8px] font-mono tracking-widest uppercase px-2 py-0.5 bg-amber-950 text-amber-200 border border-amber-600/40 font-bold rounded-full shadow-xs">
+                        Current Slot Sold Out • 50 ML
                       </span>
                     </div>
                   </Link>
@@ -104,20 +104,20 @@ export default function CacaoaveilCollectionPage() {
                           ₹{product.fullPrice || 399}
                         </span>
                         <span className="text-[10px] text-[#110D09]/40 line-through font-mono">
-                          ₹599
+                          MRP ₹599
                         </span>
-                        <span className="text-[9px] font-mono font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                          Save ₹200
+                        <span className="text-[9px] font-mono font-bold text-amber-900 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-300">
+                          Slot Full
                         </span>
                       </div>
                     </div>
 
                     <div className="pt-2 border-t border-[#E8DFD3]/80 space-y-2">
                       <Link
-                        href={`/product/${product.slug}`}
+                        href={`/product/${product.slug}#notify`}
                         className="w-full py-2 bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all duration-200 block text-center shadow-xs"
                       >
-                        Add to Cart • ₹399
+                        Notify Me For Next Slot →
                       </Link>
                     </div>
                   </div>

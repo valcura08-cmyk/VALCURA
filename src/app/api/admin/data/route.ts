@@ -376,6 +376,7 @@ export async function GET() {
       customers,
       requests: contactInquiries,
       subscribers,
+      restockWaitlist: Array.isArray(db.settings?.restockWaitlist) ? db.settings.restockWaitlist : [],
       stats: {
         totalOrders,
         fullyPaidCount: fullyPaidOrders.length,
