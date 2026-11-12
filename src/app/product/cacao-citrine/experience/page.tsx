@@ -40,7 +40,7 @@ export default function CacaoCitrineExperiencePage() {
       image: '/moods/coffee-date.jpg',
       quote: '“Where conversations stretch across warm ceramic cups and effortless morning laughter.”',
       description:
-        'An intimate café table bathed in morning sunlight. The fresh Calabrian bergamot cuts through the rich roasted notes of freshly ground espresso, while the heart of hazelnut milk blends seamlessly with the café atmosphere. A fragrance that feels instantly approachable yet memorable.',
+        'An intimate café table bathed in morning sunlight. The fresh Calabrian bergamot cuts through the rich roasted notes of freshly ground espresso, while the heart of creamy chocolate and vanilla blends seamlessly with the café atmosphere. A fragrance that feels instantly approachable yet memorable.',
       applicationTip: 'Two sprays at collarbones and inside wrists before stepping out.',
     },
     {
@@ -62,7 +62,7 @@ export default function CacaoCitrineExperiencePage() {
       image: '/moods/little-indulgence.jpg',
       quote: '“A reminder that pleasure does not have to be earned—it only has to be savored.”',
       description:
-        'A moment carved out entirely for yourself. Hazelnut pastries dusted with fine cocoa powder, a quiet terrace, and no rush to be anywhere. The sweet hazelnut and mandarin aroma creates a personal sanctuary of quiet tactile luxury.',
+        'A moment carved out entirely for yourself. Chocolate pastries dusted with fine cocoa powder, a quiet terrace, and no rush to be anywhere. The sweet chocolate, vanilla, and mandarin aroma creates a personal sanctuary of quiet tactile luxury.',
       applicationTip: 'Mist onto chest and forearms for an enveloping personal cocoon.',
     },
     {

@@ -38,12 +38,12 @@ export default function CacaoCitrineCharacterPage() {
     summer: {
       title: 'Summer Twilight',
       vibe: 'Golden Hour Radiance',
-      desc: 'Effortless on warm skin. The solar citrus cut prevents heaviness even in humid twilight dinners, radiating an airy hazelnut aura.',
+      desc: 'Effortless on warm skin. The solar citrus cut prevents heaviness even in humid twilight dinners, radiating an airy chocolate aura.',
     },
     autumn: {
       title: 'Autumn Resonance (Ideal Season)',
-      vibe: 'Praline & Toasted Cacao Harmony',
-      desc: 'The crisp autumn breeze allows the heart notes of Piedmont hazelnut and roasted cacao shell to wrap around pulse points like a cashmere scarf.',
+      vibe: 'Chocolate & Toasted Cacao Harmony',
+      desc: 'The crisp autumn breeze allows the heart notes of creamy chocolate, vanilla, and roasted cacao shell to wrap around pulse points like a cashmere scarf.',
     },
     winter: {
       title: 'Winter Cocoon',
@@ -116,7 +116,7 @@ export default function CacaoCitrineCharacterPage() {
               Zest Meets Cream
             </h3>
             <p className="text-sm text-[#18120E]/75 font-light leading-relaxed">
-              The soul of Cacao Citrine lies in its deliberate internal friction: high-pitch, crystalline Calabrian bergamot rubbing against warm, velvety Piedmont hazelnut cream. Rather than colliding, they create an electric harmony that feels alive on the skin.
+              The soul of Cacao Citrine lies in its deliberate internal friction: high-pitch, crystalline Calabrian bergamot rubbing against warm, velvety creamy chocolate and vanilla. Rather than colliding, they create an electric harmony that feels alive on the skin.
             </p>
           </div>
 
@@ -152,7 +152,7 @@ export default function CacaoCitrineCharacterPage() {
               The Unisex Chameleon
             </h3>
             <p className="text-sm text-[#18120E]/75 font-light leading-relaxed">
-              On masculine pulse points, the dry roasted cedar and roasted cacao husks take center stage. On feminine skin, the sparkling mandarin peel and silky hazelnut milk radiate with luminous warmth.
+              On masculine pulse points, the dry roasted cedar and roasted cacao husks take center stage. On feminine skin, the sparkling mandarin peel and silky creamy chocolate and vanilla radiate with luminous warmth.
             </p>
           </div>
         </div>

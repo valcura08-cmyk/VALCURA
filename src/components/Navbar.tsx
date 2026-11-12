@@ -291,7 +291,7 @@ export default function Navbar() {
               <Search className="w-5 h-5 text-[#8C6D42]" />
               <input
                 type="text"
-                placeholder="Search notes, collections, or moods (e.g. Citrus, Hazelnut, Pre-order)..."
+                placeholder="Search notes, collections, or moods (e.g. Citrus, Chocolate, Pre-order)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
@@ -308,7 +308,7 @@ export default function Navbar() {
                   { name: 'Cacao Citrine', href: '/product/cacao-citrine' },
                   { name: 'Calabrian Bergamot', href: '/product/cacao-citrine' },
                   { name: 'Roasted Cacao Absolute', href: '/product/cacao-citrine' },
-                  { name: 'Creamy Hazelnut Note', href: '/product/cacao-citrine' },
+                  { name: 'Creamy Chocolate Note', href: '/product/cacao-citrine' },
                   { name: 'Golden Amber Silk', href: '/product/cacao-citrine' },
                   { name: '20% Eau De Parfum', href: '/product/cacao-citrine' },
                   { name: 'The Coffee Date (Mood 01)', href: '/moods/coffee-date' },

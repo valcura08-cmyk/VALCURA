@@ -54,7 +54,7 @@ export default function RefundPolicyPage() {
             </p>
             <p>
               We recommend reviewing our detailed olfactory breakdown (Top: Citrus, Heart: Creamy
-              Hazelnut &amp; Vanilla, Base: Rose &amp; Fresh) on the product page before unsealing
+              Chocolate &amp; Vanilla, Base: Rose &amp; Fresh) on the product page before unsealing
               your flacon.
             </p>
           </div>

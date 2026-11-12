@@ -140,7 +140,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
           reason = `Your taste for delicate white jasmine petals, personal tranquility, and soft silk musks perfectly aligns with ${matched.name}. Its airy, cocooning trail wraps you in timeless serenity.`;
         } else {
           matched = recommendedProducts.find((p) => p.id === 'cacao-citrine') || primaryProduct;
-          reason = `With your affinity for sun-drenched bergamot, creamy hazelnut praline, and luminous daytime warmth, ${matched.name} is your ideal fragrance match for ${mood.title}.`;
+          reason = `With your affinity for sun-drenched bergamot, creamy chocolate and vanilla, and luminous daytime warmth, ${matched.name} is your ideal fragrance match for ${mood.title}.`;
         }
 
         setQuizResultProduct(matched);
@@ -589,8 +589,8 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                     {[
                       {
                         key: 'a',
-                        title: 'Sun-Drenched Citrus & Hazelnut Cream',
-                        desc: 'Crisp bergamot sparkling into warm, roasted hazelnut praline.',
+                        title: 'Sun-Drenched Citrus & Creamy Chocolate',
+                        desc: 'Crisp bergamot sparkling into warm, comforting chocolate and vanilla.',
                       },
                       {
                         key: 'b',

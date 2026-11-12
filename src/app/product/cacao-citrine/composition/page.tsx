@@ -50,9 +50,9 @@ export default function CacaoCitrineCompositionPage() {
       timeline: 'Minutes 30 to Hours 03',
       intensity: 'Opulent Cream Core',
       description:
-        'As the brisk citrus veil warms into pulse points, it reveals a rich, comforting Hazelnut milk praline core. Delicately creamy, tactile, and comforting without tipping into sickly sugariness.',
+        'As the brisk citrus veil warms into pulse points, it reveals a rich, comforting Creamy Chocolate and Vanilla core. Delicately creamy, tactile, and comforting without tipping into sickly sugariness.',
       notes: [
-        { name: 'Roasted Hazelnut Cream', origin: 'Piedmont, Italy', profile: 'Velvety nut milk, toasted butteriness' },
+        { name: 'Creamy Chocolate & Vanilla', origin: 'Artisanal Gourmand Accord', profile: 'Velvety melted cacao, warm comforting vanilla' },
         { name: 'Steamed Almond Milk', origin: 'Organic Infusion', profile: 'Silky, soothing, warm second skin' },
         { name: 'Cocoa Butter Emulsion', origin: 'Cold-Pressed Absolute', profile: 'Creamy tactile softness, roundness' },
       ],
@@ -231,7 +231,7 @@ export default function CacaoCitrineCompositionPage() {
             <div className="p-4 bg-white/5 border border-white/10 space-y-1">
               <span className="text-2xl font-serif text-[#C9A96E]">10 Hrs</span>
               <p className="text-xs font-mono uppercase text-[#FAF7F2]">Skin Longevity</p>
-              <p className="text-[10px] text-[#FAF7F2]/60 font-light">Enduring hazelnut musk trail</p>
+              <p className="text-[10px] text-[#FAF7F2]/60 font-light">Enduring chocolate musk trail</p>
             </div>
             <div className="p-4 bg-white/5 border border-white/10 space-y-1">
               <span className="text-2xl font-serif text-[#C9A96E]">Clean</span>

@@ -38,7 +38,7 @@ export function evaluateFragranceRecommendation(
 
   // Find best matching product
   // For Cacao Citrine:
-  // Verified notes: Citrus, Creamy Hazelnut, Fresh
+  // Verified notes: Citrus, Creamy Chocolate & Vanilla, Fresh
   // Category: Unisex
   // Target occasions: Everyday, Coffee Date, Work, Dinner
   // Moods: Fresh & Uplifting, Soft & Comforting, Warm & Indulgent
@@ -79,7 +79,7 @@ export function evaluateFragranceRecommendation(
         answers.notes === 'Sweet and Gourmand' ||
         answers.notes === 'Woody and Warm'
       ) {
-        // Creamy hazelnut has warm gourmand elements
+        // Creamy chocolate & vanilla has warm gourmand elements
         score += 20;
         matches.push('Warm Gourmand Accords');
       } else {
@@ -140,7 +140,7 @@ export function evaluateFragranceRecommendation(
   // Generate intelligent explanation
   const noteDesc =
     answers.notes === 'Creamy and Nutty'
-      ? 'creamy hazelnut nuance'
+      ? 'creamy chocolate & vanilla nuance'
       : answers.notes === 'Citrus and Fresh'
       ? 'bright citrus freshness'
       : 'harmonious contrast between crisp brightness and comforting warmth';
@@ -148,7 +148,7 @@ export function evaluateFragranceRecommendation(
   const moodDesc = answers.mood.toLowerCase();
   const occasionDesc = answers.occasion.toLowerCase();
 
-  const explanation = `Based on your preference for ${moodDesc} impressions suited for ${occasionDesc}, Cacao Citrine is an exceptional match. Its verified composition features bright citrus freshness evolving seamlessly into comforting creamy hazelnut — delivering the ${answers.direction.toLowerCase()} character you desire.`;
+  const explanation = `Based on your preference for ${moodDesc} impressions suited for ${occasionDesc}, Cacao Citrine is an exceptional match. Its verified composition features bright citrus freshness evolving seamlessly into comforting creamy chocolate and vanilla — delivering the ${answers.direction.toLowerCase()} character you desire.`;
 
   return {
     hasMatch: true,

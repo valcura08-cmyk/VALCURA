@@ -86,8 +86,8 @@ export default function CacaoCitrineProductPage() {
     },
     {
       src: '/products/cacao-citrine-2.jpg',
-      caption: 'Travertine & Hazelnut',
-      alt: 'VALCURA Cacao Citrine - Studio Portrait with Hazelnut',
+      caption: 'Travertine & Chocolate',
+      alt: 'VALCURA Cacao Citrine - Studio Portrait with Chocolate',
     },
     {
       src: '/products/cacao-citrine-3.jpg',
@@ -124,7 +124,7 @@ export default function CacaoCitrineProductPage() {
       image: '/moods/little-indulgence.jpg',
       tag: 'Afternoon Leisure • 3:30 PM',
       handle: 'little.indulgence.ritual',
-      desc: 'Hazelnut pastries and cocoa-dusted treats. A tactile reminder to savor the finer moments.',
+      desc: 'Chocolate pastries and cocoa-dusted treats. A tactile reminder to savor the finer moments.',
     },
     {
       slug: 'slow-moments',
@@ -579,7 +579,7 @@ export default function CacaoCitrineProductPage() {
                   <span className="font-mono text-xs uppercase tracking-widest text-[#8C6D42] font-bold w-32 shrink-0">
                     Heart Note:
                   </span>
-                  <span className="font-bold text-[#110D09]">Creamy Hazelnut &amp; Vanilla</span>
+                  <span className="font-bold text-[#110D09]">Creamy Chocolate &amp; Vanilla</span>
                 </div>
                 <div className="flex items-baseline space-x-3 py-2">
                   <span className="font-mono text-xs uppercase tracking-widest text-[#8C6D42] font-bold w-32 shrink-0">
@@ -859,7 +859,7 @@ export default function CacaoCitrineProductPage() {
                 </li>
                 <li className="flex items-center space-x-3">
                   <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
-                  <span><strong>Unisex composition</strong> harmonizing sparkling Italian citrus with velvety roasted hazelnut &amp; vanilla.</span>
+                  <span><strong>Unisex composition</strong> harmonizing sparkling Italian citrus with velvety creamy chocolate &amp; vanilla.</span>
                 </li>
               </ul>
             </div>

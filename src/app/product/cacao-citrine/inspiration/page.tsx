@@ -121,10 +121,10 @@ export default function CacaoCitrineInspirationPage() {
                 For decades, the commercial gourmand fragrance category has been defined by high-fructose syrup notes: vanilla frosting, heavy caramel syrup, and suffocating ethyl maltol. They demand attention through overpowering sweetness that tires the senses after twenty minutes.
               </p>
               <p>
-                VALCURA asked: What if gourmand didn’t mean dessert? What if it meant the tactile memory of breaking open an artisanal Piedmont hazelnut bar while standing in the shade of a Sicilian bergamot grove?
+                VALCURA asked: What if gourmand didn’t mean dessert? What if it meant the tactile memory of breaking open an artisanal dark chocolate bar while standing in the shade of a Sicilian bergamot grove?
               </p>
               <p>
-                The citrus doesn’t apologize for its sharpness; it cuts right through the hazelnut milk. The roasted cacao doesn’t taste like candy; it smells like warm earth, dry roasted shells, and dark cedar shavings.
+                The citrus doesn’t apologize for its sharpness; it cuts right through the creamy chocolate milk and vanilla. The roasted cacao doesn’t taste like candy; it smells like warm earth, dry roasted shells, and dark cedar shavings.
               </p>
             </div>
 

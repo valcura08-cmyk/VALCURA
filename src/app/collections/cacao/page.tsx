@@ -43,7 +43,7 @@ export default function CacaoaveilCollectionPage() {
                 Cacaoaveil
               </h1>
               <p className="text-[11px] sm:text-xs text-white/90 font-light max-w-lg mx-auto leading-relaxed drop-shadow-sm">
-                Where rich hazelnut comfort and roasted cacao depth meet luminous citrus vitality.
+                Where rich creamy chocolate and vanilla comfort meet luminous citrus vitality.
               </p>
             </div>
           </div>

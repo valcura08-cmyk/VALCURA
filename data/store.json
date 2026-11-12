@@ -23,10 +23,10 @@
         "/products/cacao-citrine-3.jpg",
         "/products/cacao-citrine-4.jpg"
       ],
-      "shortDescription": "A sophisticated modern composition marrying vibrant citrus freshness with the comforting depth of creamy hazelnut.",
+      "shortDescription": "A sophisticated modern composition marrying vibrant citrus freshness with the comforting depth of creamy chocolate and vanilla.",
       "notes": [
         "Sun-drenched Bergamot",
-        "Roasted Hazelnut Cream",
+        "Creamy Chocolate & Vanilla",
         "Cacao Shell Veil"
       ],
       "inventory": 0,
@@ -96,7 +96,7 @@
         "cacao-citrine",
         "roasted-zest"
       ],
-      "storySnippet": "When conversations stretch across warm cups and intimate table candlelight, you need a scent that feels both effortless and distinctive. Cacao Citrine brings crisp citrus brightness with creamy hazelnut warmth, while Roasted Zest adds dark cocoa nibs and smoked woods for café allure."
+      "storySnippet": "When conversations stretch across warm cups and intimate table candlelight, you need a scent that feels both effortless and distinctive. Cacao Citrine brings crisp citrus brightness with creamy chocolate and vanilla warmth, while Roasted Zest adds dark cocoa nibs and smoked woods for café allure."
     },
     {
       "id": "slow-moments",
@@ -124,13 +124,13 @@
         "roasted-zest",
         "cacao-citrine"
       ],
-      "storySnippet": "As dusk descends and the atmosphere deepens, an evening calls for quiet confidence and magnetic warmth. Roasted Zest commands the room with smoky woods and bitter cocoa rind, beautifully complemented by the sparkling hazelnut glow of Cacao Citrine."
+      "storySnippet": "As dusk descends and the atmosphere deepens, an evening calls for quiet confidence and magnetic warmth. Roasted Zest commands the room with smoky woods and bitter cocoa rind, beautifully complemented by the sparkling chocolate glow of Cacao Citrine."
     },
     {
       "id": "little-indulgence",
       "slug": "little-indulgence",
       "title": "A LITTLE INDULGENCE",
-      "visualDirection": "Hazelnut pastries, cocoa-inspired desserts, coffee and an elegant dessert-table experience.",
+      "visualDirection": "Chocolate pastries, cocoa-inspired desserts, coffee and an elegant dessert-table experience.",
       "description": "For people who enjoy the finer little moments.",
       "image": "/moods/little-indulgence.jpg",
       "recommendedProductId": "cacao-citrine",
@@ -153,7 +153,7 @@
         "cacao-citrine",
         "roasted-zest"
       ],
-      "storySnippet": "A sudden spark in the velvet dark. A flick of a flame illuminating glossy lips, smoky allure, and unspoken chemistry. Cacao Citrine captures this intoxicating energy with radiant solar citrus freshness that melts into the rich, addictive warmth of hazelnut cream and roasted cacao."
+      "storySnippet": "A sudden spark in the velvet dark. A flick of a flame illuminating glossy lips, smoky allure, and unspoken chemistry. Cacao Citrine captures this intoxicating energy with radiant solar citrus freshness that melts into the rich, addictive warmth of creamy chocolate, vanilla, and roasted cacao."
     }
   ],
   "orders": [

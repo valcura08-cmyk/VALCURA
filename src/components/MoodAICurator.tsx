@@ -46,7 +46,7 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
 
       if (q1Answer?.includes('citrus') || answer.includes('daily') || answer.includes('sun')) {
         matched = curatedProducts.find((p) => p.id === 'cacao-citrine') || cacaoCitrine;
-        rationale = `Based on your love for bright solar radiance and creamy hazelnut depth, Cacao Citrine is your bespoke signature. Its 20% Eau de Parfum concentration delivers effortless elegance from morning into evening.`;
+        rationale = `Based on your love for bright solar radiance and creamy chocolate depth, Cacao Citrine is your bespoke signature. Its 20% Eau de Parfum concentration delivers effortless elegance from morning into evening.`;
       } else if (q1Answer?.includes('smoky') || answer.includes('evening') || answer.includes('bold')) {
         const rz = curatedProducts.find((p) => p.id === 'roasted-zest');
         matched = rz || cacaoCitrine;
@@ -57,7 +57,7 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
         const ss = curatedProducts.find((p) => p.id === 'silken-sambac');
         matched = ss || cacaoCitrine;
         rationale = ss
-          ? `Your affinity for dewy white florals and cocooning tranquility aligns with Silken Sambac. You can explore Cacao Citrine today for an equally tactile, comforting hazelnut skin scent.`
+          ? `Your affinity for dewy white florals and cocooning tranquility aligns with Silken Sambac. You can explore Cacao Citrine today for an equally tactile, comforting creamy chocolate and vanilla skin scent.`
           : `Cacao Citrine softens into a velvety skin-scent that envelops you in personal serenity.`;
       }
 
@@ -149,8 +149,8 @@ export default function MoodAICurator({ mood, curatedProducts }: Props) {
             {[
               {
                 id: 'citrus-cream',
-                title: 'Solar Citrus Sparkle & Hazelnut Cream',
-                desc: 'Vibrant, crystalline morning freshness softening into creamy, tactile praline comfort.',
+                title: 'Solar Citrus Sparkle & Creamy Chocolate',
+                desc: 'Vibrant, crystalline morning freshness softening into creamy chocolate and vanilla comfort.',
               },
               {
                 id: 'smoky-cacao',

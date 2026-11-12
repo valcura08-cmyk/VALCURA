@@ -21,7 +21,7 @@ export default function FAQPage() {
     },
     {
       q: 'What fragrance notes make up Cacao Citrine?',
-      a: 'Cacao Citrine is a long-lasting unisex Eau de Parfum crafted for Indian weather with three distinct accords: Sparkling Citrus (Top Note), Creamy Hazelnut & Vanilla (Heart Note), and Warm Amber Rose (Base Note).',
+      a: 'Cacao Citrine is a long-lasting unisex Eau de Parfum crafted for Indian weather with three distinct accords: Sparkling Citrus (Top Note), Creamy Chocolate & Vanilla (Heart Note), and Warm Amber Rose (Base Note).',
     },
     {
       q: 'When will Silken Sambac and Roasted Zest become available?',
