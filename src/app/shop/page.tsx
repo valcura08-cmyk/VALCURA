@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ShoppingBag, Bell } from 'lucide-react';
 import { getDb } from '@/lib/db';
 
 export default function ShopAllFragrancesPage() {
@@ -46,7 +47,7 @@ export default function ShopAllFragrancesPage() {
               return (
                 <div
                   key={product.id}
-                  className="bg-white border border-[#110D09] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300"
+                  className="bg-white border border-[#E8DFD3] hover:border-[#8C6D42] rounded-2xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300"
                 >
                   {/* Compact Image */}
                   <Link href={`/product/${product.slug}`} className="relative aspect-[16/10] max-h-40 sm:max-h-44 bg-[#F8F5F0] overflow-hidden block group">
@@ -91,12 +92,20 @@ export default function ShopAllFragrancesPage() {
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-[#E8E2D8]">
+                    <div className="pt-2 border-t border-[#E8E2D8] space-y-1.5">
+                      <Link
+                        href={`/product/${product.slug}`}
+                        className="w-full py-2.5 px-3 bg-[#110D09] hover:bg-[#8C6D42] text-white text-[11px] font-serif font-bold uppercase tracking-[0.16em] rounded-xl transition-all shadow-2xs hover:shadow-sm active:scale-[0.98] flex items-center justify-center space-x-1.5 cursor-pointer text-center"
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <span>Pre-Order Next Slot • ₹{product.fullPrice || 399}</span>
+                      </Link>
                       <Link
                         href={`/product/${product.slug}#notify`}
-                        className="w-full btn-luxury-primary text-center block text-[11px] font-bold py-2 px-3 uppercase tracking-luxury rounded-lg shadow-2xs"
+                        className="w-full py-1.5 px-3 bg-[#FAF6EE] hover:bg-[#EFE9DF] text-[#8C6D42] hover:text-[#110D09] border border-[#E8DFD3] text-[10px] font-mono font-bold uppercase tracking-wider rounded-lg transition-all active:scale-[0.98] flex items-center justify-center space-x-1 cursor-pointer text-center"
                       >
-                        Notify Me For Next Slot →
+                        <Bell className="w-3 h-3" />
+                        <span>Notify Me For Drop</span>
                       </Link>
                     </div>
                   </div>

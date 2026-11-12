@@ -278,7 +278,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
 
         {/* 2. DIRECT LIST OF ALL FRAGRANCES LINKED TO THIS MOOD (JUST LIKE IN EXPLORE BY SCENTS) */}
         <section className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-[#110D09] pb-3 gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#E8DFD3] pb-3 gap-2">
             <div>
               <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#8C6D42] font-bold block">
                 Paired Perfumes
@@ -305,7 +305,7 @@ export default function MoodDetailPageClient({ mood, recommendedProducts }: Prop
                 return (
                   <div
                     key={product.id}
-                    className="bg-[#FAF6EE] border border-[#110D09] rounded-xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300"
+                    className="bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#8C6D42] rounded-2xl max-w-[270px] sm:max-w-[280px] w-full mx-auto flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300"
                   >
                     {/* Compact Bottle Image with Status Tag */}
                     <Link

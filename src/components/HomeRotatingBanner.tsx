@@ -18,8 +18,8 @@ const slides: BannerSlide[] = [
   {
     id: 'cacaoaveil',
     image: '/brand/home-banner-cacaoaveil.jpg',
-    title: 'Cacao Citrine • Current Slot Sold Out (Join Next Slot Waitlist)',
-    link: '/product/cacao-citrine#notify',
+    title: 'Cacao Citrine • Pre-Order Next Batch at ₹399',
+    link: '/product/cacao-citrine',
     bgColor: '#3D2314',
     objectPosition: 'center center',
   },
@@ -77,7 +77,7 @@ export default function HomeRotatingBanner() {
     <section className="px-3 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto -mt-1 sm:-mt-2 mb-3 sm:mb-5">
       {/* Sleek Wide Rectangular Banner Frame - Natural 1024/346 ratio preserves full image on mobile and desktop without cutting */}
       <div
-        className="relative w-full aspect-[1024/346] rounded-xl sm:rounded-2xl overflow-hidden border border-[#110D09]/80 sm:border-2 sm:border-[#110D09] shadow-[0_12px_36px_-12px_rgba(17,13,9,0.2)] transition-colors duration-700 group select-none touch-pan-y"
+        className="relative w-full aspect-[1024/346] rounded-xl sm:rounded-2xl overflow-hidden border border-[#E8DFD3] shadow-[0_12px_36px_-12px_rgba(17,13,9,0.15)] hover:border-[#8C6D42] transition-colors duration-700 group select-none touch-pan-y"
         style={{ backgroundColor: currentSlide.bgColor }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}

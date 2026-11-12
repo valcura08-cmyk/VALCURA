@@ -17,7 +17,7 @@
   }
 
   html {
-    zoom: 0.92;
+    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -80,25 +80,25 @@
 }
 
 .card-warm:hover {
-  border-color: #110D09;
+  border-color: #8C6D42;
   box-shadow: 0 10px 30px -10px rgba(17, 13, 9, 0.08);
 }
 
-/* Luxury button styling with warm tones */
+/* Luxury button styling with warm tactile responsiveness */
 .btn-luxury {
-  @apply inline-flex items-center justify-center px-8 py-4 text-xs uppercase tracking-luxury transition-all duration-300 font-medium;
+  @apply inline-flex items-center justify-center px-6 py-3.5 text-xs uppercase tracking-luxury font-medium transition-all duration-300 ease-out rounded-xl cursor-pointer select-none active:scale-[0.98];
 }
 
 .btn-luxury-primary {
-  @apply btn-luxury bg-[#110D09] text-[#FAF7F2] hover:bg-[#2A1F16] shadow-md hover:shadow-lg font-bold;
+  @apply btn-luxury bg-[#110D09] text-[#FAF7F2] hover:bg-[#8C6D42] shadow-sm hover:shadow-md font-bold;
 }
 
 .btn-luxury-outline {
-  @apply btn-luxury border border-[#110D09]/30 text-[#110D09] hover:border-[#110D09] hover:bg-[#110D09]/5 font-semibold;
+  @apply btn-luxury border border-[#E8DFD3] text-[#110D09] hover:border-[#8C6D42] hover:bg-[#FAF6EE] shadow-sm font-semibold;
 }
 
 .btn-luxury-gold {
-  @apply btn-luxury bg-[#8C6D42] text-white hover:bg-[#725732] shadow-md font-bold;
+  @apply btn-luxury bg-[#8C6D42] text-white hover:bg-[#725732] shadow-sm hover:shadow-md font-bold;
 }
 
 

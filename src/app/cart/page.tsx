@@ -65,7 +65,7 @@ export default function CartPage() {
                 return (
                   <div
                     key={item.productId}
-                    className="bg-white border border-[#E8E2D8] p-6 space-y-4 shadow-sm"
+                    className="bg-white border border-[#E8DFD3] rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xs hover:shadow-sm transition-all"
                   >
                     <div className="flex flex-col sm:flex-row gap-6">
                       <div className="relative w-28 h-36 bg-[#F8F5F0] border border-[#E8E2D8] flex-shrink-0 overflow-hidden">
@@ -138,8 +138,8 @@ export default function CartPage() {
 
             {/* Order Summary & Checkout Box */}
             <div className="lg:col-span-4">
-              <div className="bg-white border border-[#E8E2D8] p-6 sm:p-8 space-y-6 sticky top-28 shadow-lg">
-                <h3 className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono border-b border-[#E8E2D8] pb-3 font-medium">
+              <div className="bg-white border border-[#E8DFD3] rounded-2xl p-6 sm:p-8 space-y-6 sticky top-28 shadow-md">
+                <h3 className="text-xs tracking-luxury uppercase text-[#8C6D42] font-mono border-b border-[#E8DFD3] pb-3 font-medium">
                   Summary & Calculations
                 </h3>
 

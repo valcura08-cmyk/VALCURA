@@ -65,7 +65,7 @@ export default function Footer() {
               href="https://www.instagram.com/valcura__?cplk=MWdscXZoN3BqY3Q3NQ=="
               target="_blank"
               rel="noopener noreferrer"
-              className="w-11 h-11 bg-[#111111] text-white flex items-center justify-center hover:bg-[#8C6D42] transition-colors"
+              className="w-11 h-11 bg-[#111111] text-white flex items-center justify-center rounded-xl hover:bg-[#8C6D42] transition-colors shadow-2xs"
               aria-label="VALCURA Instagram"
             >
               <Instagram className="w-5 h-5" />
@@ -185,12 +185,12 @@ export default function Footer() {
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="Email"
-                  className="bg-[#F0EDE8] border border-transparent focus:border-black px-4 py-3 sm:py-3.5 text-sm text-[#111111] placeholder:text-[#111111]/45 focus:outline-none flex-1 transition-colors"
+                  className="bg-[#F0EDE8] border border-transparent focus:border-black px-4 py-3 sm:py-3.5 text-sm text-[#111111] placeholder:text-[#111111]/45 focus:outline-none flex-1 transition-colors rounded-xl sm:rounded-r-none"
                 />
                 <button
                   type="submit"
                   disabled={newsletterStatus === 'loading'}
-                  className="bg-[#111111] hover:bg-[#8C6D42] text-white px-7 py-3 sm:py-3.5 text-xs font-semibold uppercase tracking-wider transition-colors disabled:opacity-50 shrink-0"
+                  className="bg-[#111111] hover:bg-[#8C6D42] text-white px-7 py-3 sm:py-3.5 text-xs font-semibold uppercase tracking-wider transition-colors disabled:opacity-50 shrink-0 rounded-xl sm:rounded-l-none cursor-pointer"
                 >
                   {newsletterStatus === 'loading' ? 'Joining...' : 'Join us'}
                 </button>

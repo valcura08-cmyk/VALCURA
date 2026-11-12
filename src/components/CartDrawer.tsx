@@ -94,7 +94,7 @@ export default function CartDrawer() {
                   <div key={item.productId} className="pt-6 first:pt-0 space-y-4">
                     <div className="flex space-x-4">
                       {/* Thumbnail */}
-                      <div className="relative w-20 h-24 bg-[#F8F5F0] border border-[#E8E2D8] overflow-hidden flex-shrink-0">
+                      <div className="relative w-20 h-24 bg-[#F8F5F0] border border-[#E8DFD3] rounded-xl overflow-hidden flex-shrink-0 shadow-2xs">
                         <Image
                           src={item.image}
                           alt={item.name}
@@ -127,7 +127,7 @@ export default function CartDrawer() {
 
                         {/* Quantity Controls */}
                         <div className="flex items-center space-x-3 pt-2">
-                          <div className="inline-flex items-center border border-[#D5CDC2] bg-[#FAF8F5]">
+                          <div className="inline-flex items-center border border-[#D5CDC2] rounded-lg bg-[#FAF8F5] overflow-hidden">
                             <button
                               onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                               className="w-7 h-7 text-xs text-[#110D09]/70 hover:text-[#110D09] transition-colors"
@@ -152,12 +152,12 @@ export default function CartDrawer() {
                     </div>
 
                     {/* Clean Pricing Line */}
-                    <div className="bg-[#FAF8F5] border border-[#E8E2D8] p-3 flex items-center justify-between text-xs font-mono">
+                    <div className="bg-[#FAF8F5] border border-[#E8DFD3] rounded-xl p-3 flex items-center justify-between text-xs font-mono shadow-2xs">
                       <div>
                         <span className="text-[10px] text-[#8C6D42] uppercase block font-medium">Price</span>
                         <span className="text-[#110D09] font-bold">₹{item.fullUnitPrice * item.quantity}</span>
                       </div>
-                      <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
+                      <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 border border-emerald-200 rounded">
                         Saved ₹{(item.standardUnitPrice - item.fullUnitPrice) * item.quantity}
                       </span>
                     </div>

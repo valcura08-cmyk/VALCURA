@@ -361,18 +361,92 @@ export default function CacaoCitrineProductPage() {
                 </div>
               </div>
 
+              {/* Quantity Selector & Primary Active Acquisition Actions */}
+              <div className="space-y-3 pt-1">
+                {/* Quantity Control */}
+                <div className="flex items-center justify-between bg-white border border-[#E8DFD3] rounded-xl p-2.5 shadow-2xs">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#110D09] font-bold">
+                      Quantity:
+                    </span>
+                    <span className="text-[10px] font-mono text-[#888075]">
+                      (50 ML Bottle)
+                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-3">
+                    <div className="inline-flex items-center border border-[#D5CDC2] rounded-lg bg-[#FAF8F5] overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[#110D09] hover:bg-[#EFE9DF] transition-colors cursor-pointer select-none"
+                        aria-label="Decrease quantity"
+                      >
+                        -
+                      </button>
+                      <span className="w-8 text-center text-xs font-mono font-bold text-[#110D09]">
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[#110D09] hover:bg-[#EFE9DF] transition-colors cursor-pointer select-none"
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-[#110D09]">
+                      Total: ₹{totalFull}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Primary Button: Pre-Order Next Slot at ₹399 */}
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  className="w-full h-12 text-xs font-serif font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2 rounded-xl bg-[#110D09] hover:bg-[#8C6D42] text-[#FAF7F2] shadow-sm hover:shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                >
+                  {isAdded ? (
+                    <>
+                      <Check className="w-4 h-4 text-emerald-400" />
+                      <span>Added to Bag (₹{totalFull})!</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>Pre-Order Next Slot • ₹{totalFull}</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Direct WhatsApp Scanner Request to Raghav */}
+                <a
+                  href={`https://wa.me/916378582047?text=${encodeURIComponent(
+                    `hlo raghav sindhwani i want to reserve my cacao citrine please provide me the scanner to pay`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-11 text-xs font-mono font-bold tracking-wider uppercase flex items-center justify-center space-x-2 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-white shadow-2xs hover:shadow-sm transition-all active:scale-[0.98] cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Reserve on WhatsApp • Ask Raghav for Scanner</span>
+                </a>
+              </div>
+
               {/* Interactive Next Batch Slot Waitlist Card */}
-              <div id="notify" className="bg-[#FAF6EE] border-2 border-[#110D09] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-xs">
+              <div id="notify" className="bg-[#FAF6EE] border border-[#E8DFD3] hover:border-[#8C6D42] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-2xs transition-all">
                 <div className="space-y-1">
                   <div className="flex items-center space-x-1.5 text-[#8C6D42] text-[10px] font-mono uppercase tracking-wider font-bold">
                     <Bell className="w-3.5 h-3.5" />
-                    <span>Next Batch Slot Priority</span>
+                    <span>Prefer to wait for public restock?</span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-serif font-bold text-[#110D09] uppercase tracking-wide">
-                    Get Notified When Next Slot Drops
+                  <h3 className="text-sm sm:text-base font-serif font-bold text-[#110D09] uppercase tracking-wide">
+                    Get Free Email Alert When Next Slot Drops
                   </h3>
                   <p className="text-xs text-[#554D45] leading-relaxed">
-                    Due to high demand, our current batch of Cacao Citrine is completely sold out! Kindly drop your email address below, and we will notify you directly the very moment our fresh batch slot opens.
+                    Leave your email address below. We will inform you the very minute a fresh batch of Cacao Citrine is bottled and released!
                   </p>
                 </div>
 
@@ -464,18 +538,6 @@ export default function CacaoCitrineProductPage() {
                     </div>
                   </form>
                 )}
-              </div>
-
-              {/* Out of Stock Button indicator */}
-              <div className="pt-1">
-                <button
-                  type="button"
-                  disabled
-                  className="w-full h-11 text-xs font-serif font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2 rounded-xl bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
-                >
-                  <Lock className="w-3.5 h-3.5" />
-                  <span>Out of Stock • Current Slot Full</span>
-                </button>
               </div>
             </div>
 
@@ -612,7 +674,7 @@ export default function CacaoCitrineProductPage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#FAF6EE] p-4 sm:p-6 rounded-2xl border border-[#E8DFD3]">
                 {/* Left Column: Authentic Instagram Post Card */}
                 <div className="lg:col-span-5 max-w-sm mx-auto w-full">
-                  <div className="bg-white border-2 border-[#110D09] rounded-2xl overflow-hidden shadow-lg">
+                  <div className="bg-white border border-[#E8DFD3] rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all">
                     {/* Instagram Header with Verified Badge and Stepper */}
                     <div className="p-3 border-b border-[#E8DFD3] flex items-center justify-between bg-[#FAF6EE]">
                       <div className="flex items-center space-x-2.5">
