@@ -486,11 +486,11 @@ export default function CacaoCitrineProductPage() {
                 <span className="text-[9px] text-[#888075]">High Oil Concentration</span>
               </div>
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
-                <span className="text-[#8C6D42] font-bold block">4 HOURS</span>
+                <span className="text-[#8C6D42] font-bold block">6-8 HOURS</span>
                 <span className="text-[9px] text-[#888075]">Strong Scent Projection</span>
               </div>
               <div className="p-2 bg-white border border-[#E8DFD3] rounded-xl">
-                <span className="text-[#8C6D42] font-bold block">4-5 HOURS</span>
+                <span className="text-[#8C6D42] font-bold block">6-8 HOURS</span>
                 <span className="text-[9px] text-[#888075]">Tested on Indian Climate</span>
               </div>
             </div>
@@ -851,11 +851,11 @@ export default function CacaoCitrineProductPage() {
                 </li>
                 <li className="flex items-center space-x-3">
                   <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
-                  <span><strong>4 Hours active projection</strong> radiating a distinctive, arm&apos;s-length fragrance aura.</span>
+                  <span><strong>6 to 8 Hours active projection</strong> radiating a distinctive, arm&apos;s-length fragrance aura.</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />
-                  <span><strong>4 to 5 Hours skin longevity</strong> settling into an intimate, warm chocolate-musk dry-down.</span>
+                  <span><strong>6 to 8 Hours skin longevity</strong> settling into an intimate, warm chocolate-musk dry-down.</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <span className="w-2 h-2 rounded-full bg-[#8C6D42] shrink-0" />

@@ -122,13 +122,13 @@ export default function CacaoCitrineCharacterPage() {
 
           <div className="bg-[#FAF6EE] border border-[#E8DFD3] p-8 space-y-4 hover:border-[#18120E] transition-all">
             <span className="text-[10px] font-mono uppercase tracking-widest text-[#8C6D42] font-semibold">
-              Dimension 02 • Sillage &amp; 4 Hours Projection
+              Dimension 02 • Sillage &amp; 6-8 Hours Projection
             </span>
             <h3 className="text-2xl font-serif uppercase tracking-wide text-[#18120E]">
-              4 Hours Radiant Projection
+              6-8 Hours Radiant Projection
             </h3>
             <p className="text-sm text-[#18120E]/75 font-light leading-relaxed">
-              Designed for private allure. During the first 4 hours, it projects with captivating radiance within an arm’s length. As the day unfolds beyond 4 hours, it draws closer, becoming an irresistible second-skin scent that lingers for 10–12 hours.
+              Designed for private allure. During the first 6–8 hours, it projects with captivating radiance within an arm’s length. As the day unfolds beyond 8 hours, it draws closer, becoming an irresistible second-skin scent that lingers for 10–12 hours.
             </p>
           </div>
 
