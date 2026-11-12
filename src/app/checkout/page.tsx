@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import {
   Lock,
   ArrowRight,
@@ -30,7 +29,6 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 
 export default function CheckoutPage() {
-  const router = useRouter();
   const {
     items,
     addToCart,
@@ -66,6 +64,8 @@ export default function CheckoutPage() {
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
+  const [whatsappSent, setWhatsappSent] = useState(false);
+  const [lastWhatsappUrl, setLastWhatsappUrl] = useState('');
 
   // Sync logged in user if available
   useEffect(() => {
@@ -182,16 +182,21 @@ ${customerDetails}`;
 
       const whatsappUrl = `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
-      // 3. Clear cart
+      // 3. Set WhatsApp state and stop loading
+      setLastWhatsappUrl(whatsappUrl);
+      setWhatsappSent(true);
+      setLoading(false);
+
+      // 4. Clear cart
       clearCart();
 
-      // 4. Open WhatsApp directly
+      // 5. Open WhatsApp directly without redirecting away to confirmation
       if (typeof window !== 'undefined') {
-        window.open(whatsappUrl, '_blank');
+        const opened = window.open(whatsappUrl, '_blank');
+        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+          window.location.href = whatsappUrl;
+        }
       }
-
-      // 5. Navigate to Order Confirmation Invoice page
-      router.push(`/order-confirmation/${orderId}`);
     } catch (err: any) {
       console.error('WhatsApp order error:', err);
       setErrorMsg(err.message || 'Could not complete order. Please try again.');
@@ -223,11 +228,17 @@ ${customerDetails}`;
 
       const whatsappUrl = `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
+      setLastWhatsappUrl(whatsappUrl);
+      setWhatsappSent(true);
+      setLoading(false);
+
       clearCart();
       if (typeof window !== 'undefined') {
-        window.open(whatsappUrl, '_blank');
+        const opened = window.open(whatsappUrl, '_blank');
+        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+          window.location.href = whatsappUrl;
+        }
       }
-      router.push(`/order-confirmation/${orderId}`);
     } catch (err: any) {
       console.error('UPI Order error:', err);
       setErrorMsg(err.message || 'Could not confirm UPI order.');
@@ -399,33 +410,73 @@ ${customerDetails}`;
                   </div>
                 </div>
 
-                {/* Big Glowing WhatsApp Order Button */}
-                <div className="pt-1 space-y-2">
-                  <button
-                    type="button"
-                    onClick={handleWhatsAppOrder}
-                    disabled={loading}
-                    className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-serif font-bold text-sm sm:text-base tracking-wide shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 group relative overflow-hidden"
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Reserving Flacon...</span>
-                      </>
-                    ) : (
-                      <>
-                        <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-white" />
-                        <span>Order via WhatsApp • ₹{totalPayableAmount}</span>
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </>
-                    )}
-                  </button>
+                {/* WhatsApp Order Action / Status */}
+                {whatsappSent ? (
+                  <div className="p-4 sm:p-5 rounded-xl bg-emerald-50 border-2 border-emerald-500/40 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-emerald-600 text-white mx-auto flex items-center justify-center shadow-sm">
+                      <MessageCircle className="w-6 h-6" />
+                    </div>
 
-                  <div className="flex items-center justify-center gap-1.5 text-center text-[10px] text-[#110D09]/60 font-mono">
-                    <Sparkles className="w-3 h-3 text-[#8C6D42]" />
-                    <span>Instant 1-Click Allocation • Raghav will send official ICICI QR</span>
+                    <div className="space-y-1">
+                      <h4 className="font-serif font-bold text-sm sm:text-base text-emerald-950">
+                        WhatsApp Chat Opened with Raghav Sindhwani
+                      </h4>
+                      <p className="text-xs text-emerald-800 leading-relaxed max-w-md mx-auto">
+                        Please hit <strong>Send</strong> in WhatsApp. Raghav (+91 6378582047) will provide the official scanner to complete your payment.
+                      </p>
+                    </div>
+
+                    <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2">
+                      <a
+                        href={lastWhatsappUrl || `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full sm:w-auto py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-serif font-bold rounded-lg text-center flex items-center justify-center gap-2 shadow-xs transition-colors"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>Open WhatsApp Again</span>
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setWhatsappSent(false)}
+                        className="w-full sm:w-auto px-4 py-2 text-xs font-mono text-emerald-900 hover:underline"
+                      >
+                        Edit Details
+                      </button>
+                    </div>
+
+                    <p className="text-[10px] text-emerald-700/80 font-mono">
+                      Raghav Sindhwani • +91 6378582047
+                    </p>
                   </div>
-                </div>
+                ) : (
+                  <div className="pt-1 space-y-2">
+                    <button
+                      type="button"
+                      onClick={handleWhatsAppOrder}
+                      disabled={loading}
+                      className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-serif font-bold text-sm sm:text-base tracking-wide shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 group relative overflow-hidden"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Opening WhatsApp...</span>
+                        </>
+                      ) : (
+                        <>
+                          <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-white" />
+                          <span>Order via WhatsApp • ₹{totalPayableAmount}</span>
+                          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </>
+                      )}
+                    </button>
+
+                    <div className="flex items-center justify-center gap-1.5 text-center text-[10px] text-[#110D09]/60 font-mono">
+                      <Sparkles className="w-3 h-3 text-[#8C6D42]" />
+                      <span>Instant 1-Click Allocation • Raghav will send official ICICI QR</span>
+                    </div>
+                  </div>
+                )}
 
                 {errorMsg && (
                   <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
@@ -528,31 +579,67 @@ ${customerDetails}`;
                   </div>
                 </div>
 
-                {/* Confirm Paid via WhatsApp */}
-                <div className="space-y-2">
-                  <button
-                    type="button"
-                    onClick={handleDirectUpiConfirmation}
-                    disabled={loading}
-                    className="w-full py-2.5 px-4 rounded-xl bg-[#110D09] hover:bg-[#8C6D42] text-white font-serif font-bold text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Generating Confirmation...</span>
-                      </>
-                    ) : (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        <span>I Have Paid • Send Screenshot on WhatsApp</span>
-                      </>
-                    )}
-                  </button>
+                {/* Confirm Paid via WhatsApp / Status */}
+                {whatsappSent ? (
+                  <div className="p-4 rounded-xl bg-emerald-50 border-2 border-emerald-500/40 text-center space-y-3">
+                    <div className="w-10 h-10 rounded-full bg-emerald-600 text-white mx-auto flex items-center justify-center shadow-sm">
+                      <CheckCircle2 className="w-5 h-5" />
+                    </div>
 
-                  <p className="text-[10px] text-[#110D09]/60 font-mono text-center">
-                    Sends your payment reference directly to Raghav (+91 6378582047) for instant verification.
-                  </p>
-                </div>
+                    <div className="space-y-1">
+                      <h4 className="font-serif font-bold text-sm text-emerald-950">
+                        WhatsApp Opened to Send Payment Screenshot
+                      </h4>
+                      <p className="text-xs text-emerald-800 leading-relaxed max-w-md mx-auto">
+                        Please send your payment screenshot to Raghav (+91 6378582047) in WhatsApp so he can quickly verify and pack your bottle.
+                      </p>
+                    </div>
+
+                    <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2">
+                      <a
+                        href={lastWhatsappUrl || `https://wa.me/${CONCIERGE_WHATSAPP_NUMBER}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full sm:w-auto py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-serif font-bold rounded-lg text-center flex items-center justify-center gap-2 shadow-xs transition-colors"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>Open WhatsApp Again</span>
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setWhatsappSent(false)}
+                        className="w-full sm:w-auto px-4 py-2 text-xs font-mono text-emerald-900 hover:underline"
+                      >
+                        Update Message
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <button
+                      type="button"
+                      onClick={handleDirectUpiConfirmation}
+                      disabled={loading}
+                      className="w-full py-2.5 px-4 rounded-xl bg-[#110D09] hover:bg-[#8C6D42] text-white font-serif font-bold text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Opening WhatsApp...</span>
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <span>I Have Paid • Send Screenshot on WhatsApp</span>
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-[10px] text-[#110D09]/60 font-mono text-center">
+                      Sends your payment reference directly to Raghav (+91 6378582047) for instant verification.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 

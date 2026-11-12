@@ -165,7 +165,7 @@ export default function CartPage() {
                 </div>
 
                 <div className="p-3 bg-[#FAF8F5] border border-[#E8DFD3] text-[10px] text-[#8C6D42] font-mono text-center">
-                  ✨ Pre-order settlement options (₹399 Full / ₹449 70% Plan) selectable at checkout.
+                  ✨ Pre-Order Privilege: Flat ₹399 per flacon. Direct WhatsApp booking available at checkout.
                 </div>
 
                 <div className="pt-1">
