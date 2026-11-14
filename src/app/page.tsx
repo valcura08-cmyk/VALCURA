@@ -80,7 +80,7 @@ export default function HomePage() {
           >
             <div className="relative aspect-[16/10] sm:aspect-[4/3] bg-[#F4ECE1] overflow-hidden">
               <Image
-                src="/editorial/explore-by-scents-banner.jpg"
+                src="/editorial/explore-by-scents-banner-v2.jpg"
                 alt="Explore By Scents - VALCURA"
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 380px"

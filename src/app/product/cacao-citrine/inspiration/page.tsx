@@ -16,7 +16,7 @@ export default function CacaoCitrineInspirationPage() {
         productId: 'cacao-citrine',
         name: 'Cacao Citrine',
         slug: 'cacao-citrine',
-        image: '/products/cacao-citrine-1.jpg',
+        image: '/products/cacao-citrine-1-v2.jpg',
         category: 'Unisex',
         volume: '50 ML',
         quantity: 1,

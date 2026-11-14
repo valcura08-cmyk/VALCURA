@@ -25,7 +25,7 @@ export default function ExploreByScents({ products }: Props) {
         productId: cacaoCitrine.id,
         name: cacaoCitrine.name,
         slug: cacaoCitrine.slug,
-        image: cacaoCitrine.images[0] || '/products/cacao-citrine-1.jpg',
+        image: cacaoCitrine.images[0] || '/products/cacao-citrine-1-v2.jpg',
         category: cacaoCitrine.category,
         volume: cacaoCitrine.volume,
         quantity: quantity,

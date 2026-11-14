@@ -9,7 +9,7 @@ const nextConfig = {
   },
   images: {
     formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    minimumCacheTTL: 3600, // 1 hour revalidation window
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
@@ -64,12 +64,12 @@ const nextConfig = {
         ],
       },
       {
-        // Static Asset Caching
+        // Static Asset Caching - Revalidate hourly so image updates propagate across all edge servers
         source: '/:all*(svg|jpg|png|webp|avif|ico)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=3600, stale-while-revalidate=86400',
           },
         ],
       },
