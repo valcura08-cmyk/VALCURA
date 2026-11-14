@@ -13,10 +13,10 @@ export default function ShopAllFragrancesPage() {
       {/* Editorial Front Banner */}
       <section className="relative w-full h-[160px] sm:h-[220px] lg:h-[260px] bg-[#110D09] overflow-hidden">
         <Image
-          src="/editorial/explore-by-scents-banner-v2.jpg"
+          src="/editorial/explore-by-scents-banner-v3.jpg"
           alt="Explore By Scents - VALCURA"
           fill
-          className="object-cover object-[center_22%] opacity-85"
+          className="object-cover object-center opacity-85"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
