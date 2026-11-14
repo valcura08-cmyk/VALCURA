@@ -80,24 +80,24 @@ export default function CacaoCitrineProductPage() {
 
   const images = [
     {
-      src: '/products/cacao-citrine-1-v2.jpg',
-      caption: 'Stone & Cocoa Still Life',
-      alt: 'VALCURA Cacao Citrine - Sandstone Still Life',
+      src: '/products/cacao-citrine-1-v3.jpg',
+      caption: 'Golden Hour Marble & Velvet Rose',
+      alt: 'VALCURA Cacao Citrine - Golden Hour Marble Still Life',
     },
     {
-      src: '/products/cacao-citrine-2-v2.jpg',
-      caption: 'Travertine & Chocolate',
-      alt: 'VALCURA Cacao Citrine - Studio Portrait with Chocolate',
+      src: '/products/cacao-citrine-2-v3.jpg',
+      caption: 'Gilded Mirror & Champagne Silk',
+      alt: 'VALCURA Cacao Citrine - Gilded Mirror and Silk Display',
     },
     {
-      src: '/products/cacao-citrine-3-v2.jpg',
-      caption: 'Champagne Silk Satin',
-      alt: 'VALCURA Cacao Citrine - Lay-flat Bottle in Liquid Silk',
+      src: '/products/cacao-citrine-3-v3.jpg',
+      caption: 'Cocoa Dust & Roasted Nibs Flatlay',
+      alt: 'VALCURA Cacao Citrine - Tactile Cocoa and Coffee Flatlay',
     },
     {
-      src: '/products/cacao-citrine-4-v2.jpg',
-      caption: 'Pedestal Perspective',
-      alt: 'VALCURA Cacao Citrine - Polished Plinth Display',
+      src: '/products/cacao-citrine-4-v3.jpg',
+      caption: 'Travertine Plinth & Liquid Silk',
+      alt: 'VALCURA Cacao Citrine - Travertine Plinth and Silk Perspective',
     },
   ];
 
